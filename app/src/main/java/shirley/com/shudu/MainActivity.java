@@ -227,8 +227,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
     /**
      * 更新冲突状态
+     *
      */
     public boolean updateConflictState(){
        addConflictToset();
