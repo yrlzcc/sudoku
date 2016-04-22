@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shirley.com.shudu.view.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/item_back"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/item_tv_gridcell"
+        android:gravity="center"
+        android:textColor="@color/fix_textcolor"
+        android:cursorVisible="false"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</shirley.com.shudu.view.SquareLayout>

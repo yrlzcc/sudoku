@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">花式数独</string>
+    <string name="level1">简单</string>
+    <string name="level2">普通</string>
+    <string name="level3">高级</string>
+    <string name="level4">大师</string>
+
+    <string name="sudoku_again">再来一局</string>
+    <string name="sudoku_cancel">取消</string>
+
+    <string name="sudoku_clear">清除</string>
+</resources>
