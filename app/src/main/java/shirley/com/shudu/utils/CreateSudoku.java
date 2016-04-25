@@ -516,6 +516,44 @@ public class CreateSudoku {
         return pList;
     }
 
+    /**
+     * 获取当前格对应的冲突列表
+     * @param data
+     * @return
+     */
+    public ArrayList<Point> validateForCurrentList(List<GridItem> data,int position) {
+        if(position == -1){
+            return null;
+        }
+        ArrayList<Point> pList = new ArrayList<Point>();
+        int m = 0, n = 0, p = 0, q = 0; // m,n是计数器，p,q用于确定测试点的方格位置
+        int x = position/9;
+        int y = position%9;
+        for (m = 0; m < 9; m++) {  //判断同一列是否有重复
+            int tempm = m*9+y;
+            if (m != x  && (data.get(tempm).num == data.get(position).num)) {
+                pList.add(new Point(m,y));
+            }
+        }
+        for (n = 0; n < 9; n++) {  //判断同一行是否有重复
+            int tempn = 9*x+n;
+            if (n != y && data.get(tempn).num == data.get(position).num) {
+                pList.add(new Point(x,tempn));
+            }
+        }
+        for (p = x / 3 * 3, m = 0; m < 3; m++) { //判断一个九宫格里是否有重复
+            for (q = y / 3 * 3, n = 0; n < 3; n++) {
+                int temppq = 9 * (p + m) + q + n;
+                if ((p + m != x || q + n != y)
+                        && (data.get(temppq).num == data.get(position).num)) {
+                    pList.add(new Point(p+m,q+n));
+                }
+            }
+        }
+        return pList;
+    }
+
+
     public int[][] myResultData() {
         return resultData;
     }

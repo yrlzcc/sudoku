@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param key
      */
     private void updateGridState(int key){
+        System.out.println("selection:" +selection);
         if(selection == -1){
             return;
         }
@@ -209,21 +210,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 冲突列表放到set里
+     *
      */
     private void addConflictToset(){
-        conflictList = sudoku.validateForList(gridItemsData);
-        if(conflictList == null || conflictList.size() == 0){
-            return;
-        }
         if(conflictSet == null){
             conflictSet = new HashSet<Integer>();
         }
         else{
             conflictSet.clear();
         }
+        conflictList = sudoku.validateForList(gridItemsData);
+        if(conflictList == null || conflictList.size() == 0){
+            return;
+        }
         for(Point pt:conflictList){
             int position = pt.x * COLOUMNUM + pt.y;
             conflictSet.add(position);
+            System.out.println("position:" + position);
         }
     }
 
@@ -235,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public boolean updateConflictState(){
        addConflictToset();
-        if(conflictSet == null || conflictSet.size() == 0){
+        if(conflictSet == null){  //为null时直接返回，size为0时说明列表为空，没有冲突，需要将冲突状态重置
             return false;
         }
         int size = gridItemsData.size();
