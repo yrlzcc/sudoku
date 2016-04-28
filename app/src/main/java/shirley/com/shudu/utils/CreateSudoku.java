@@ -14,6 +14,7 @@ import shirley.com.shudu.GridItem;
  *
  */
 public class CreateSudoku {
+    public static final int SUDOKU_NUM = 1;
     private int[][] orginData;  //保存初始状态的数独
     // 初始化生成数组
     private int[][] sudokuData = { { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -72,13 +73,19 @@ public class CreateSudoku {
             default:
                 break;
         }
-        genSuduku();
+//        genSuduku();
+        create();
         orginData = new int[9][9];
         for(int i = 0; i < 9; i++) {
             System.arraycopy(sudokuData[i], 0, orginData[i], 0, 9);
         }
     }
 
+    public void create(){
+
+//        getSudoku();
+
+    }
     /**
      * 生成唯一解的数独
      */
@@ -452,33 +459,7 @@ public class CreateSudoku {
         return true;
     }
 
-    /**
-     * 设置高亮提示
-     * @param data
-     * @param position
-     */
-    public void setHighLight(List<GridItem> data, int position) {
-        for(GridItem item:data){
-            item.isSelected = false;  //初始化
-        }
-        int m = 0, n = 0, p = 0, q = 0; // m,n是计数器，p,q用于确定测试点的方格位置
-        int x = position/9;
-        int y = position%9;
-        for (m = 0; m < 9; m++) {  //判断同一列是否有重复
-            int tempm = m*9+y;
-            data.get(tempm).isSelected = true;
-        }
-        for (n = 0; n < 9; n++) {  //判断同一行是否有重复
-            int tempn = 9*x+n;
-            data.get(tempn).isSelected = true;
-        }
-        for (p = x / 3 * 3, m = 0; m < 3; m++) { //判断一个九宫格里是否有重复
-            for (q = y / 3 * 3, n = 0; n < 3; n++) {
-                int temppq = 9 * (p + m) + q + n;
-                data.get(temppq).isSelected = true;
-            }
-        }
-    }
+
 
 
     /**
@@ -625,6 +606,90 @@ public class CreateSudoku {
         return resultData;
     }
 
+    int is_digital_match(int sudoku[][], int i, int j)
+    {
+        int temp = sudoku[i][j];
+        int p, q;
+        int m, n;
 
+        for(p=0; p<9; p++)
+            if(p!=i && sudoku[p][j]==temp)
+                return 0;
+        for(p=0; p<9; p++)
+            if(p!=j && sudoku[i][p]==temp)
+                return 0;
+
+        p = i/3;
+        q = j/3;
+        for(m=p*3; m<p*3+3; m++)
+            for(n=q*3; n<q*3+3; n++)
+                if(m!=i && n!=j && sudoku[m][n]==temp)
+                    return 0;
+
+        return 1;
+    }
+
+    /*输出数独矩阵*/
+    void sudoku_print(int sudoku[][])
+    {
+        int i,j;
+        for(i=0; i<9; i++)
+        {
+            for(j=0; j<9; j++)
+                System.out.print(sudokuData[i][j]);
+            System.out.print("\n");
+        }
+    }
+
+   private void getSudoku()
+    {
+        int i, j, temp=0;
+        int k=0, num=0;
+        Random rand = new Random();
+        for(i = 0;i < 9;i++){
+            for(j = 0;j < 9;j++){
+                sudokuData[i][j] = 0;
+            }
+        }
+    /*通过添加一些随机性，来每次生成不同的数独矩阵*/
+    /*添加更多随机性，则生成的矩阵将更随即*/
+        for(i=0; i<9; i++)
+        {
+            temp = rand.nextInt() % 81;
+            sudokuData[temp/9][temp%9] = i+1;
+        }
+    /*回溯法，构造数独矩阵*/
+        while(true)
+        {
+            i = k/9;
+            j = k%9;
+
+            while(true)
+            {
+                System.out.print("========================i,j = " + i + ","+j);
+                sudokuData[i][j]++;
+                if(sudokuData[i][j] == 10)
+                {
+                    sudokuData[i][j] = 0;
+                    --k;
+                    break;
+                }
+                else if(validateIandJ(sudokuData, i, j))
+                {
+                    ++k;
+                    break;
+                }
+            }
+
+            if(k == 81)
+            {
+                sudoku_print(sudokuData);
+                if(num >= SUDOKU_NUM)
+                    return;
+
+                --k;
+            }
+        }
+    }
 }
 

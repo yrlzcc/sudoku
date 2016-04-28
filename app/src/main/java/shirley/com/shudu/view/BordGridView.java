@@ -59,7 +59,7 @@ import shirley.com.shudu.R;
             super.dispatchDraw(canvas);
             int column = 9;//计算出一共有多少列，假设有3列
             int childCount = getChildCount();//子view的总数
-            System.out.println("子view的总数childCount==" + childCount);
+//            System.out.println("子view的总数childCount==" + childCount);
 
             for (int i = 0; i < childCount; i++) {//遍历子view
                 int row = i/column;
