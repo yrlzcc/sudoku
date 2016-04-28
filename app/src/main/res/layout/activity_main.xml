@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,6 +22,9 @@
         android:padding="5dp"
         android:numColumns="9"
         android:gravity="center"
+        app:mainBorderWidth="5.0"
+        app:mainBorderColor="@color/item_main_border_color"
+        app:subBorderColor="@color/item_sub_border_color"
         android:listSelector="@android:color/transparent"
         android:stretchMode="columnWidth"
         android:layout_width="match_parent"

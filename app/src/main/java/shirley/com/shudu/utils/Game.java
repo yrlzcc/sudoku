@@ -40,13 +40,18 @@ public class Game extends Observable {
     public void newGame(int level) {
         setLevel(level);
         solution = generateSolution(new int[9][9]);
-        game = generateGame(copy(solution));
+//        game = generateGame(copy(solution));
         setChanged();
+        game = copy(solution);
         notifyObservers(UpdateAction.NEW_GAME);
         print(solution);
-        print(game);
+//        print(game);
     }
 
+    /**
+     * 设置级别
+     * @param level
+     */
     public void setLevel(int level) {
         if (level < 0 || level > 6) {
             this.level = 3;
@@ -336,30 +341,42 @@ public class Game extends Observable {
         return null;
     }
 
+    /**
+     * 数独生成算法，将原有算法改进了下，先随机生成一条对角线上的九宫格的数字，原后对剩余九宫格分别用回溯算法
+     * @param game
+     * @return
+     */
     private int[][] generateSolution(int[][] game) {
         long time1 = System.currentTimeMillis();
         game = generateBlock(game, 0, 0);
         game = generateBlock(game, 3, 3);
         game = generateBlock(game, 6, 6);
-        int[] index = {6, 7, 8, 15, 16, 17, 24, 25, 26};
+        int[] index = {6, 7, 8, 15, 16, 17, 24, 25, 26,54, 55, 56, 63, 64, 65, 72, 73, 74,3, 4, 5, 12, 13, 14, 21, 22, 23,27, 28, 29, 36, 37, 38, 45, 46, 47,33, 34, 35, 42, 43, 44, 51, 52, 53,57, 58, 59, 66, 67, 68, 75, 76, 77};
         game = generateSolution(game, index, 0);
-        int[] index2 = {54, 55, 56, 63, 64, 65, 72, 73, 74};
-        game = generateSolution(game, index2, 0);
-        int[] index3 = {3, 4, 5, 12, 13, 14, 21, 22, 23};
-        game = generateSolution(game, index3, 0);
-        int[] index4 = {27, 28, 29, 36, 37, 38, 45, 46, 47};
-        game = generateSolution(game, index4, 0);
-        int[] index5 = {33, 34, 35, 42, 43, 44, 51, 52, 53};
-        game = generateSolution(game, index5, 0);
-        int[] index6 = {57, 58, 59, 66, 67, 68, 75, 76, 77};
-        game = generateSolution(game, index6, 0);
+//        int[] index2 = {54, 55, 56, 63, 64, 65, 72, 73, 74};
+//        game = generateSolution(game, index2, 0);
+//        int[] index3 = {3, 4, 5, 12, 13, 14, 21, 22, 23};
+//        game = generateSolution(game, index3, 0);
+//        int[] index4 = {27, 28, 29, 36, 37, 38, 45, 46, 47};
+//        game = generateSolution(game, index4, 0);
+//        int[] index5 = {33, 34, 35, 42, 43, 44, 51, 52, 53};
+//        game = generateSolution(game, index5, 0);
+//        int[] index6 = {57, 58, 59, 66, 67, 68, 75, 76, 77};
+//        game = generateSolution(game, index6, 0);
         long time2 = System.currentTimeMillis();
         System.out.println("生成数独time:" + (time2 - time1));
         return game;
     }
 
+    /**
+     * 对指定格子采用回溯算法
+     * @param game 整个数独对应的数组
+     * @param index 指定格子序列
+     * @param indexi 指定格子在序列中的下标
+     * @return
+     */
     private int[][] generateSolution(int[][] game, int[] index, int indexi) {
-        if (indexi > 8)
+        if (indexi > 53)
             return game;
 
 
@@ -376,7 +393,7 @@ public class Game extends Observable {
                 return null;
 
             game[x][y] = number;
-            int[][] tmpGame = generateSolution(game, index[indexi] + 1);
+            int[][] tmpGame = generateSolution(game, index,indexi + 1);
             if (tmpGame != null)
                 return tmpGame;
             game[x][y] = 0;

@@ -8,7 +8,7 @@
     <TextView
         android:padding="5dp"
         android:id="@+id/main_include_select_1"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:text="1"
         android:gravity="center"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/main_include_select_2"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:text="2"
         android:padding="5dp"
@@ -30,7 +30,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="5dp"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:id="@+id/main_include_select_3"
         android:layout_width="wrap_content"
         android:text="3"
@@ -39,7 +39,7 @@
         android:id="@+id/main_include_select_4"
         android:padding="5dp"
         android:layout_width="wrap_content"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:gravity="center"
         android:text="4"
         android:layout_weight="1"
@@ -47,7 +47,7 @@
     <TextView
         android:id="@+id/main_include_select_5"
         android:padding="5dp"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:text="5"
         android:gravity="center"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_6"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:layout_weight="1"
         android:padding="5dp"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_7"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:padding="5dp"
@@ -77,7 +77,7 @@
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:padding="5dp"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:gravity="center"
         android:text="8"
         android:layout_height="wrap_content" />
@@ -86,7 +86,7 @@
         android:id="@+id/main_include_select_9"
         android:layout_weight="1"
         android:gravity="center"
-        android:background="@mipmap/bg_my_chose_car"
+        android:background="@drawable/bg_btn_selector"
         android:padding="5dp"
         android:layout_width="wrap_content"
         android:text="9"
