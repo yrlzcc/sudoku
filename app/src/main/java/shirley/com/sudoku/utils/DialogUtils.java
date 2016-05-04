@@ -1,4 +1,4 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 
 /**
  * Created by Administrator on 2016/4/18.
@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import shirley.com.shudu.R;
+import shirley.com.sudoku.R;
 
 public class DialogUtils extends Dialog {
     private static int default_width = 310; // 默认宽度

@@ -1,17 +1,21 @@
-package shirley.com.shudu;
+package shirley.com.sudoku;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import shirley.com.shudu.utils.Constans;
+import com.umeng.analytics.MobclickAgent;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
+import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.utils.Constans;
+
+public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        UmengUpdateAgent.update(this);
         setContentView(R.layout.activity_menu);
         findViewById(R.id.menu_level1).setOnClickListener(this);
         findViewById(R.id.menu_level2).setOnClickListener(this);
@@ -38,7 +42,19 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             default:break;
         }
         Intent intent = new Intent(MenuActivity.this,MainActivity.class);
-        intent.putExtra("level",level);
+        intent.putExtra("level", level);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onResume(this);
     }
 }

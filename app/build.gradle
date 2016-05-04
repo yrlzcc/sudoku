@@ -1,11 +1,29 @@
 apply plugin: 'com.android.application'
 
+/**
+ *
+ * 获取时间戳
+ */
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+/**
+ *
+ * 从AndroidManifest.xml中获取版本号
+ */
+def getVersionNameFromManifest() {
+    def manifestParser = new com.android.builder.core.DefaultManifestParser()
+    return manifestParser.getVersionName(android.sourceSets.main.manifest.srcFile)
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "shirley.com.shudu"
+        applicationId "shirley.com.sudoku"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -17,10 +35,66 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /**
+     * 配置渠道名称
+     */
+    productFlavors {
+        update {}
+        baidu {}
+        anzhi {}
+        '360' {}
+        tengxun {}
+        '91' {}
+        jifeng {}
+        xiaomi {}
+        Nduo {}
+        appchina {}
+        wandoujia {}
+        oppo {}
+        '10086' {}
+        meizu {}
+        eoemarket {}
+        yiyonghui {}
+        huawei {}
+        talkphone {}
+        google {}
+        mumayi {}
+        woshangdian {}
+        leshangdian {}
+        aliyun {}
+        samsung {}
+        wangyi {}
+        taobao {}
+        pp {}
+        sougou {}
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+
+    /**
+     * 批量打包修改生成的apk名字
+     */
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def oldFile = output.outputFile
+            if (variant.buildType.name.equals('release')) {
+                def releaseApkName = 'sudoku_' + getDate() + '_v' + getVersionNameFromManifest() + '_' + variant.productFlavors[0].name + '_release' + '.apk'
+                output.outputFile = new File(oldFile.parent, releaseApkName)
+            }
+
+            if (variant.buildType.name.equals('debug')) {
+                def debugApkName = 'sudoku_' + getDate() + '_v' + getVersionNameFromManifest() + '_' + variant.productFlavors[0].name + '_debug' + '.apk'
+                output.outputFile = new File(oldFile.parent, debugApkName)
+            }
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

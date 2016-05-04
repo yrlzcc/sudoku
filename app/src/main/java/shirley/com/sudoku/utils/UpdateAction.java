@@ -1,4 +1,4 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 
 /**
  * Enumeration used to inform observers what to update.

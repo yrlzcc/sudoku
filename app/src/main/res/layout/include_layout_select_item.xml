@@ -11,6 +11,8 @@
         android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:text="1"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:gravity="center"
         android:layout_weight="1"
         android:layout_height="wrap_content" />
@@ -21,6 +23,8 @@
         android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:text="2"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:padding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -28,8 +32,10 @@
 
     <TextView
         android:layout_weight="1"
+        android:layout_margin="1dp"
         android:gravity="center"
         android:padding="5dp"
+        android:textSize="28dp"
         android:background="@drawable/bg_btn_selector"
         android:id="@+id/main_include_select_3"
         android:layout_width="wrap_content"
@@ -37,7 +43,9 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_4"
+        android:layout_margin="1dp"
         android:padding="5dp"
+        android:textSize="28dp"
         android:layout_width="wrap_content"
         android:background="@drawable/bg_btn_selector"
         android:gravity="center"
@@ -46,6 +54,8 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_5"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:padding="5dp"
         android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
@@ -55,6 +65,8 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_6"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:background="@drawable/bg_btn_selector"
         android:layout_width="wrap_content"
         android:layout_weight="1"
@@ -64,6 +76,8 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/main_include_select_7"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:background="@drawable/bg_btn_selector"
         android:layout_weight="1"
         android:layout_width="wrap_content"
@@ -74,6 +88,8 @@
 
     <TextView
         android:id="@+id/main_include_select_8"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:padding="5dp"
@@ -84,6 +100,8 @@
 
     <TextView
         android:id="@+id/main_include_select_9"
+        android:layout_margin="1dp"
+        android:textSize="28dp"
         android:layout_weight="1"
         android:gravity="center"
         android:background="@drawable/bg_btn_selector"

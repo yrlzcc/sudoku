@@ -1,11 +1,11 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 import android.graphics.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import shirley.com.shudu.GridItem;
+import shirley.com.sudoku.GridItem;
 
 /**
  * Created by shirley on 2016/4/14.

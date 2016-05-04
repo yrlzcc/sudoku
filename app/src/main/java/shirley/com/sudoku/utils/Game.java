@@ -1,4 +1,4 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,9 +40,9 @@ public class Game extends Observable {
     public void newGame(int level) {
         setLevel(level);
         solution = generateSolution(new int[9][9]);
-//        game = generateGame(copy(solution));
+        game = generateGame(copy(solution));
         setChanged();
-        game = copy(solution);
+//        game = copy(solution);
         notifyObservers(UpdateAction.NEW_GAME);
         print(solution);
 //        print(game);

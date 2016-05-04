@@ -1,4 +1,4 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 
 /**
  * Created by Administrator on 2016/4/18.

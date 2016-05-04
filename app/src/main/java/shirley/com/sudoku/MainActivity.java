@@ -1,4 +1,4 @@
-package shirley.com.shudu;
+package shirley.com.sudoku;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-import shirley.com.shudu.utils.DialogUtils;
-import shirley.com.shudu.utils.Game;
-import shirley.com.shudu.utils.UpdateAction;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,Observer {
+import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.utils.DialogUtils;
+import shirley.com.sudoku.utils.Game;
+import shirley.com.sudoku.utils.UpdateAction;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener,Observer {
 
     private final int COLOUMNUM = 9;
     private Context context;
@@ -307,4 +309,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+
 }

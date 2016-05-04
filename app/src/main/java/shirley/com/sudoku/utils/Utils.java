@@ -1,4 +1,4 @@
-package shirley.com.shudu.utils;
+package shirley.com.sudoku.utils;
 
 import android.content.Context;
 

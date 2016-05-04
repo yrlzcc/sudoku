@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="shirley.com.shudu.MainActivity">
+    tools:context="shirley.com.sudoku.MainActivity">
 
     <Chronometer
         android:layout_margin="10dp"
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <shirley.com.shudu.view.BordGridView
+    <shirley.com.sudoku.view.BordGridView
         android:id="@+id/main_gv_show"
         android:layout_below="@+id/main_ch_time"
         android:padding="5dp"
@@ -28,7 +28,7 @@
         android:listSelector="@android:color/transparent"
         android:stretchMode="columnWidth"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></shirley.com.shudu.view.BordGridView>
+        android:layout_height="wrap_content"></shirley.com.sudoku.view.BordGridView>
 
     <include
         layout="@layout/include_layout_btn"

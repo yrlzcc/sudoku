@@ -1,4 +1,4 @@
-package shirley.com.shudu.view;
+package shirley.com.sudoku.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridView;
 
-import shirley.com.shudu.R;
+import shirley.com.sudoku.R;
 
 /**
  * Created by Administrator on 2016/4/18.

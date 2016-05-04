@@ -1,4 +1,4 @@
-package shirley.com.shudu;
+package shirley.com.sudoku;
 
 import android.content.Context;
 import android.view.KeyEvent;

@@ -1,4 +1,4 @@
-package shirley.com.shudu;
+package shirley.com.sudoku;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
