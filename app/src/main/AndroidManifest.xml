@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="shirley.com.sudoku">
+    package="shirley.com.sudoku"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-sdk android:minSdkVersion="10" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-        <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-        <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 
         <activity android:name="shirley.com.sudoku.MenuActivity">
             <intent-filter>
@@ -33,9 +37,8 @@
             <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" >-->
         <!--</activity>-->
         <!--友盟更新结束-->
+        <meta-data android:value="5729986fe0f55a7ba7000102" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="update" android:name="UMENG_CHANNEL"/>
     </application>
-
-    <meta-data android:value="5729986fe0f55a7ba7000102" android:name="UMENG_APPKEY"></meta-data>
-    <meta-data android:value="update" android:name="UMENG_CHANNEL"/>
 
 </manifest>

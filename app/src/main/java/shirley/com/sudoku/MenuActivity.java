@@ -1,11 +1,8 @@
 package shirley.com.sudoku;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import com.umeng.analytics.MobclickAgent;
 
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.utils.Constans;
@@ -16,6 +13,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        UmengUpdateAgent.update(this);
+//        UmengUpdateAgent.setDeltaUpdate(false);
         setContentView(R.layout.activity_menu);
         findViewById(R.id.menu_level1).setOnClickListener(this);
         findViewById(R.id.menu_level2).setOnClickListener(this);
@@ -49,12 +47,12 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onResume(this);
     }
 }

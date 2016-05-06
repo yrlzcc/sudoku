@@ -35,7 +35,7 @@ public class BaseActivity extends FragmentActivity {
 		isDestory = false;
 		isResume = true;
 		super.onResume();
-//		MobclickAgent.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class BaseActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		isResume = false;
-//		MobclickAgent.onPause(this);
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

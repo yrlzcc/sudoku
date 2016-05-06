@@ -29,13 +29,56 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+
+
+    /**
+     *  忽略编译错误
+     */
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    /**
+     * 配置签名文件 release＋debug
+     */
+    signingConfigs {
+        debug {
+//            keyAlias 'sudoku'
+//            keyPassword 'sudokuxia'
+//            storeFile file('sudoku.debugkey')
+//            storePassword 'sudokuxia'
+//
+        }
+//        release {
+//            keyAlias 'sudoku'
+//            keyPassword 'sudokuxia'
+//            storeFile file('sudoku.releasekey')
+//            storePassword 'sudokuxia'
+//        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            keyAlias 'benyang'
+            keyPassword 'itisabenny'
+            storeFile file('safetrip.releasekey')
+            storePassword 'itisabenny'
         }
     }
 
+    buildTypes {
+        /**
+         * 配置编译类型
+         */
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
     /**
      * 配置渠道名称
      */
@@ -90,6 +133,31 @@ android {
             }
         }
     }
+
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            jniLibs.srcDirs = ['libs']
+//            assets.srcDirs = ['assets']
+//        }
+//
+//        // Move the tests to tests/java, tests/res, etc...
+//        instrumentTest.setRoot('tests')
+//
+//        // Move the build types to build-types/<type>
+//        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+//        // This moves them out of them default location under src/<type>/... which would
+//        // conflict with src/ being used by the main source set.
+//        // Adding new build types or product flavors should be accompanied
+//        // by a similar customization.
+//        debug.setRoot('build-types/debug')
+//        release.setRoot('build-types/release')
+//    }
 }
 
 dependencies {
