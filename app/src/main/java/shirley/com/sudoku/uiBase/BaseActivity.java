@@ -16,6 +16,9 @@ public class BaseActivity extends FragmentActivity {
 	public boolean isResume;
 	private boolean exit;
 	private ApplicationManager applicationManager;
+	protected static boolean isSoundOpen = true;  //声音开关
+	protected static boolean isTipsOpen = true;  //高亮提示开关
+	protected static boolean isHelpOpen = true; 	//帮助开关
 
 	@Override
 	protected void onCreate(Bundle arg0) {

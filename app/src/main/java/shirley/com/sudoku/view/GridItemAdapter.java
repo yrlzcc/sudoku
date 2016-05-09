@@ -1,4 +1,4 @@
-package shirley.com.sudoku;
+package shirley.com.sudoku.view;
 
 import android.content.Context;
 import android.view.KeyEvent;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.List;
+
+import shirley.com.sudoku.R;
 
 
 public class GridItemAdapter extends BaseAdapter {
@@ -79,14 +81,12 @@ public class GridItemAdapter extends BaseAdapter {
         }
         else {
             if (item.isSelected) {
-                if(position == selection){
-                    holder.tv_content.setBackgroundResource(R.color.item_select_back);
-                }
-                else {
-                    holder.tv_content.setBackgroundResource(R.color.item_select_reference_back);
-                }
+                holder.tv_content.setBackgroundResource(R.color.item_select_reference_back);
             } else {
                 holder.tv_content.setBackgroundResource(R.color.item_back);
+            }
+            if(position == selection){
+                holder.tv_content.setBackgroundResource(R.color.item_select_back);
             }
         }
         return convertView;

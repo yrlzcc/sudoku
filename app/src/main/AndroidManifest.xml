@@ -4,11 +4,15 @@
     android:versionCode="1"
     android:versionName="1.0.0">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <uses-sdk android:minSdkVersion="10" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".BaseApplication"
@@ -17,28 +21,33 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <activity android:name="shirley.com.sudoku.MenuActivity">
+        <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="shirley.com.sudoku.MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
-        <!--友盟更新开始-->
-        <!--<service-->
-            <!--android:name="com.umeng.update.net.DownloadingService"-->
-            <!--android:process=":DownloadingService" >-->
-        <!--</service>-->
-        <!--<activity-->
-            <!--android:name="com.umeng.update.UpdateDialogActivity"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" >-->
-        <!--</activity>-->
-        <!--友盟更新结束-->
-        <meta-data android:value="5729986fe0f55a7ba7000102" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="update" android:name="UMENG_CHANNEL"/>
+        <!-- 友盟更新开始 -->
+        <!-- <service -->
+        <!-- android:name="com.umeng.update.net.DownloadingService" -->
+        <!-- android:process=":DownloadingService" > -->
+        <!-- </service> -->
+        <!-- <activity -->
+        <!-- android:name="com.umeng.update.UpdateDialogActivity" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" > -->
+        <!-- </activity> -->
+        <!-- 友盟更新结束 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5729986fe0f55a7ba7000102" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="update" />
+
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

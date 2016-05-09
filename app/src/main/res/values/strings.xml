@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">花式数独</string>
+    <string name="app_name">数独</string>
     <string name="level1">简单</string>
     <string name="level2">普通</string>
     <string name="level3">高级</string>

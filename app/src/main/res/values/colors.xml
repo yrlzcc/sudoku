@@ -17,4 +17,10 @@
 
     <color name="item_main_border_color">#ff492d29</color><!--九宫格边框颜色-->
     <color name="item_sub_border_color">#ffb5aaa8</color><!--小格子边框颜色-->
+
+    <color name="back">#ffe9dfdc</color> <!--页面背景-->
+    <color name="title_back">#ff9b6d5f</color><!--标题栏背景-->
+
+    <color name="btn_number_select">#ff9d6d60</color><!--按钮选中背景-->
+    <color name="btn_number_normal">#ffdac6bf</color><!--按钮背景-->
 </resources>
