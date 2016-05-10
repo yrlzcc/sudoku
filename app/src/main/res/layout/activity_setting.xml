@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="显示冲突开关"
+            android:text="@string/setting_switch_conflict_tips"
             android:textColor="@android:color/black"
-            android:textSize="14.0sp" />
+            android:textSize="16.0sp" />
 
         <ToggleButton
             android:id="@+id/tb_setting_help_conflict"
@@ -44,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="高亮提示开关"
+            android:text="@string/setting_switch_highlight_tips"
             android:textColor="@android:color/black"
-            android:textSize="14.0sp" />
+            android:textSize="16.0sp" />
 
         <ToggleButton
             android:id="@+id/tb_setting_help_highlight"
@@ -63,6 +63,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:visibility="invisible"
         android:layout_height="wrap_content">
 
         <TextView
@@ -71,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="声音开关"
+            android:text="@string/setting_switch_sound"
             android:textColor="@android:color/black"
             android:textSize="14.0sp" />
 
