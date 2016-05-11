@@ -4,20 +4,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.utils.Utils;
 
 public class SettingActivity extends BaseActivity {
     private ToggleButton toggleButtonhelp;   //显示冲突开关
     private ToggleButton toggleButtontips;   //高亮提示开关
     private ToggleButton toggleButtonsound;     //声音开关
     private ToggleButton toggleButtoncomplete;  //自动填充所有
+    private TextView tv_setting_current_version; //当前版本
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        tv_setting_current_version = (TextView)findViewById(R.id.tv_setting_current_version);
+        tv_setting_current_version.setText(Utils.getVersion(this));
         toggleButtonhelp = (ToggleButton)findViewById(R.id.tb_setting_help_conflict);
         toggleButtonhelp.setChecked(isConflictHelpOpen);
         toggleButtonhelp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,5 +65,6 @@ public class SettingActivity extends BaseActivity {
                 toggleButtonsound.setChecked(isChecked);
             }
         });
+
     }
 }

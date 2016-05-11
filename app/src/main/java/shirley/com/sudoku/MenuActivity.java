@@ -1,8 +1,15 @@
 package shirley.com.sudoku;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
+
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.utils.Constans;
@@ -14,6 +21,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 //        UmengUpdateAgent.update(this);
 //        UmengUpdateAgent.setDeltaUpdate(false);
+        checkUpdate();
         setContentView(R.layout.activity_menu);
         findViewById(R.id.menu_level1).setOnClickListener(this);
         findViewById(R.id.menu_level2).setOnClickListener(this);
@@ -44,6 +52,40 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         startActivity(intent);
     }
 
+    private void checkUpdate(){
+        PgyUpdateManager.register(this,
+                new UpdateManagerListener() {
+
+                    @Override
+                    public void onUpdateAvailable(final String result) {
+                        System.out.println("onUpdateAvailable:" + result);
+                        // 将新版本信息封装到AppBean中
+                        final AppBean appBean = getAppBeanFromString(result);
+                        new AlertDialog.Builder(MenuActivity.this)
+                                .setTitle("更新")
+                                .setMessage("")
+                                .setNegativeButton(
+                                        "确定",
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(
+                                                    DialogInterface dialog,
+                                                    int which) {
+                                                startDownloadTask(
+                                                        MenuActivity.this,
+                                                        appBean.getDownloadURL());
+                                            }
+                                        }).show();
+                    }
+
+                    @Override
+                    public void onNoUpdateAvailable() {
+                        System.out.println("onNoUpdateAvailable-------------------");
+                    }
+                });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -54,5 +96,17 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
 //        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                System.exit(0);
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

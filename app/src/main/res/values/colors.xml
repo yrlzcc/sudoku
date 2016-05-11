@@ -12,8 +12,8 @@
     <color name="fix_textcolor">#ff492d29</color>  <!--固定数字的颜色-->
     <color name="fill_textcolor">#880000ff</color><!--可填数字的颜色-->
     <color name="item_back">#ffffffff</color><!--普通格子的背景颜色-->
-    <color name="item_select_back">#aa000000</color><!--选中格子的背景颜色-->
-    <color name="item_select_reference_back">#66000000</color><!--和选中格子有关系的格子背景颜色-->
+    <color name="item_select_back">#ff9d6d60</color><!--选中格子的背景颜色-->
+    <color name="item_select_reference_back">#ffdac6bf</color><!--和选中格子有关系的格子背景颜色-->
     <color name="item_conflict_back">#ffff0000</color><!--冲突格子背景颜色-->
 
     <color name="item_main_border_color">#ff492d29</color><!--九宫格边框颜色-->

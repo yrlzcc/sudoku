@@ -14,6 +14,7 @@
     <string name="setting_switch_conflict_tips">显示冲突开关</string>
     <string name="setting_switch_sound">声音开关</string>
     <string name="setting_switch_complete">自动填充所有</string>
+    <string name="setting_version">当前版本</string>
 
     <string name="sudoku_dialog_complete_tips">恭喜您，完全正确！</string>
 </resources>

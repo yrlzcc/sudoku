@@ -18,6 +18,13 @@ def getVersionNameFromManifest() {
     return manifestParser.getVersionName(android.sourceSets.main.manifest.srcFile)
 }
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -82,7 +89,7 @@ android {
     /**
      * 配置渠道名称
      */
-    productFlavors {
+    productFlavors  {
         update {}
         baidu {}
         anzhi {}
@@ -160,9 +167,3 @@ android {
 //    }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.umeng.analytics:analytics:latest.integration'
-}

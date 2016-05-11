@@ -461,7 +461,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 自动填充所有数据
      */
     private void setAutoFill() {
-        if (gridItemsData == null || gridItemsData.isEmpty()) {
+        if (gridItemsData == null || gridItemsData.isEmpty() || game == null) {
             return;
         }
         gridItemsData.clear();

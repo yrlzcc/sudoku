@@ -2,6 +2,8 @@ package shirley.com.sudoku;
 
 import android.app.Application;
 
+import com.pgyersdk.crash.PgyCrashManager;
+
 /**
  * Created by Administrator on 2016/5/5.
  */
@@ -18,6 +20,7 @@ public class BaseApplication extends Application {
             // TODO Auto-generated method stub
             super.onCreate();
             application = this;
+            PgyCrashManager.register(this);
         }
 
 }

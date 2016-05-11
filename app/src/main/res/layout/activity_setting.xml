@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/tv_setting_help_conflict"
@@ -36,7 +36,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/tv_setting_help_highlight"
@@ -64,7 +64,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:visibility="gone"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/tv_setting_sound"
@@ -92,7 +92,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:visibility="visible"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/tv_setting_complete"
@@ -115,5 +115,30 @@
             android:text=""
             android:textOff=""
             android:textOn="" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:visibility="visible"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_version"
+            android:textColor="@android:color/black"
+            android:textSize="16.0sp" />
+
+        <TextView
+            android:id="@+id/tv_setting_current_version"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="16.0sp"
+            android:gravity="center_vertical"
+            android:text="1.0.0" />
     </RelativeLayout>
 </LinearLayout>
