@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import shirley.com.sudoku.R;
+import shirley.com.sudoku.model.GridItem;
 
 
 public class GridItemAdapter extends BaseAdapter {
@@ -76,6 +77,7 @@ public class GridItemAdapter extends BaseAdapter {
             holder.tv_content.setEnabled(true);
             holder.tv_content.setTextColor(context.getResources().getColor(R.color.fill_textcolor));
         }
+        holder.tv_content.setBackground(null);
         if(item.isSame){
             holder.tv_content.setBackgroundColor(context.getResources().getColor(R.color.item_conflict_back));
         }

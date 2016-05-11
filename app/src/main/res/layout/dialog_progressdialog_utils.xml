@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/group_add_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15.33dp"
+        android:indeterminate="true"
+        android:layout_gravity="center_horizontal"
+        android:indeterminateDrawable="@anim/loading"/>
+
+    <TextView
+        android:id="@+id/contenttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15.33dp"
+        android:layout_marginTop="15.33dp"
+        android:text="hahhah"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="14dp" />
+
+</LinearLayout>

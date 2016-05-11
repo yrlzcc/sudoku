@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import shirley.com.sudoku.view.GridItem;
+import shirley.com.sudoku.model.GridItem;
 
 /**
  * Created by shirley on 2016/4/14.

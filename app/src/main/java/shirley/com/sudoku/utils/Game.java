@@ -44,7 +44,7 @@ public class Game extends Observable {
         setChanged();
 //        game = copy(solution);
         notifyObservers(UpdateAction.NEW_GAME);
-        print(solution);
+//        print(solution);
 //        print(game);
     }
 
@@ -189,6 +189,9 @@ public class Game extends Observable {
      * @return true 说明填入的是有效的，错误的说明有冲突
      */
     public boolean checkValid(int x, int y) {
+        if(game == null){
+            return false;
+        }
         int number = game[x][y];
         if (number == 0) {
             return true;
@@ -216,6 +219,16 @@ public class Game extends Observable {
      */
     public int getNumber(int x, int y) {
         return game[x][y];
+    }
+
+    /**
+     * 获取解决方案中指定位置的数
+     * @param x
+     * @param y
+     * @return
+     */
+    public int getSolutionNumber(int x,int y){
+        return solution[x][y];
     }
 
     /**
@@ -348,9 +361,11 @@ public class Game extends Observable {
      */
     private int[][] generateSolution(int[][] game) {
         long time1 = System.currentTimeMillis();
+        //生成一条对角线的格子
         game = generateBlock(game, 0, 0);
         game = generateBlock(game, 3, 3);
         game = generateBlock(game, 6, 6);
+        //生成其它格子
         int[] index = {6, 7, 8, 15, 16, 17, 24, 25, 26,54, 55, 56, 63, 64, 65, 72, 73, 74,3, 4, 5, 12, 13, 14, 21, 22, 23,27, 28, 29, 36, 37, 38, 45, 46, 47,33, 34, 35, 42, 43, 44, 51, 52, 53,57, 58, 59, 66, 67, 68, 75, 76, 77};
         game = generateSolution(game, index, 0);
 //        int[] index2 = {54, 55, 56, 63, 64, 65, 72, 73, 74};

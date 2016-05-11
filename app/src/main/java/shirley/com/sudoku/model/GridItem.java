@@ -1,4 +1,4 @@
-package shirley.com.sudoku.view;
+package shirley.com.sudoku.model;
 
 /**
  * Created by Administrator on 2016/4/14.
