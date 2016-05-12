@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -16,6 +17,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private ToggleButton toggleButtonsound;     //声音开关
     private ToggleButton toggleButtoncomplete;  //自动填充所有
     private TextView tv_setting_current_version; //当前版本
+    private RelativeLayout rl_auto_fill;  //自动填充layout
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
+        rl_auto_fill = (RelativeLayout)findViewById(R.id.rl_auto_fill);
         toggleButtoncomplete = (ToggleButton)findViewById(R.id.tb_setting_complete);
         if(!isDebug){
-            toggleButtoncomplete.setVisibility(View.GONE);
+            rl_auto_fill.setVisibility(View.GONE);
         }
         toggleButtoncomplete.setChecked(false);
         isAutoFill = false;

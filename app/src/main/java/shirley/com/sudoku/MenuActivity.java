@@ -13,8 +13,11 @@ import com.pgyersdk.update.UpdateManagerListener;
 
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.utils.Constans;
+import shirley.com.sudoku.utils.DialogUtils;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
+
+    private DialogUtils dialogUtils = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int level = 1;
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.menu_level1:
                 level = Constans.LEVEL1;
                 break;
@@ -45,14 +48,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             case R.id.menu_level4:
                 level = Constans.LEVEL4;
                 break;
-            default:break;
+            default:
+                break;
         }
-        Intent intent = new Intent(MenuActivity.this,MainActivity.class);
+        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
         intent.putExtra("level", level);
         startActivity(intent);
     }
 
-    private void checkUpdate(){
+    private void checkUpdate() {
         PgyUpdateManager.register(this,
                 new UpdateManagerListener() {
 
@@ -61,29 +65,32 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                         System.out.println("onUpdateAvailable:" + result);
                         // 将新版本信息封装到AppBean中
                         final AppBean appBean = getAppBeanFromString(result);
-                        new AlertDialog.Builder(MenuActivity.this)
-                                .setTitle("更新")
-                                .setMessage("")
-                                .setNegativeButton(
-                                        "确定",
-                                        new DialogInterface.OnClickListener() {
-
-                                            @Override
-                                            public void onClick(
-                                                    DialogInterface dialog,
-                                                    int which) {
-                                                startDownloadTask(
-                                                        MenuActivity.this,
-                                                        appBean.getDownloadURL());
-                                            }
-                                        }).show();
+                        dialogUtils = new DialogUtils(MenuActivity.this, "更新", appBean.getReleaseNote(), new DialogUtils.OnDialogSelectId() {
+                            @Override
+                            public void onClick(int whichButton) {
+                                switch (whichButton) {
+                                    case 0:
+                                        dialogUtils.dismiss();
+                                        break;
+                                    case 1:
+                                        dialogUtils.dismiss();
+                                        startDownloadTask(
+                                                MenuActivity.this,
+                                                appBean.getDownloadURL());
+                                        break;
+                                }
+                            }
+                        });
+                        dialogUtils.show();
                     }
 
                     @Override
                     public void onNoUpdateAvailable() {
                         System.out.println("onNoUpdateAvailable-------------------");
                     }
-                });
+                }
+
+        );
     }
 
     @Override

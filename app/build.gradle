@@ -92,6 +92,7 @@ android {
     productFlavors  {
         update {}
         baidu {}
+        android {}
         anzhi {}
         '360' {}
         tengxun {}
