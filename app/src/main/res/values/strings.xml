@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">数独</string>
-    <string name="level1">简单</string>
-    <string name="level2">普通</string>
-    <string name="level3">高级</string>
-    <string name="level4">大师</string>
+    <string name="level1">入门级</string>
+    <string name="level2">进阶级</string>
+    <string name="level3">困难级</string>
+    <string name="level4">专家级</string>
 
+    <string name="sudoku_ok">确定</string>
     <string name="sudoku_again">再来一局</string>
     <string name="sudoku_cancel">取消</string>
 
@@ -17,4 +18,7 @@
     <string name="setting_version">当前版本</string>
 
     <string name="sudoku_dialog_complete_tips">恭喜您，完全正确！</string>
+    <string name="sudoku_dialog_exit">当前游戏正在进行中，确定要退出吗？</string>
+
+    <string name="sudoku_help">用数字1~9填充九宫格上的所有空格，保证每行、每列、每个小九宫格中1~9的数字只出现一次</string>
 </resources>

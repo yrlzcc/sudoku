@@ -52,8 +52,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/sudoku_again"
-            android:textColor="#4bbe73"
+            android:text="@string/sudoku_ok"
+            android:textColor="@color/title_back"
             android:textSize="16dp" />
 
         <Button
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/sudoku_again"
+            android:text="@string/sudoku_ok"
             android:textColor="#4bbe73"
             android:textSize="16dp"
             android:visibility="gone" />

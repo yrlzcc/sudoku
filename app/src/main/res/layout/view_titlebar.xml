@@ -19,7 +19,8 @@
             android:background="@color/transparent"
             android:contentDescription="@null"
             android:paddingLeft="17dp"
-            android:paddingRight="17dp" />
+            android:paddingRight="17dp"
+            android:src="@mipmap/btn_left_back" />
 
         <TextView
             android:id="@+id/text_title"

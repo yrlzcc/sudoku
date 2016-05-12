@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import com.umeng.analytics.MobclickAgent;
 
 public class BaseActivity extends FragmentActivity {
-	public static final boolean isDebug = true; // app是否是测试包
+	public static final boolean isDebug = false; // app是否是测试包
 	public boolean isDestory;
 	public boolean isResume;
 	private boolean exit;

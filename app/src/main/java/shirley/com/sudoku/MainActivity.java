@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private List<Point> conflictList = null; //冲突列表
     private Set<Integer> conflictSet = null;
     private Game game;
+    private boolean isInitSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.main_include_select_9).setOnClickListener(this);
         findViewById(R.id.main_include_btn_clear).setOnClickListener(this);
         findViewById(R.id.imagebutton_right).setOnClickListener(this);
+        findViewById(R.id.imagebutton_left).setOnClickListener(this);
         chronometer = (Chronometer) findViewById(R.id.main_ch_time);
         gridView.setOnItemClickListener(this);
         level = getIntent().getIntExtra("level", 1);
@@ -184,6 +186,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                updateGridState(key);
                 game.setSelectedNumber(key);
                 break;
+            case R.id.imagebutton_left:
+                showExitDialog();
+                break;
             case R.id.imagebutton_right:
                 Intent intent = new Intent(this, SettingActivity.class);
                 startActivity(intent);
@@ -275,7 +280,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 弹出完成对话框
      */
     private void showCompleteDialog(){
-        dialogUtils = new DialogUtils(context, "选择", "成功", new DialogUtils.OnDialogSelectId() {
+        dialogUtils = new DialogUtils(context, "选择", context.getResources().getString(R.string.sudoku_dialog_complete_tips), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
                 switch (whichButton) {
@@ -285,6 +290,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     case 1:
                         initGame(level);
                         dialogUtils.dismiss();
+                        break;
+                }
+            }
+        });
+        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_again));
+        dialogUtils.show();
+    }
+
+    /**
+     * 弹出退出对话框
+     */
+    private void showExitDialog(){
+        dialogUtils = new DialogUtils(context, "退出", context.getResources().getString(R.string.sudoku_dialog_exit), new DialogUtils.OnDialogSelectId() {
+            @Override
+            public void onClick(int whichButton) {
+                switch (whichButton) {
+                    case 0:
+                        dialogUtils.dismiss();
+                        break;
+                    case 1:
+                        dialogUtils.dismiss();
+                        writeSettingValue();
+                        finish();
                         break;
                 }
             }
@@ -366,8 +394,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         System.out.println("update");
         switch ((UpdateAction) data) {
             case NEW_GAME:
-                progressDialog.dismiss();
+                dissmissProgressDialog();
                 game = (Game)observable;
+                isInitSuccess = true;
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -477,6 +506,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
+        if(!isInitSuccess){
+            return;
+        }
         initTipsState();
         if (isHighlightTipsOpen) {
             setHighLight(gridItemsData, selection);
@@ -500,7 +532,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                writeSettingValue();
+                showExitDialog();
                 break;
             default:
                 break;

@@ -190,7 +190,7 @@ public class Game extends Observable {
      */
     public boolean checkValid(int x, int y) {
         if(game == null){
-            return false;
+            return true;
         }
         int number = game[x][y];
         if (number == 0) {

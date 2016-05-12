@@ -10,7 +10,7 @@ import android.widget.ToggleButton;
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.utils.Utils;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ToggleButton toggleButtonhelp;   //显示冲突开关
     private ToggleButton toggleButtontips;   //高亮提示开关
     private ToggleButton toggleButtonsound;     //声音开关
@@ -23,6 +23,10 @@ public class SettingActivity extends BaseActivity {
         setContentView(R.layout.activity_setting);
         tv_setting_current_version = (TextView)findViewById(R.id.tv_setting_current_version);
         tv_setting_current_version.setText(Utils.getVersion(this));
+
+        findViewById(R.id.imagebutton_left).setOnClickListener(this);
+        findViewById(R.id.imagebutton_right).setVisibility(View.GONE);
+
         toggleButtonhelp = (ToggleButton)findViewById(R.id.tb_setting_help_conflict);
         toggleButtonhelp.setChecked(isConflictHelpOpen);
         toggleButtonhelp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -58,6 +62,7 @@ public class SettingActivity extends BaseActivity {
             toggleButtoncomplete.setVisibility(View.GONE);
         }
         toggleButtoncomplete.setChecked(false);
+        isAutoFill = false;
         toggleButtoncomplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -66,5 +71,15 @@ public class SettingActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.imagebutton_left:
+                finish();
+                break;
+            default:break;
+        }
     }
 }
