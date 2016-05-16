@@ -2,6 +2,7 @@ package shirley.com.sudoku;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Message;
 import android.os.SystemClock;
@@ -37,19 +38,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private GridView gridView;
     private GridItemAdapter gridItemAdapter;
     private ProgressDialogUtils progressDialog = null;
-    private Button main_bt_complete;
     private List<GridItem> gridItemsData = null;
-    //    private CreateSudoku sudoku;
-//    private int[][] sudokuData;
-//    private int[][] sudokuResult;
     private int selection = -1;
     private int level;
     private DialogUtils dialogUtils = null;
     private Chronometer chronometer = null; //计时器
-    private List<Point> conflictList = null; //冲突列表
-    private Set<Integer> conflictSet = null;
     private Game game;
-    private boolean isInitSuccess = false;
+    private boolean isInitSuccess = false; //是否加载成功
+    private boolean isMark = false; //是否是标记状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.main_include_select_8).setOnClickListener(this);
         findViewById(R.id.main_include_select_9).setOnClickListener(this);
         findViewById(R.id.main_include_btn_clear).setOnClickListener(this);
+        findViewById(R.id.main_include_btn_mark).setOnClickListener(this);
         findViewById(R.id.imagebutton_right).setOnClickListener(this);
         findViewById(R.id.imagebutton_left).setOnClickListener(this);
         chronometer = (Chronometer) findViewById(R.id.main_ch_time);
@@ -79,15 +76,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     /**
      * 初始化游戏
+     *
      * @param level
      */
     private void initGame(final int level) {
         initData();
-        gridItemAdapter = new GridItemAdapter(this, gridItemsData, selection);
+        gridItemAdapter = new GridItemAdapter(context, gridItemsData, selection);
         gridView.setAdapter(gridItemAdapter);
-        new Thread(){
+        new Thread() {
             public void run() {
-                game = new Game();
+                game = new Game(context);
                 game.addObserver(MainActivity.this);
                 game.newGame(level);
             }
@@ -95,9 +93,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
-     * 初始化
+     * 初始化九宫格
      */
-    private void initData(){
+    private void initData() {
         gridItemsData = new ArrayList<GridItem>();
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
@@ -113,12 +111,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     /**
      * 显示进度条
+     *
      * @param content
      */
-    private void showProgressDialog(String content){
-        if(progressDialog == null){
+    private void showProgressDialog(String content) {
+        if (progressDialog == null) {
             progressDialog = new ProgressDialogUtils(this, content, null);
-        }else {
+        } else {
             progressDialog.setContent(content);
         }
         progressDialog.show();
@@ -127,8 +126,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 隐藏进度条
      */
-    private void dissmissProgressDialog(){
-        if(progressDialog != null && progressDialog.isShowing())
+    private void dissmissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 
@@ -138,53 +137,46 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.main_include_select_1:
                 key = 1;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_2:
                 key = 2;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_3:
                 key = 3;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_4:
                 key = 4;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_5:
                 key = 5;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_6:
                 key = 6;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_7:
                 key = 7;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_8:
                 key = 8;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.main_include_select_9:
                 key = 9;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
+                break;
+            case R.id.main_include_btn_mark:
+                isMark = !isMark;
                 break;
             case R.id.main_include_btn_clear:
                 key = 0;
-//                updateGridState(key);
-                game.setSelectedNumber(key);
+                onItemClick(key);
                 break;
             case R.id.imagebutton_left:
                 showExitDialog();
@@ -196,10 +188,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             default:
                 break;
         }
-
-
     }
 
+    /**
+     * 选中数字键
+     *
+     * @param key
+     */
+    private void onItemClick(int key) {
+        game.setSelectedNumber(key);
+    }
 
     /**
      * Sets the fields corresponding to given game.
@@ -207,7 +205,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * @param game Game to be set.
      */
     public void setGame(Game game) {
-        if(gridItemsData == null) {
+        if (gridItemsData == null) {
             gridItemsData = new ArrayList<GridItem>();
         }
         gridItemsData.clear();
@@ -222,32 +220,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         }
         gridItemAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 启动计时器
+     */
+    private void initTime() {
         chronometer.start();
         // 将计时器清零
         chronometer.setBase(SystemClock.elapsedRealtime());
         //开始计时
         chronometer.start();
-    }
-
-    /**
-     * 获取冲突集合
-     *
-     * @return
-     */
-    public Set getConflictSet() {
-        if(game == null){
-            return null;
-        }
-        Set set = new HashSet<Integer>();
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
-                boolean isValid = game.checkValid(x, y);
-                if (!isValid) {
-                    set.add(9 * x + y);
-                }
-            }
-        }
-        return set;
     }
 
 
@@ -261,25 +244,86 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (selection == -1) {
             return;
         }
-        int x = selection / 9;
-        int y = selection % 9;
-        game.setNumber(x, y, key);
-        gridItemsData.get(selection).num = key;
+        if (isMark && key != 0) {
+            setMarkNumber(selection, key);
+        } else {
+            setNumber(selection, key);
+        }
         if (isConflictHelpOpen) {
             isItemValidate();
         }
-        gridItemAdapter.notifyDataSetChanged();
         if (isComplete()) {
             chronometer.stop();
             showCompleteDialog();
         }
+        gridItemAdapter.notifyDataSetChanged();
 
+
+    }
+
+    /**
+     * 设置输入数字,输入的同时标志清空
+     *
+     * @param position
+     * @param key
+     */
+    private void setNumber(int position, int key) {
+        if (position == -1) {
+            return;
+        }
+        gridItemsData.get(position).num = key;
+        gridItemsData.get(position).marknums = null;
+        gridItemsData.get(position).markcount = 0;
+        setGameNumber(position, key);
+    }
+
+    /**
+     * 给游戏设置当前位置的数字
+     *
+     * @param position
+     * @param key
+     */
+    private void setGameNumber(int position, int key) {
+        int x = position / 9;
+        int y = position % 9;
+        game.setNumber(x, y, key);
+    }
+
+    /**
+     * 输入标记，输入的同时将已输入的数字也转化成标记数字
+     *
+     * @param position
+     * @param key
+     */
+    private void setMarkNumber(int position, int key) {
+        if (position == -1) {
+            return;
+        }
+        if (gridItemsData.get(position).markcount == 0) {
+            gridItemsData.get(position).marknums = new int[9];
+        }
+        gridItemsData.get(position).marknums[key - 1] = key;
+        int num = gridItemsData.get(position).num;
+        //将已输入的数字转化成标记数字
+        if (num != 0) {
+            gridItemsData.get(position).marknums[num - 1] = num;
+            gridItemsData.get(position).num = 0;
+            setGameNumber(position, 0);
+        }
+        gridItemsData.get(position).markcount = gridItemsData.get(position).marknums.length;
+    }
+
+    /**
+     * 清空当前格子的内容
+     */
+    private void clearCell(int position) {
+        setNumber(position, 0);
     }
 
     /**
      * 弹出完成对话框
      */
-    private void showCompleteDialog(){
+    private void showCompleteDialog() {
         dialogUtils = new DialogUtils(context, "选择", context.getResources().getString(R.string.sudoku_dialog_complete_tips), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -301,7 +345,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 弹出退出对话框
      */
-    private void showExitDialog(){
+    private void showExitDialog() {
         dialogUtils = new DialogUtils(context, "退出", context.getResources().getString(R.string.sudoku_dialog_exit), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -328,13 +372,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
         if (isHighlightTipsOpen) {
-            setHighLight(gridItemsData, selection);
+            game.checkReference(position / COLOUMNUM, position % COLOUMNUM);
         }
         gridItemAdapter.notifyDataSetChanged();
     }
 
     /**
      * 检查冲突
+     *
      * @return
      */
     public boolean isItemValidate() {
@@ -347,20 +392,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 更新冲突状态
      */
     public boolean updateConflictState() {
-        if(gridItemsData == null){
+        if (gridItemsData == null) {
             return false;
-        }
-        if (conflictSet == null) {
-            conflictSet = new HashSet<Integer>();
-        }
-        conflictSet.clear();
-        conflictSet = getConflictSet();
-        if(conflictSet == null){
-            return true;
         }
         int size = gridItemsData.size();
         for (int i = 0; i < size; i++) {
-            if (conflictSet.contains(i)) {
+            GridItem item = gridItemsData.get(i);
+            int x = i / COLOUMNUM;
+            int y = i % COLOUMNUM;
+            if (item.num != 0 && !game.checkValid(x, y)) {
                 gridItemsData.get(i).isSame = true;
             } else {
                 gridItemsData.get(i).isSame = false;
@@ -395,58 +435,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch ((UpdateAction) data) {
             case NEW_GAME:
                 dissmissProgressDialog();
-                game = (Game)observable;
+                game = (Game) observable;
                 isInitSuccess = true;
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         setGame(game);
+                        initTime();
                     }
                 });
                 break;
             case CHECK:
 //                setGameCheck((Game)o);
                 break;
-            case SELECTED_NUMBER:
+            case SELECTED_NUMBER: {
                 Game game = (Game) observable;
                 updateGridState(game.getSelectedNumber());
                 break;
+            }
             case CANDIDATES:
             case HELP:
 //                setCandidates((Game)o);
+                break;
+            case INPUT_NUMBER:
+                break;
+            case CELL_CLICK: {
+                Game game = (Game) observable;
+                setHighLight(game.isReference());
+            }
                 break;
         }
     }
 
     /**
      * 设置高亮提示
-     *
-     * @param data
-     * @param position
      */
-    public void setHighLight(List<GridItem> data, int position) {
-        if (data == null || data.isEmpty() || position == -1) {
+    public void setHighLight(boolean[][] reference) {
+        if (reference == null || gridItemsData.isEmpty()) {
             return;
         }
-        for (GridItem item : data) {
-            item.isSelected = false;  //初始化
-        }
-        int m = 0, n = 0, p = 0, q = 0; // m,n是计数器，p,q用于确定测试点的方格位置
-        int x = position / 9;
-        int y = position % 9;
-        for (m = 0; m < 9; m++) {
-            int tempm = m * 9 + y;
-            data.get(tempm).isSelected = true;
-        }
-        for (n = 0; n < 9; n++) {
-            int tempn = 9 * x + n;
-            data.get(tempn).isSelected = true;
-        }
-        for (p = x / 3 * 3, m = 0; m < 3; m++) {
-            for (q = y / 3 * 3, n = 0; n < 3; n++) {
-                int temppq = 9 * (p + m) + q + n;
-                data.get(temppq).isSelected = true;
-            }
+        int size = gridItemsData.size();
+        for(int i = 0;i < size;i++){
+            gridItemsData.get(i).isSelected = reference[i/COLOUMNUM][i%COLOUMNUM];
         }
     }
 
@@ -470,23 +500,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     /**
-     * 高亮状态，冲突状态重置
-     */
-    private void initTipsState() {
-        if (gridItemsData == null || gridItemsData.isEmpty()) {
-            return;
-        }
-        for (GridItem item : gridItemsData) {
-            if (!isHighlightTipsOpen) {
-                item.isSelected = false;
-            }
-            if (!isConflictHelpOpen) {
-                item.isSame = false;
-            }
-        }
-    }
-
-    /**
      * 自动填充所有数据
      */
     private void setAutoFill() {
@@ -506,19 +519,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!isInitSuccess){
+        if (!isInitSuccess) {
             return;
         }
-        initTipsState();
         if (isHighlightTipsOpen) {
-            setHighLight(gridItemsData, selection);
+            game.checkReference(selection / COLOUMNUM, selection % COLOUMNUM);
         }
         if (isConflictHelpOpen) {
             isItemValidate();
         }
-        if(isAutoFill){
+        if (isAutoFill) {
             setAutoFill();
-            if(isComplete()){
+            if (isComplete()) {
                 chronometer.stop();
                 showCompleteDialog();
             }

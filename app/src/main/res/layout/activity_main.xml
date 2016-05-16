@@ -27,6 +27,7 @@
         android:numColumns="9"
         android:gravity="center"
         app:mainBorderWidth="5.0"
+        android:focusable="false"
         app:mainBorderColor="@color/item_main_border_color"
         app:subBorderColor="@color/item_sub_border_color"
         android:listSelector="@android:color/transparent"

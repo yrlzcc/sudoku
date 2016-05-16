@@ -10,5 +10,7 @@ public enum UpdateAction {
     CHECK,
     SELECTED_NUMBER,
     CANDIDATES,
-    HELP
+    HELP,
+    INPUT_NUMBER,
+    CELL_CLICK
 }

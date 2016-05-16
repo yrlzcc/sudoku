@@ -5,7 +5,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 import java.util.List;
 
@@ -51,18 +53,23 @@ public class GridItemAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.layout_item_griditem, null);
             holder = new ViewHolder();
             holder.tv_content = (TextView)convertView.findViewById(R.id.item_tv_gridcell);
+            holder.item_gv_mark = (GridView)convertView.findViewById(R.id.item_gv_mark);
             convertView.setTag(holder);
-            holder.tv_content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    return false;
-                }
-            });
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
         GridItem item = gridItemList.get(position);
-        //不为0将数字显示，为0将格子初始化
+        if(item.marknums != null) {
+            holder.item_gv_mark.setAdapter(new GridMarkItemAdapter(context, item.marknums));
+            holder.item_gv_mark.setEnabled(false);
+            holder.item_gv_mark.setClickable(false);
+            holder.item_gv_mark.setFocusable(false);
+            holder.item_gv_mark.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.item_gv_mark.setVisibility(View.GONE);
+        }
+            //不为0将数字显示，为0将格子初始化
         if(item.num != 0) {
             holder.tv_content.setText(String.valueOf(item.num));
         }
@@ -94,16 +101,13 @@ public class GridItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public  List<GridItem> getUserResult(){
-        return gridItemList;
-    }
-
     public void setSelection(int selection){
         this.selection = selection;
     }
 
     class ViewHolder{
         public TextView tv_content;
+        public GridView item_gv_mark;
     }
 
 }

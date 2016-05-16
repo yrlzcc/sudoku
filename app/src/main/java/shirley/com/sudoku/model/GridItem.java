@@ -9,4 +9,6 @@ public class GridItem {
     public boolean isSelected = false;
     public boolean isSame = false; //是否有重复
     public int mode = 1;
+    public int[] marknums;  //标记数字
+    public int markcount = 0; //标记个数
 }

@@ -1,10 +1,14 @@
 package shirley.com.sudoku.utils;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+
+import shirley.com.sudoku.model.GridItem;
 
 /**
  * This class represents a Sudoku game. It contains the solution, the user
@@ -17,19 +21,23 @@ public class Game extends Observable {
     private int[][] solution;       // Generated solution.
     private int[][] game;           // Generated game with user input.
     private boolean[][] check;      // Holder for checking validity of game.
+    private boolean[][] checkReference; //是否与当前选中的相关，进行高亮提示
     private int selectedNumber;     // Selected number by user.
     private boolean help;           // Help turned on or off.
     private int minFilled;
     private Random ran = new Random();
     // 当前难度级别;1-2简单难度；3普通难度；4高级难度；5骨灰级难度
     private int level;
+    private Context context;
 
     /**
      * Constructor
      */
-    public Game() {
+    public Game(Context context) {
 //        newGame();
+        this.context = context;
         check = new boolean[9][9];
+        checkReference = new boolean[9][9];
         help = true;
     }
 
@@ -50,6 +58,7 @@ public class Game extends Observable {
 
     /**
      * 设置级别
+     *
      * @param level
      */
     public void setLevel(int level) {
@@ -80,6 +89,7 @@ public class Game extends Observable {
 
     /**
      * 生成数独游戏,根据等级决定最少填充个数，随机生成数字决定挖洞位置
+     *
      * @param game
      * @return
      */
@@ -88,13 +98,13 @@ public class Game extends Observable {
         for (int i = 0; i <= 80; i++) numbers.add(i);
         Collections.shuffle(numbers);
         //删掉填充位置，留下挖洞位置
-        for(int i =0;i <= minFilled;i++){
+        for (int i = 0; i <= minFilled; i++) {
             numbers.remove(0);
         }
-        for(int i =0;i < numbers.size();i++){
+        for (int i = 0; i < numbers.size(); i++) {
             int index = numbers.get(i);
-            int x = index/9;
-            int y = index%9;
+            int x = index / 9;
+            int y = index % 9;
             game[x][y] = 0;
         }
         return game;
@@ -189,7 +199,7 @@ public class Game extends Observable {
      * @return true 说明填入的是有效的，错误的说明有冲突
      */
     public boolean checkValid(int x, int y) {
-        if(game == null){
+        if (game == null) {
             return true;
         }
         int number = game[x][y];
@@ -208,6 +218,8 @@ public class Game extends Observable {
      */
     public void setNumber(int x, int y, int number) {
         game[x][y] = number;
+        setChanged();
+        notifyObservers(UpdateAction.INPUT_NUMBER);
     }
 
     /**
@@ -223,11 +235,12 @@ public class Game extends Observable {
 
     /**
      * 获取解决方案中指定位置的数
+     *
      * @param x
      * @param y
      * @return
      */
-    public int getSolutionNumber(int x,int y){
+    public int getSolutionNumber(int x, int y) {
         return solution[x][y];
     }
 
@@ -356,6 +369,7 @@ public class Game extends Observable {
 
     /**
      * 数独生成算法，将原有算法改进了下，先随机生成一条对角线上的九宫格的数字，原后对剩余九宫格分别用回溯算法
+     *
      * @param game
      * @return
      */
@@ -366,7 +380,7 @@ public class Game extends Observable {
         game = generateBlock(game, 3, 3);
         game = generateBlock(game, 6, 6);
         //生成其它格子
-        int[] index = {6, 7, 8, 15, 16, 17, 24, 25, 26,54, 55, 56, 63, 64, 65, 72, 73, 74,3, 4, 5, 12, 13, 14, 21, 22, 23,27, 28, 29, 36, 37, 38, 45, 46, 47,33, 34, 35, 42, 43, 44, 51, 52, 53,57, 58, 59, 66, 67, 68, 75, 76, 77};
+        int[] index = {6, 7, 8, 15, 16, 17, 24, 25, 26, 54, 55, 56, 63, 64, 65, 72, 73, 74, 3, 4, 5, 12, 13, 14, 21, 22, 23, 27, 28, 29, 36, 37, 38, 45, 46, 47, 33, 34, 35, 42, 43, 44, 51, 52, 53, 57, 58, 59, 66, 67, 68, 75, 76, 77};
         game = generateSolution(game, index, 0);
 //        int[] index2 = {54, 55, 56, 63, 64, 65, 72, 73, 74};
 //        game = generateSolution(game, index2, 0);
@@ -385,8 +399,9 @@ public class Game extends Observable {
 
     /**
      * 对指定格子采用回溯算法
-     * @param game 整个数独对应的数组
-     * @param index 指定格子序列
+     *
+     * @param game   整个数独对应的数组
+     * @param index  指定格子序列
      * @param indexi 指定格子在序列中的下标
      * @return
      */
@@ -408,7 +423,7 @@ public class Game extends Observable {
                 return null;
 
             game[x][y] = number;
-            int[][] tmpGame = generateSolution(game, index,indexi + 1);
+            int[][] tmpGame = generateSolution(game, index, indexi + 1);
             if (tmpGame != null)
                 return tmpGame;
             game[x][y] = 0;
@@ -559,5 +574,39 @@ public class Game extends Observable {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * 检查是否和当前格子相关，同一行，同一列，同一小九宫格里的都认为相关
+     * @param x
+     * @param y
+     */
+    public void checkReference(int x, int y) {
+        if (game == null) {
+            return;
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int px = x / 3 * 3;
+                int qy = y / 3 * 3;
+                boolean isBlock = ((i >= px && i < (px + 3)) && (j >= qy && j < (qy + 3)));
+                if (j == y || i == x || isBlock) {
+                    checkReference[i][j] = true;
+                } else {
+                    checkReference[i][j] = false;
+                }
+            }
+        }
+        setChanged();
+        notifyObservers(UpdateAction.CELL_CLICK);
+    }
+
+    /**
+     * 获取和当前选中相关的位置
+     *
+     * @return
+     */
+    public boolean[][] isReference() {
+        return checkReference;
     }
 }

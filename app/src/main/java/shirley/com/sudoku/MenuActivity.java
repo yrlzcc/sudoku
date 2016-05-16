@@ -24,12 +24,13 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 //        UmengUpdateAgent.update(this);
 //        UmengUpdateAgent.setDeltaUpdate(false);
-        checkUpdate();
         setContentView(R.layout.activity_menu);
         findViewById(R.id.menu_level1).setOnClickListener(this);
         findViewById(R.id.menu_level2).setOnClickListener(this);
         findViewById(R.id.menu_level3).setOnClickListener(this);
         findViewById(R.id.menu_level4).setOnClickListener(this);
+
+        checkUpdate();
     }
 
     @Override

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shirley.com.sudoku.view.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/transparent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:focusable="false"
+        android:clickable="false"
+        android:id="@+id/item_tv_gridcell"
+        android:gravity="center"
+        android:textColor="@color/fix_textcolor"
+        android:cursorVisible="false"
+        android:textSize="12dp"
+        android:typeface="normal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</shirley.com.sudoku.view.SquareLayout>

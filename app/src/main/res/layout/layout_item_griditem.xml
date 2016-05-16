@@ -2,6 +2,7 @@
 <shirley.com.sudoku.view.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/item_back"
+    android:descendantFocusability="blocksDescendants"
     android:layout_height="match_parent">
 
     <TextView
@@ -12,7 +13,19 @@
         android:textSize="32dp"
         android:typeface="normal"
         android:textStyle="bold"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <shirley.com.sudoku.view.NoScrollGridView
+        android:id="@+id/item_gv_mark"
+        android:padding="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:focusable="false"
+        android:clickable="false"
+        android:numColumns="3"></shirley.com.sudoku.view.NoScrollGridView>
 
 </shirley.com.sudoku.view.SquareLayout>
