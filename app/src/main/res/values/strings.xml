@@ -9,8 +9,10 @@
     <string name="sudoku_again">再来一局</string>
     <string name="sudoku_cancel">取消</string>
 
+    <string name="sudoku_pre">向前</string>
     <string name="sudoku_clear">清除</string>
     <string name="sudoku_mark">标记</string>
+    <string name="sudoku_next">向后</string>
 
     <string name="setting_switch_highlight_tips">高亮提示开关</string>
     <string name="setting_switch_conflict_tips">显示冲突开关</string>

@@ -2,27 +2,22 @@ package shirley.com.sudoku;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.os.Message;
 import android.os.SystemClock;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.GridView;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
+import shirley.com.sudoku.model.BaseItem;
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.uiBase.BaseInputStack;
 import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.DialogUtils;
 import shirley.com.sudoku.utils.Game;
@@ -46,6 +41,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Game game;
     private boolean isInitSuccess = false; //是否加载成功
     private boolean isMark = false; //是否是标记状态
+    private View main_include_btn_pre; //向前按钮
+    private View main_include_btn_next; //向后按钮
+    private View main_include_btn_clear; //清除按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +60,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.main_include_select_7).setOnClickListener(this);
         findViewById(R.id.main_include_select_8).setOnClickListener(this);
         findViewById(R.id.main_include_select_9).setOnClickListener(this);
-        findViewById(R.id.main_include_btn_clear).setOnClickListener(this);
+        main_include_btn_clear = findViewById(R.id.main_include_btn_clear);
+        main_include_btn_clear.setOnClickListener(this);
+        main_include_btn_clear.setEnabled(false);
         findViewById(R.id.main_include_btn_mark).setOnClickListener(this);
+        main_include_btn_pre = findViewById(R.id.main_include_btn_pre);
+        main_include_btn_pre.setOnClickListener(this);
+        main_include_btn_pre.setEnabled(false);
+        main_include_btn_next = findViewById(R.id.main_include_btn_next);
+        main_include_btn_next.setOnClickListener(this);
+        main_include_btn_next.setEnabled(false);
         findViewById(R.id.imagebutton_right).setOnClickListener(this);
         findViewById(R.id.imagebutton_left).setOnClickListener(this);
         chronometer = (Chronometer) findViewById(R.id.main_ch_time);
@@ -178,6 +184,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 key = 0;
                 onItemClick(key);
                 break;
+            case R.id.main_include_btn_pre: {
+                BaseItem item = BaseInputStack.getInstance().getPre();
+                updateBtnState();
+                pre(item);
+                if (isConflictHelpOpen) {
+                    isItemValidate();
+                }
+                if (isComplete()) {
+                    chronometer.stop();
+                    showCompleteDialog();
+                }
+                updateClearState();
+                gridItemAdapter.setSelection(selection);
+                gridItemAdapter.notifyDataSetChanged();
+                break;
+            }
+            case R.id.main_include_btn_next:
+                BaseItem item = BaseInputStack.getInstance().getNext();
+                updateBtnState();
+                next(item);
+                if (isConflictHelpOpen) {
+                    isItemValidate();
+                }
+                if (isComplete()) {
+                    chronometer.stop();
+                    showCompleteDialog();
+                }
+                updateClearState();
+                gridItemAdapter.setSelection(selection);
+                gridItemAdapter.notifyDataSetChanged();
+                break;
             case R.id.imagebutton_left:
                 showExitDialog();
                 break;
@@ -190,6 +227,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    /**
+     * 更新向前向后撤销按钮的状态
+     */
+    private void updateBtnState(){
+        if(BaseInputStack.getInstance().isPreEnable()){
+            main_include_btn_pre.setEnabled(true);
+        }
+        else{
+            main_include_btn_pre.setEnabled(false);
+        }
+        if(BaseInputStack.getInstance().isNextEnable()){
+            main_include_btn_next.setEnabled(true);
+        }
+        else{
+            main_include_btn_next.setEnabled(false);
+        }
+    }
+
+    /**
+     * 更新清除按钮
+     */
+    private void updateClearState(){
+        if(selection == -1 || gridItemsData == null || gridItemsData.isEmpty()){
+            return;
+        }
+        GridItem item = gridItemsData.get(selection);
+        boolean isMarkEmpty = (item.isMark && (item.marknums == null || item.marknums.length == 0));
+        boolean isNumEmpty = (!item.isMark && item.num == 0);
+        if(item.isFix || isMarkEmpty || isNumEmpty){
+            main_include_btn_clear.setEnabled(false);
+        }
+        else{
+            main_include_btn_clear.setEnabled(true);
+        }
+    }
     /**
      * 选中数字键
      *
@@ -233,6 +305,66 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         chronometer.start();
     }
 
+    /**
+     * 记录当前操作
+     *
+     * @param key
+     */
+    private void push(int key) {
+        BaseItem item = new BaseItem();
+        item.num = key;
+        item.position = selection;
+        item.isMark = isMark;
+        if (gridItemsData != null && !gridItemsData.isEmpty()) {
+            GridItem gridItem = gridItemsData.get(selection);
+            if(!gridItem.isMark){
+                item.prenum = gridItem.num;
+            }
+            else{
+                item.prenum = gridItem.currentMarkNum;
+                item.ispreMark = gridItem.isMark;
+                item.preMarkNum = copy(gridItem.marknums);
+            }
+        }
+        BaseInputStack.getInstance().popToCurrentPosition(); //每次push之前把撤销之后的无效部分清掉
+        BaseInputStack.getInstance().pushCurrentInput(item);
+        updateBtnState();
+    }
+
+    /**
+     * 向前
+     */
+    private void pre(BaseItem baseItem) {
+        if (gridItemsData == null || gridItemsData.isEmpty() || baseItem == null) {
+            return;
+        }
+        GridItem item = gridItemsData.get(baseItem.position);
+        if (baseItem.ispreMark) {
+            setMarkNumber(baseItem.position, baseItem.preMarkNum);
+        } else {
+            setNumber(baseItem.position, baseItem.prenum);
+        }
+        item.isMark = baseItem.ispreMark;
+        selection = baseItem.position;
+    }
+
+    /**
+     * 向后
+     * @param baseItem
+     */
+    private void next(BaseItem baseItem) {
+        if (gridItemsData == null || gridItemsData.isEmpty() || baseItem == null) {
+            return;
+        }
+        GridItem item = gridItemsData.get(baseItem.position);
+        if (baseItem.isMark) {
+            addMarkNumber(baseItem.position, baseItem.num);
+        } else {
+            setNumber(baseItem.position, baseItem.num);
+        }
+        item.isMark = baseItem.isMark;
+        selection = baseItem.position;
+    }
 
     /**
      * 更新格子的状态
@@ -245,7 +377,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
         if (isMark && key != 0) {
-            setMarkNumber(selection, key);
+            addMarkNumber(selection, key);
         } else {
             setNumber(selection, key);
         }
@@ -273,7 +405,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         gridItemsData.get(position).num = key;
         gridItemsData.get(position).marknums = null;
-        gridItemsData.get(position).markcount = 0;
+        gridItemsData.get(position).currentMarkNum = 0;
+        gridItemsData.get(position).isMark = false;
         setGameNumber(position, key);
     }
 
@@ -290,27 +423,47 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
-     * 输入标记，输入的同时将已输入的数字也转化成标记数字
+     *
+     *
+     * @param position
+     * @param marknums
+     */
+    private void setMarkNumber(int position,int[] marknums) {
+        if (position == -1 || gridItemsData == null) {
+            return;
+        }
+        GridItem item = gridItemsData.get(position);
+        int num = item.num;
+        item.marknums = marknums;
+        if (num != 0) {
+            gridItemsData.get(position).num = 0;
+            setGameNumber(position, 0);
+        }
+    }
+
+    /**
+     * 输入标记，输入的同时清空输入数字
      *
      * @param position
      * @param key
      */
-    private void setMarkNumber(int position, int key) {
-        if (position == -1) {
+    private void addMarkNumber(int position, int key) {
+        if (position == -1 || gridItemsData == null) {
             return;
         }
-        if (gridItemsData.get(position).markcount == 0) {
-            gridItemsData.get(position).marknums = new int[9];
+        GridItem item = gridItemsData.get(position);
+        if(item.marknums == null){
+            item.marknums = new int[9];
         }
-        gridItemsData.get(position).marknums[key - 1] = key;
-        int num = gridItemsData.get(position).num;
-        //将已输入的数字转化成标记数字
+        item.isMark = isMark;
+        item.currentMarkNum = key;
+        gridItemsData.get(position).marknums[key-1] = key;
+        gridItemsData.get(position).currentMarkNum = key;
+        int num = item.num;
         if (num != 0) {
-            gridItemsData.get(position).marknums[num - 1] = num;
             gridItemsData.get(position).num = 0;
             setGameNumber(position, 0);
         }
-        gridItemsData.get(position).markcount = gridItemsData.get(position).marknums.length;
     }
 
     /**
@@ -450,7 +603,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case SELECTED_NUMBER: {
                 Game game = (Game) observable;
+                push(game.getSelectedNumber());
                 updateGridState(game.getSelectedNumber());
+                updateClearState();
                 break;
             }
             case CANDIDATES:
@@ -463,7 +618,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 Game game = (Game) observable;
                 setHighLight(game.isReference());
             }
-                break;
+            break;
         }
     }
 
@@ -475,8 +630,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
         int size = gridItemsData.size();
-        for(int i = 0;i < size;i++){
-            gridItemsData.get(i).isSelected = reference[i/COLOUMNUM][i%COLOUMNUM];
+        for (int i = 0; i < size; i++) {
+            gridItemsData.get(i).isSelected = reference[i / COLOUMNUM][i % COLOUMNUM];
         }
     }
 
@@ -514,6 +669,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 gridItemsData.add(item);
             }
         }
+    }
+
+    private int[] copy(int[] item) {
+        int[] copy = new int[9];
+
+        for (int x = 0; x < 9; x++)
+            for (int y = 0; y < 9; y++) {
+                copy[y] = item[y];
+            }
+        return copy;
     }
 
     @Override

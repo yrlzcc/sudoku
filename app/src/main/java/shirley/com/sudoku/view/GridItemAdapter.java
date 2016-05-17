@@ -59,7 +59,7 @@ public class GridItemAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         GridItem item = gridItemList.get(position);
-        if(item.marknums != null) {
+        if(item.isMark) {
             holder.item_gv_mark.setAdapter(new GridMarkItemAdapter(context, item.marknums));
             holder.item_gv_mark.setEnabled(false);
             holder.item_gv_mark.setClickable(false);
