@@ -28,11 +28,17 @@ public class GridMarkItemAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if(gridItemList == null){
+            return 0;
+        }
         return gridItemList.length;
     }
 
     @Override
     public Object getItem(int position) {
+        if(gridItemList == null){
+            return null;
+        }
         return gridItemList[position];
     }
 

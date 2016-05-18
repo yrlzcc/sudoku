@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private View main_include_btn_pre; //向前按钮
     private View main_include_btn_next; //向后按钮
     private View main_include_btn_clear; //清除按钮
+    private View main_include_btn_mark; //标记按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         main_include_btn_clear = findViewById(R.id.main_include_btn_clear);
         main_include_btn_clear.setOnClickListener(this);
         main_include_btn_clear.setEnabled(false);
-        findViewById(R.id.main_include_btn_mark).setOnClickListener(this);
+        main_include_btn_mark = findViewById(R.id.main_include_btn_mark);
+        main_include_btn_mark.setOnClickListener(this);
         main_include_btn_pre = findViewById(R.id.main_include_btn_pre);
         main_include_btn_pre.setOnClickListener(this);
         main_include_btn_pre.setEnabled(false);
@@ -179,6 +181,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.main_include_btn_mark:
                 isMark = !isMark;
+                if(isMark){
+                    main_include_btn_mark.setSelected(true);
+                }
+                else{
+                    main_include_btn_mark.setSelected(false);
+                }
                 break;
             case R.id.main_include_btn_clear:
                 key = 0;
@@ -190,10 +198,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 pre(item);
                 if (isConflictHelpOpen) {
                     isItemValidate();
-                }
-                if (isComplete()) {
-                    chronometer.stop();
-                    showCompleteDialog();
                 }
                 updateClearState();
                 gridItemAdapter.setSelection(selection);
@@ -326,9 +330,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 item.preMarkNum = copy(gridItem.marknums);
             }
         }
+        //多次在同一格子输入相同数字，只记录一次的
+        if(isInputSame(item)){
+            return;
+        }
         BaseInputStack.getInstance().popToCurrentPosition(); //每次push之前把撤销之后的无效部分清掉
         BaseInputStack.getInstance().pushCurrentInput(item);
         updateBtnState();
+    }
+
+    /**
+     * 是否输入同一个数字
+     * @param item
+     * @return
+     */
+    private boolean isInputSame(BaseItem item){
+        if(item == null){
+            return false;
+        }
+        if(item.isMark == item.ispreMark && item.num == item.prenum){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -357,7 +380,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
         GridItem item = gridItemsData.get(baseItem.position);
-        if (baseItem.isMark) {
+        if (baseItem.isMark && baseItem.num != 0) {
             addMarkNumber(baseItem.position, baseItem.num);
         } else {
             setNumber(baseItem.position, baseItem.num);
@@ -521,6 +544,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selection = position;
         gridItemAdapter.setSelection(selection);
+        updateClearState();
         if (gridItemsData.get(position).isFix) {
             return;
         }
