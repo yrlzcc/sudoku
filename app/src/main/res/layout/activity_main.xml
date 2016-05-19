@@ -38,7 +38,6 @@
     <include
         layout="@layout/include_layout_btn"
         android:id="@+id/main_include_btn"
-        android:layout_marginTop="10dp"
         android:layout_below="@+id/main_gv_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +46,6 @@
     <include
         layout="@layout/include_layout_select_item"
         android:id="@+id/main_include_select_layout"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/main_include_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

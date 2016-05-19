@@ -23,5 +23,6 @@
     <color name="title_back">#ff9b6d5f</color><!--标题栏背景-->
 
     <color name="btn_number_select">#ff9d6d60</color><!--按钮选中背景-->
-    <color name="btn_number_normal">#ffdac6bf</color><!--按钮背景-->
+    <color name="btn_number_not_enable">#66a0948f</color><!--按钮黑灰背景-->
+    <color name="btn_number_normal">#ffd8bbae</color><!--按钮背景-->
 </resources>

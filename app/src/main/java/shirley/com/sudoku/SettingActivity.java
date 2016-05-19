@@ -24,7 +24,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         tv_setting_current_version = (TextView)findViewById(R.id.tv_setting_current_version);
-        tv_setting_current_version.setText(Utils.getVersion(this));
+        String version = Utils.getVersion(this);
+        tv_setting_current_version.setText(version);
 
         findViewById(R.id.imagebutton_left).setOnClickListener(this);
         findViewById(R.id.imagebutton_right).setVisibility(View.GONE);

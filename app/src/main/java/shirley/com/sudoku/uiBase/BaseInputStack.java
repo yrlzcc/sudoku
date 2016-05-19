@@ -149,4 +149,14 @@ public class BaseInputStack {
     public boolean isNextEnable() {
         return isNextEnable;
     }
+
+    /**
+     * 清空栈的数据
+     * @return
+     */
+    public void reset(){
+        if(inputlist != null){
+            inputlist.clear();
+        }
+    }
 }

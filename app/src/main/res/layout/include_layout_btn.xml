@@ -5,43 +5,44 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-    <Button
-        android:padding="5dp"
+    <ImageView
+        android:padding="2dp"
         android:id="@+id/main_include_btn_pre"
         android:layout_width="wrap_content"
-        android:text="@string/sudoku_pre"
+        android:src="@mipmap/ic_menu_back"
         android:layout_margin="5dp"
         android:textSize="16dp"
         android:background="@drawable/bg_btn_selector"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:padding="5dp"
+    <ImageView
+        android:padding="2dp"
         android:id="@+id/main_include_btn_clear"
         android:layout_width="wrap_content"
         android:text="@string/sudoku_clear"
         android:textSize="16dp"
         android:layout_margin="5dp"
+        android:src="@mipmap/ic_menu_delete"
         android:background="@drawable/bg_btn_selector"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:padding="5dp"
+    <ImageView
+        android:padding="2dp"
         android:id="@+id/main_include_btn_mark"
         android:layout_width="wrap_content"
-        android:text="@string/sudoku_mark"
         android:layout_margin="5dp"
         android:textSize="16dp"
+        android:src="@mipmap/ic_menu_edit"
         android:background="@drawable/bg_btn_selector"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:padding="5dp"
+    <ImageView
+        android:padding="2dp"
         android:id="@+id/main_include_btn_next"
         android:layout_width="wrap_content"
-        android:text="@string/sudoku_next"
         android:layout_margin="5dp"
         android:textSize="16dp"
+        android:src="@mipmap/ic_menu_forward"
         android:background="@drawable/bg_btn_selector"
         android:layout_height="wrap_content" />
 

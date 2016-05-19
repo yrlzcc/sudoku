@@ -63,15 +63,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.main_include_select_9).setOnClickListener(this);
         main_include_btn_clear = findViewById(R.id.main_include_btn_clear);
         main_include_btn_clear.setOnClickListener(this);
-        main_include_btn_clear.setEnabled(false);
         main_include_btn_mark = findViewById(R.id.main_include_btn_mark);
         main_include_btn_mark.setOnClickListener(this);
         main_include_btn_pre = findViewById(R.id.main_include_btn_pre);
         main_include_btn_pre.setOnClickListener(this);
-        main_include_btn_pre.setEnabled(false);
         main_include_btn_next = findViewById(R.id.main_include_btn_next);
         main_include_btn_next.setOnClickListener(this);
-        main_include_btn_next.setEnabled(false);
         findViewById(R.id.imagebutton_right).setOnClickListener(this);
         findViewById(R.id.imagebutton_left).setOnClickListener(this);
         chronometer = (Chronometer) findViewById(R.id.main_ch_time);
@@ -83,12 +80,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
+     * 初始化按钮状态
+     */
+    private void initBtnState(){
+        if(main_include_btn_clear != null) {
+            main_include_btn_clear.setEnabled(false);
+        }
+        if(main_include_btn_pre != null) {
+            main_include_btn_pre.setEnabled(false);
+        }
+        if(main_include_btn_next != null) {
+            main_include_btn_next.setEnabled(false);
+        }
+    }
+
+    /**
      * 初始化游戏
      *
      * @param level
      */
     private void initGame(final int level) {
         initData();
+        initBtnState();
+        isInitSuccess = false;
+        isMark = false;
+        selection = -1;
+        BaseInputStack.getInstance().reset();
         gridItemAdapter = new GridItemAdapter(context, gridItemsData, selection);
         gridView.setAdapter(gridItemAdapter);
         new Thread() {
@@ -315,6 +332,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * @param key
      */
     private void push(int key) {
+        if(selection == -1){
+            return;
+        }
         BaseItem item = new BaseItem();
         item.num = key;
         item.position = selection;

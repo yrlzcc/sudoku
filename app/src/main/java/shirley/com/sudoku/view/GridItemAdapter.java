@@ -84,7 +84,7 @@ public class GridItemAdapter extends BaseAdapter {
             holder.tv_content.setEnabled(true);
             holder.tv_content.setTextColor(context.getResources().getColor(R.color.fill_textcolor));
         }
-        holder.tv_content.setBackground(null);
+        holder.tv_content.setBackgroundResource(R.color.item_back);
         if(item.isSame){
             holder.tv_content.setBackgroundColor(context.getResources().getColor(R.color.item_conflict_back));
         }
