@@ -20,7 +20,7 @@
     <string name="setting_switch_complete">自动填充所有</string>
     <string name="setting_version">当前版本</string>
 
-    <string name="sudoku_dialog_complete_tips">恭喜您，完全正确！</string>
+    <string name="sudoku_dialog_complete_tips">恭喜过关！本局用时%s</string>
     <string name="sudoku_dialog_exit">当前游戏正在进行中，确定要退出吗？</string>
 
     <string name="sudoku_help">用数字1~9填充九宫格上的所有空格，保证每行、每列、每个小九宫格中1~9的数字只出现一次</string>

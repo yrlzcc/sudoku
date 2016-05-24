@@ -22,7 +22,9 @@ public class Game extends Observable {
     private int[][] game;           // Generated game with user input.
     private boolean[][] check;      // Holder for checking validity of game.
     private boolean[][] checkReference; //是否与当前选中的相关，进行高亮提示
+    private boolean[][] checkConflict; //是否和其它格子冲突
     private int selectedNumber;     // Selected number by user.
+    private int[] position;       //选中的位置
     private boolean help;           // Help turned on or off.
     private int minFilled;
     private Random ran = new Random();
@@ -38,6 +40,7 @@ public class Game extends Observable {
         this.context = context;
         check = new boolean[9][9];
         checkReference = new boolean[9][9];
+        checkConflict = new boolean[9][9];
         help = true;
     }
 
@@ -157,6 +160,22 @@ public class Game extends Observable {
         return selectedNumber;
     }
 
+    public void setSelectedPosition(int x,int y) {
+        this.position = new int[2];
+        position[0] = x;
+        position[1] = y;
+        setChanged();
+        notifyObservers(UpdateAction.SELECTED_POSITION);
+    }
+
+    /**
+     * Returns number selected user.
+     *
+     * @return Number selected by user.
+     */
+    public int[] getSelectedPosition() {
+        return position;
+    }
     /**
      * Returns whether help is turned on or off.
      *
@@ -578,6 +597,7 @@ public class Game extends Observable {
 
     /**
      * 检查是否和当前格子相关，同一行，同一列，同一小九宫格里的都认为相关
+     *
      * @param x
      * @param y
      */
@@ -597,8 +617,6 @@ public class Game extends Observable {
                 }
             }
         }
-        setChanged();
-        notifyObservers(UpdateAction.CELL_CLICK);
     }
 
     /**
@@ -608,5 +626,46 @@ public class Game extends Observable {
      */
     public boolean[][] isReference() {
         return checkReference;
+    }
+
+    /**
+     * 检查当前存在冲突的格子
+     */
+    public void checkConflict() {
+        if (game == null) {
+            return;
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (game[i][j] != 0 && !checkValid(i, j)) {
+                    checkConflict[i][j] = true;
+                } else {
+                    checkConflict[i][j] = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * 清除冲突
+     */
+    public void clearConflict(){
+        if (game == null) {
+            return;
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                checkConflict[i][j] = false;
+            }
+        }
+    }
+
+    /**
+     * 获取冲突的状态
+     *
+     * @return
+     */
+    public boolean[][] isConflict() {
+        return checkConflict;
     }
 }

@@ -12,5 +12,5 @@ public enum UpdateAction {
     CANDIDATES,
     HELP,
     INPUT_NUMBER,
-    CELL_CLICK
+    SELECTED_POSITION
 }

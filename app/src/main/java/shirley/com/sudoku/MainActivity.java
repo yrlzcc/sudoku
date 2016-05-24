@@ -162,39 +162,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.main_include_select_1:
                 key = 1;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_2:
                 key = 2;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_3:
                 key = 3;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_4:
                 key = 4;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_5:
                 key = 5;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_6:
                 key = 6;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_7:
                 key = 7;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_8:
                 key = 8;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_select_9:
                 key = 9;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_btn_mark:
                 isMark = !isMark;
@@ -207,14 +207,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.main_include_btn_clear:
                 key = 0;
-                onItemClick(key);
+                onNumClick(key);
                 break;
             case R.id.main_include_btn_pre: {
                 BaseItem item = BaseInputStack.getInstance().getPre();
                 updateBtnState();
                 pre(item);
                 if (isConflictHelpOpen) {
-                    isItemValidate();
+                    checkConflict();
                 }
                 updateClearState();
                 gridItemAdapter.setSelection(selection);
@@ -226,7 +226,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 updateBtnState();
                 next(item);
                 if (isConflictHelpOpen) {
-                    isItemValidate();
+                    checkConflict();
                 }
                 if (isComplete()) {
                     chronometer.stop();
@@ -236,8 +236,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 gridItemAdapter.setSelection(selection);
                 gridItemAdapter.notifyDataSetChanged();
                 break;
-            case R.id.imagebutton_left:
-                showExitDialog();
+            case R.id.imagebutton_left:showExitDialog();
+
                 break;
             case R.id.imagebutton_right:
                 Intent intent = new Intent(this, SettingActivity.class);
@@ -288,7 +288,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      *
      * @param key
      */
-    private void onItemClick(int key) {
+    private void onNumClick(int key) {
         game.setSelectedNumber(key);
     }
 
@@ -336,9 +336,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
         BaseItem item = new BaseItem();
+        //记录输入数字
         item.num = key;
         item.position = selection;
         item.isMark = isMark;
+        //记录输入前的状态
         if (gridItemsData != null && !gridItemsData.isEmpty()) {
             GridItem gridItem = gridItemsData.get(selection);
             if(!gridItem.isMark){
@@ -356,7 +358,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         BaseInputStack.getInstance().popToCurrentPosition(); //每次push之前把撤销之后的无效部分清掉
         BaseInputStack.getInstance().pushCurrentInput(item);
-        updateBtnState();
     }
 
     /**
@@ -410,11 +411,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
-     * 更新格子的状态
+     * 将选中数字加到格子里
      *
      * @param key
      */
-    private void updateGridState(int key) {
+    private void addNumToGrid(int key) {
         System.out.println("selection:" + selection);
         if (selection == -1) {
             return;
@@ -425,7 +426,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             setNumber(selection, key);
         }
         if (isConflictHelpOpen) {
-            isItemValidate();
+            checkConflict();
         }
         if (isComplete()) {
             chronometer.stop();
@@ -520,7 +521,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 弹出完成对话框
      */
     private void showCompleteDialog() {
-        dialogUtils = new DialogUtils(context, "选择", context.getResources().getString(R.string.sudoku_dialog_complete_tips), new DialogUtils.OnDialogSelectId() {
+        dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_tips),chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
                 switch (whichButton) {
@@ -564,14 +565,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selection = position;
         gridItemAdapter.setSelection(selection);
-        updateClearState();
         if (gridItemsData.get(position).isFix) {
             return;
         }
-        if (isHighlightTipsOpen) {
-            game.checkReference(position / COLOUMNUM, position % COLOUMNUM);
-        }
-        gridItemAdapter.notifyDataSetChanged();
+        int x = position/COLOUMNUM;
+        int y = position%COLOUMNUM;
+        game.setSelectedPosition(x,y); //
     }
 
     /**
@@ -579,9 +578,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      *
      * @return
      */
-    public boolean isItemValidate() {
-        boolean isUpdate = updateConflictState();
-        return !isUpdate;
+    public void checkConflict() {
+        if(game == null){
+            return;
+        }
+        game.checkConflict();
+        setConflictState(game.isConflict());
+    }
+
+    private void clearConflict(){
+        if(game == null){
+            return;
+        }
+        game.clearConflict();
     }
 
 
@@ -648,8 +657,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case SELECTED_NUMBER: {
                 Game game = (Game) observable;
                 push(game.getSelectedNumber());
-                updateGridState(game.getSelectedNumber());
-                updateClearState();
+                updateClearState();  //更新清除按钮
+                updateBtnState();   //更新撤销按钮
+                addNumToGrid(game.getSelectedNumber());
                 break;
             }
             case CANDIDATES:
@@ -658,9 +668,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case INPUT_NUMBER:
                 break;
-            case CELL_CLICK: {
+            case SELECTED_POSITION: {
                 Game game = (Game) observable;
-                setHighLight(game.isReference());
+                if(isHighlightTipsOpen) {
+                    game.checkReference(selection/COLOUMNUM,selection%COLOUMNUM);
+                    setHighLight(game.isReference());
+                }
+                if(isConflictHelpOpen) {
+                    game.checkConflict();
+                    setConflictState(game.isConflict());
+                }
+                updateClearState();
+                gridItemAdapter.notifyDataSetChanged();
             }
             break;
         }
@@ -670,12 +689,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 设置高亮提示
      */
     public void setHighLight(boolean[][] reference) {
-        if (reference == null || gridItemsData.isEmpty()) {
+        if (reference == null || gridItemsData.isEmpty() || selection == -1) {
             return;
         }
         int size = gridItemsData.size();
         for (int i = 0; i < size; i++) {
             gridItemsData.get(i).isSelected = reference[i / COLOUMNUM][i % COLOUMNUM];
+        }
+    }
+
+    /**
+     * 设置冲突状态
+     * @param conflict
+     */
+    public void setConflictState(boolean[][] conflict){
+        if (conflict == null || gridItemsData.isEmpty() || selection == -1) {
+            return;
+        }
+        int size = gridItemsData.size();
+        for (int i = 0; i < size; i++) {
+            gridItemsData.get(i).isSame = conflict[i / COLOUMNUM][i % COLOUMNUM];
         }
     }
 
@@ -731,12 +764,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (!isInitSuccess) {
             return;
         }
-        if (isHighlightTipsOpen) {
+        if (isHighlightTipsOpen && selection != -1) {
             game.checkReference(selection / COLOUMNUM, selection % COLOUMNUM);
         }
         if (isConflictHelpOpen) {
-            isItemValidate();
+            game.checkConflict();
         }
+        else{
+            game.clearConflict();
+        }
+        setConflictState(game.isConflict());
         if (isAutoFill) {
             setAutoFill();
             if (isComplete()) {
@@ -745,6 +782,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         }
         if (gridItemAdapter != null) {
+            gridItemAdapter.setConflictHelpState(isConflictHelpOpen);
+            gridItemAdapter.setHighLightState(isHighlightTipsOpen);
             gridItemAdapter.notifyDataSetChanged();
         }
     }
