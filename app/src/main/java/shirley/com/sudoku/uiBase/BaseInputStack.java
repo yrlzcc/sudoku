@@ -13,8 +13,8 @@ public class BaseInputStack {
     private static List<BaseItem> inputlist;
     private static BaseInputStack baseInputStack = null;
     private static int cursor = -1;
-    private boolean isPreEnable = true;  //是否可向前
-    private boolean isNextEnable = true; //是否可向后
+    private boolean isPreEnable = false;  //是否可向前
+    private boolean isNextEnable = false; //是否可向后
 
     public static BaseInputStack getInstance(){
         if(inputlist == null){
@@ -158,5 +158,8 @@ public class BaseInputStack {
         if(inputlist != null){
             inputlist.clear();
         }
+        cursor = -1;
+        isPreEnable = false;
+        isNextEnable = false;
     }
 }

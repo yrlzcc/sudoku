@@ -23,7 +23,7 @@
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
--libraryjars libs/pgyer_sdk_x.x.jar
+#-libraryjars libs/pgyer_sdk_2.2.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
 
