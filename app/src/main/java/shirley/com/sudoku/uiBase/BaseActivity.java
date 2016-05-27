@@ -10,16 +10,24 @@ import android.support.v4.app.FragmentActivity;
 
 import com.umeng.analytics.MobclickAgent;
 
+import shirley.com.sudoku.BaseApplication;
+import shirley.com.sudoku.utils.ReadSudokuUtil;
+
 public class BaseActivity extends FragmentActivity {
 	public static final boolean isDebug = true; // app是否是测试包
 	public boolean isDestory;
 	public boolean isResume;
 	private boolean exit;
 	private ApplicationManager applicationManager;
+	protected BaseApplication app = BaseApplication.getInstance();
 	protected static boolean isSoundOpen = true;  //声音开关
 	protected static boolean isHighlightTipsOpen = true;  //高亮提示开关
 	protected static boolean isConflictHelpOpen = true; 	//帮助开关
 	protected static boolean isAutoFill = false; //自动填充所有开关
+	protected static int mode = 1; //模式
+	protected static int currentLevel = 0;
+	protected static int[] currentGrade = new int[4];
+	protected ReadSudokuUtil utils = null;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -32,6 +40,15 @@ public class BaseActivity extends FragmentActivity {
 
 		applicationManager.pushActivity(this);
 
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				utils = new ReadSudokuUtil(BaseActivity.this);
+				app.sudokuData = utils.read();
+			}
+		}).start();
 	}
 
 	@Override

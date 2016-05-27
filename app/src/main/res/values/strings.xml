@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">数独</string>
-    <string name="level1">入门级</string>
-    <string name="level2">进阶级</string>
-    <string name="level3">困难级</string>
-    <string name="level4">专家级</string>
+    <string name="level1">入门级(%s/200)</string>
+    <string name="level2">进阶级(%s/200)</string>
+    <string name="level3">困难级(%s/200)</string>
+    <string name="level4">专家级(%s/200)</string>
+
+    <string name="mode_num">数字模式</string>
+    <string name="mode_color">颜色模式</string>
 
     <string name="sudoku_ok">确定</string>
-    <string name="sudoku_again">再来一局</string>
+    <string name="sudoku_again">下一关</string>
     <string name="sudoku_cancel">取消</string>
 
     <string name="sudoku_pre">向前</string>

@@ -23,6 +23,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile files('libs/YoumiSdk_v6.2.0_2016-05-20.jar')
 }
 
 android {
@@ -156,6 +157,7 @@ android {
 //            jniLibs.srcDirs = ['libs']
 //            assets.srcDirs = ['assets']
 //        }
+
 //
 //        // Move the tests to tests/java, tests/res, etc...
 //        instrumentTest.setRoot('tests')

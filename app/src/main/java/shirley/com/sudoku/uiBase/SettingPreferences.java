@@ -13,6 +13,7 @@ public class SettingPreferences {
     public static final String KEY_SETTING_SWITCH_CONFLICT = "key_setting_switch_conflict";
     public static final String KEY_SETTING_SWITCH_TIPS = "key_setting_switch_tips";
     public static final String KEY_SETTING_SWITCH_SOUND = "key_setting_switch_sound";
+    public static final String  KEY_CURRENT_SUDOKU_DATA = "key_current_sudoku_data";
 
     /**
      * @param context

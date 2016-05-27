@@ -60,29 +60,39 @@ public class Game extends Observable {
     }
 
     /**
+     * 生成好的数独，设置数据源
+     * @param data
+     */
+    public void setGame(int[][] data,int[][] solution){
+        game = copy(data);
+        this.solution = copy(solution);
+        setChanged();
+        notifyObservers(UpdateAction.NEW_GAME);
+    }
+
+    /**
      * 设置级别
      *
      * @param level
      */
     public void setLevel(int level) {
-        if (level < 0 || level > 6) {
-            this.level = 3;
+        if (level < 0 || level > 3) {
+            this.level = 1;
         } else {
             this.level = level;
         }
         switch (level) {
-            case 1:
-            case 2:
+            case 0:
                 int ranNum = ran.nextInt(10);
                 minFilled = 45 + ranNum;
                 break;
-            case 3:
+            case 1:
                 minFilled = 31 + ran.nextInt(10);
                 break;
-            case 4:
+            case 2:
                 minFilled = 21 + ran.nextInt(10);
                 break;
-            case 5:
+            case 3:
                 minFilled = 17 + ran.nextInt(10);
                 break;
             default:
@@ -639,8 +649,8 @@ public class Game extends Observable {
             for (int j = 0; j < 9; j++) {
                 if (game[i][j] != 0 && !checkValid(i, j)) {
                     checkConflict[i][j] = true;
-                } else {
-                    checkConflict[i][j] = false;
+                } else {checkConflict[i][j] = false;
+
                 }
             }
         }

@@ -8,7 +8,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Utils;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
@@ -70,6 +72,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         toggleButtoncomplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AdUtils.openAd(SettingActivity.this);
                 isAutoFill = isChecked;
                 toggleButtonsound.setChecked(isChecked);
             }

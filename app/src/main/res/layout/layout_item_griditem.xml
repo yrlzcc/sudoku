@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shirley.com.sudoku.view.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/item_back"
+    android:id="@+id/sl_item"
     android:descendantFocusability="blocksDescendants"
+    android:padding="2dp"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/item_tv_gridcell"
         android:gravity="center"
         android:textColor="@color/fix_textcolor"
+        android:background="@color/white"
         android:cursorVisible="false"
         android:textSize="32dp"
         android:typeface="normal"

@@ -6,18 +6,23 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 
+import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
     private DialogUtils dialogUtils = null;
+    private Button level1,level2,level3,level4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +30,31 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 //        UmengUpdateAgent.update(this);
 //        UmengUpdateAgent.setDeltaUpdate(false);
         setContentView(R.layout.activity_menu);
-        findViewById(R.id.menu_level1).setOnClickListener(this);
-        findViewById(R.id.menu_level2).setOnClickListener(this);
-        findViewById(R.id.menu_level3).setOnClickListener(this);
-        findViewById(R.id.menu_level4).setOnClickListener(this);
-
+        level1 = (Button)findViewById(R.id.menu_level1);
+        level1.setOnClickListener(this);
+        level2 = (Button)findViewById(R.id.menu_level2);
+        level2.setOnClickListener(this);
+        level3 = (Button)findViewById(R.id.menu_level3);
+        level3.setOnClickListener(this);
+        level4 = (Button)findViewById(R.id.menu_level4);
+        level4.setOnClickListener(this);
         checkUpdate();
+        AdUtils.openAd(this);
+        updateButtonText();
+    }
+
+    /**
+     * 更新当前级别
+     */
+    private void updateButtonText(){
+        if(level1 != null)
+        level1.setText(String.format(getResources().getString(R.string.level1),currentGrade[0]));
+        if(level2 != null)
+        level2.setText(String.format(getResources().getString(R.string.level2),currentGrade[1]));
+        if(level3 != null)
+        level3.setText(String.format(getResources().getString(R.string.level3),currentGrade[2]));
+        if(level4 != null)
+        level4.setText(String.format(getResources().getString(R.string.level4),currentGrade[3]));
     }
 
     @Override
@@ -97,6 +121,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        updateButtonText();
 //        MobclickAgent.onResume(this);
     }
 
@@ -104,17 +129,5 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
 //        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                System.exit(0);
-                break;
-            default:
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

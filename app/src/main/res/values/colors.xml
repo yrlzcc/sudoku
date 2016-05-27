@@ -18,6 +18,7 @@
 
     <color name="item_main_border_color">#ff492d29</color><!--九宫格边框颜色-->
     <color name="item_sub_border_color">#ffb5aaa8</color><!--小格子边框颜色-->
+    <color name="item_select_border_color">#ffff0000</color><!--小格子边框颜色-->
 
     <color name="back">#ffe9dfdc</color> <!--页面背景-->
     <color name="title_back">#ff9b6d5f</color><!--标题栏背景-->
@@ -25,4 +26,14 @@
     <color name="btn_number_select">#ff9d6d60</color><!--按钮选中背景-->
     <color name="btn_number_not_enable">#66a0948f</color><!--按钮黑灰背景-->
     <color name="btn_number_normal">#ffd8bbae</color><!--按钮背景-->
+
+    <color name="mode_color_1">#f23043</color><!--颜色1-->
+    <color name="mode_color_2">#ea7352</color><!--按钮背景-->
+    <color name="mode_color_3">#f4c42f</color><!--按钮背景-->
+    <color name="mode_color_4">#0b761d</color><!--按钮背景-->
+    <color name="mode_color_5">#20228a</color><!--按钮背景-->
+    <color name="mode_color_6">#3f2054</color><!--按钮背景-->
+    <color name="mode_color_7">#0d112d</color><!--按钮背景-->
+    <color name="mode_color_8">#482332</color><!--按钮背景-->
+    <color name="mode_color_9">#bab9ba</color><!--按钮背景-->
 </resources>

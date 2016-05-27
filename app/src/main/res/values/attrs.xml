@@ -3,7 +3,9 @@
     <declare-styleable name="BordGridView">
         <attr name="mainBorderWidth" format="float"/>
         <attr name="subBorderWidth" format="float"/>
+        <attr name="selectBorderWidth" format="float"/>
         <attr name="mainBorderColor" format="color"/>
         <attr name="subBorderColor" format="color"/>
+        <attr name="selectBorderColor" format="color"/>
     </declare-styleable>
 </resources>

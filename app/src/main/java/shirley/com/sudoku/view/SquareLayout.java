@@ -1,8 +1,13 @@
 package shirley.com.sudoku.view;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+
+import shirley.com.sudoku.R;
 
 /**
  * Created by Administrator on 2016/4/15.
@@ -10,23 +15,18 @@ import android.widget.RelativeLayout;
 public class SquareLayout extends RelativeLayout {
 
     public SquareLayout(Context context, AttributeSet attrs, int defStyle) {
-
         super(context, attrs, defStyle);
-
     }
 
 
     public SquareLayout(Context context, AttributeSet attrs) {
 
         super(context, attrs);
-
     }
 
 
     public SquareLayout(Context context) {
-
         super(context);
-
     }
 
 

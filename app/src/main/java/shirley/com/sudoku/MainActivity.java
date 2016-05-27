@@ -10,15 +10,25 @@ import android.widget.AdapterView;
 import android.widget.Chronometer;
 import android.widget.GridView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.model.BaseItem;
+import shirley.com.sudoku.model.GradeItem;
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.uiBase.BaseInputStack;
 import shirley.com.sudoku.uiBase.SettingPreferences;
+import shirley.com.sudoku.utils.AdUtils;
+import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
 import shirley.com.sudoku.utils.Game;
 import shirley.com.sudoku.utils.ProgressDialogUtils;
@@ -34,6 +44,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private GridItemAdapter gridItemAdapter;
     private ProgressDialogUtils progressDialog = null;
     private List<GridItem> gridItemsData = null;
+    List<GradeItem> gameList = null; //当前级别对应的所有游戏
     private int selection = -1;
     private int level;
     private DialogUtils dialogUtils = null;
@@ -45,6 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private View main_include_btn_next; //向后按钮
     private View main_include_btn_clear; //清除按钮
     private View main_include_btn_mark; //标记按钮
+    private List<GridItem> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +64,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setContentView(R.layout.activity_main);
         readSettingValue();
         gridView = (GridView) findViewById(R.id.main_gv_show);
-        findViewById(R.id.main_include_select_1).setOnClickListener(this);
-        findViewById(R.id.main_include_select_2).setOnClickListener(this);
-        findViewById(R.id.main_include_select_3).setOnClickListener(this);
-        findViewById(R.id.main_include_select_4).setOnClickListener(this);
-        findViewById(R.id.main_include_select_5).setOnClickListener(this);
-        findViewById(R.id.main_include_select_6).setOnClickListener(this);
-        findViewById(R.id.main_include_select_7).setOnClickListener(this);
-        findViewById(R.id.main_include_select_8).setOnClickListener(this);
-        findViewById(R.id.main_include_select_9).setOnClickListener(this);
+        setVisualByMode();
         main_include_btn_clear = findViewById(R.id.main_include_btn_clear);
         main_include_btn_clear.setOnClickListener(this);
         main_include_btn_mark = findViewById(R.id.main_include_btn_mark);
@@ -75,8 +79,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         gridView.setOnItemClickListener(this);
         level = getIntent().getIntExtra("level", 1);
         context = this;
-        showProgressDialog("正在生成数独...");
+//        showProgressDialog("正在生成数独...");
+        gameList = app.sudokuData.sudokuList.get(level).getGameList();
+        data = restore();
         initGame(level);
+    }
+
+    /**
+     * 更新关数
+     */
+    private void updateGrade(){
+
+    }
+    /**
+     * 根据模式设置选择面板
+     */
+    private void setVisualByMode(){
+        if(mode == Constans.MODE_NUM){
+            findViewById(R.id.ll_num_select).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_color_select).setVisibility(View.GONE);
+            findViewById(R.id.main_include_select_1).setOnClickListener(this);
+            findViewById(R.id.main_include_select_2).setOnClickListener(this);
+            findViewById(R.id.main_include_select_3).setOnClickListener(this);
+            findViewById(R.id.main_include_select_4).setOnClickListener(this);
+            findViewById(R.id.main_include_select_5).setOnClickListener(this);
+            findViewById(R.id.main_include_select_6).setOnClickListener(this);
+            findViewById(R.id.main_include_select_7).setOnClickListener(this);
+            findViewById(R.id.main_include_select_8).setOnClickListener(this);
+            findViewById(R.id.main_include_select_9).setOnClickListener(this);
+        }
+        else{
+            findViewById(R.id.ll_num_select).setVisibility(View.GONE);
+            findViewById(R.id.ll_color_select).setVisibility(View.VISIBLE);
+            findViewById(R.id.main_include_color_select_1).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_2).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_3).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_4).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_5).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_6).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_7).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_8).setOnClickListener(this);
+            findViewById(R.id.main_include_color_select_9).setOnClickListener(this);
+        }
     }
 
     /**
@@ -105,16 +149,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         isInitSuccess = false;
         isMark = false;
         selection = -1;
+
         BaseInputStack.getInstance().reset();
         gridItemAdapter = new GridItemAdapter(context, gridItemsData, selection);
+        gridItemAdapter.setMode(mode);
         gridView.setAdapter(gridItemAdapter);
-        new Thread() {
-            public void run() {
-                game = new Game(context);
-                game.addObserver(MainActivity.this);
-                game.newGame(level);
+        game = new Game(context);
+        game.addObserver(MainActivity.this);
+        game.setGame(gameList.get(currentGrade[level]).getGame(), gameList.get(currentGrade[level]).getSolution());
+        CopyToGame();
+    }
+
+    private void CopyToGame(){
+        if(gridItemsData != null){
+            for(int i = 0;i < gridItemsData.size();i++){
+                int x = i/9;
+                int y = i%9;
+                game.setNumber(x,y,gridItemsData.get(i).num);
             }
-        }.start();
+        }
     }
 
     /**
@@ -122,6 +175,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      */
     private void initData() {
         gridItemsData = new ArrayList<GridItem>();
+        if(data != null){
+            gridItemsData.addAll(data);
+            return;
+        }
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
                 GridItem item = new GridItem();
@@ -161,38 +218,47 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         int key = 1;
         switch (v.getId()) {
             case R.id.main_include_select_1:
+            case R.id.main_include_color_select_1:
                 key = 1;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_2:
+            case R.id.main_include_color_select_2:
                 key = 2;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_3:
+            case R.id.main_include_color_select_3:
                 key = 3;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_4:
+            case R.id.main_include_color_select_4:
                 key = 4;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_5:
+            case R.id.main_include_color_select_5:
                 key = 5;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_6:
+            case R.id.main_include_color_select_6:
                 key = 6;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_7:
+            case R.id.main_include_color_select_7:
                 key = 7;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_8:
+            case R.id.main_include_color_select_8:
                 key = 8;
                 onNumClick(key);
                 break;
             case R.id.main_include_select_9:
+            case R.id.main_include_color_select_9:
                 key = 9;
                 onNumClick(key);
                 break;
@@ -210,6 +276,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 onNumClick(key);
                 break;
             case R.id.main_include_btn_pre: {
+//                AdUtils.openAd(this);
                 BaseItem item = BaseInputStack.getInstance().getPre();
                 updateBtnState();
                 pre(item);
@@ -218,6 +285,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 updateClearState();
                 gridItemAdapter.setSelection(selection);
+                gridView.setSelection(selection);
                 gridItemAdapter.notifyDataSetChanged();
                 break;
             }
@@ -234,10 +302,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 updateClearState();
                 gridItemAdapter.setSelection(selection);
+                gridView.setSelection(selection);
                 gridItemAdapter.notifyDataSetChanged();
                 break;
-            case R.id.imagebutton_left:showExitDialog();
-
+            case R.id.imagebutton_left:
+                showExitDialog();
                 break;
             case R.id.imagebutton_right:
                 Intent intent = new Intent(this, SettingActivity.class);
@@ -521,6 +590,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 弹出完成对话框
      */
     private void showCompleteDialog() {
+//        AdUtils.openAd(this);
         dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_tips),chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -529,6 +599,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         dialogUtils.dismiss();
                         break;
                     case 1:
+                        currentGrade[level]++;
                         initGame(level);
                         dialogUtils.dismiss();
                         break;
@@ -553,6 +624,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     case 1:
                         dialogUtils.dismiss();
                         writeSettingValue();
+                        save();
                         finish();
                         break;
                 }
@@ -565,12 +637,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selection = position;
         gridItemAdapter.setSelection(selection);
+        gridView.setSelection(selection);
         if (gridItemsData.get(position).isFix) {
             return;
         }
         int x = position/COLOUMNUM;
         int y = position%COLOUMNUM;
-        game.setSelectedPosition(x,y); //
+        game.setSelectedPosition(x, y); //
     }
 
     /**
@@ -643,13 +716,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 dissmissProgressDialog();
                 game = (Game) observable;
                 isInitSuccess = true;
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setGame(game);
-                        initTime();
-                    }
-                });
+                if(gridItemsData.isEmpty()) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setGame(game);
+                            initTime();
+                        }
+                    });
+                }
                 break;
             case CHECK:
 //                setGameCheck((Game)o);
@@ -780,6 +855,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 chronometer.stop();
                 showCompleteDialog();
             }
+            isAutoFill = false;
         }
         if (gridItemAdapter != null) {
             gridItemAdapter.setConflictHelpState(isConflictHelpOpen);
@@ -798,5 +874,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 存储当前数独数据
+     */
+    private void save(){
+        if(gridItemsData != null){
+            Gson gs = new Gson();
+            String str = gs.toJson(gridItemsData);
+            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_DATA, str);
+        }
+    }
+
+    /**
+     * 恢复当前数独
+     */
+    private  List<GridItem> restore(){
+        String str = SettingPreferences.getSetStringValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_DATA);
+        Gson gs = new Gson();
+        List<GridItem> data = gs.fromJson(str,new TypeToken<List<GridItem>>() {}.getType());
+        return data;
     }
 }
