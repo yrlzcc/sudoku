@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_btn_selector"
         android:layout_margin="10dp"
+        android:padding="5dp"
         android:textSize="16dp"
         android:text="@string/level1"/>
 
@@ -32,6 +33,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_btn_selector"
         android:textSize="16dp"
+        android:padding="5dp"
         android:text="@string/level2"/>
 
     <Button
@@ -41,6 +43,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_btn_selector"
         android:textSize="16dp"
+        android:padding="5dp"
         android:text="@string/level3"/>
 
     <Button
@@ -49,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textSize="16dp"
+        android:padding="5dp"
         android:background="@drawable/bg_btn_selector"
         android:text="@string/level4"/>
 

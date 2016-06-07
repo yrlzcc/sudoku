@@ -41,6 +41,7 @@ public class Game extends Observable {
         check = new boolean[9][9];
         checkReference = new boolean[9][9];
         checkConflict = new boolean[9][9];
+        game = new int[9][9];
         help = true;
     }
 
@@ -66,8 +67,17 @@ public class Game extends Observable {
     public void setGame(int[][] data,int[][] solution){
         game = copy(data);
         this.solution = copy(solution);
+        print(solution);
+        print(game);
         setChanged();
         notifyObservers(UpdateAction.NEW_GAME);
+    }
+
+    public void resumeGame(int[][] solution){
+        this.solution = copy(solution);
+        print(solution);
+        setChanged();
+        notifyObservers(UpdateAction.RESUME_GAME);
     }
 
     /**
@@ -106,22 +116,22 @@ public class Game extends Observable {
      * @param game
      * @return
      */
-    private int[][] generateGame(int[][] game) {
-        List<Integer> numbers = new ArrayList<Integer>();
-        for (int i = 0; i <= 80; i++) numbers.add(i);
-        Collections.shuffle(numbers);
-        //删掉填充位置，留下挖洞位置
-        for (int i = 0; i <= minFilled; i++) {
-            numbers.remove(0);
-        }
-        for (int i = 0; i < numbers.size(); i++) {
-            int index = numbers.get(i);
-            int x = index / 9;
-            int y = index % 9;
-            game[x][y] = 0;
-        }
-        return game;
-    }
+//    private int[][] generateGame(int[][] game) {
+//        List<Integer> numbers = new ArrayList<Integer>();
+//        for (int i = 0; i <= 80; i++) numbers.add(i);
+//        Collections.shuffle(numbers);
+//        //删掉填充位置，留下挖洞位置
+//        for (int i = 0; i <= minFilled; i++) {
+//            numbers.remove(0);
+//        }
+//        for (int i = 0; i < numbers.size(); i++) {
+//            int index = numbers.get(i);
+//            int x = index / 9;
+//            int y = index % 9;
+//            game[x][y] = 0;
+//        }
+//        return game;
+//    }
 
     /**
      * Checks user input agains the solution and puts it into a check matrix.<br />
@@ -487,13 +497,13 @@ public class Game extends Observable {
      * @param game Game to be generated, user should pass a solution.
      * @return Generated Sudoku game.
      */
-//    private int[][] generateGame(int[][] game) {
-//        List<Integer> positions = new ArrayList<Integer>();
-//        for (int i = 0; i < 81; i++)
-//            positions.add(i);
-//        Collections.shuffle(positions);
-//        return generateGame(game, positions);
-//    }
+    private int[][] generateGame(int[][] game) {
+        List<Integer> positions = new ArrayList<Integer>();
+        for (int i = 0; i < 81; i++)
+            positions.add(i);
+        Collections.shuffle(positions);
+        return generateGame(game, positions);
+    }
 
     /**
      * Generates Sudoku game from solution, user should use the other
@@ -629,6 +639,9 @@ public class Game extends Observable {
         }
     }
 
+    public void setReference(int x, int y, boolean isReference) {
+        checkReference[x][y] = isReference;
+    }
     /**
      * 获取和当前选中相关的位置
      *
@@ -677,5 +690,9 @@ public class Game extends Observable {
      */
     public boolean[][] isConflict() {
         return checkConflict;
+    }
+
+    public void setConflict(int x, int y, boolean isConflict) {
+        checkConflict[x][y] = isConflict;
     }
 }

@@ -9,6 +9,9 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_item_back"
         android:layout_height="50dp">
 
         <TextView
@@ -36,6 +39,9 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_item_back"
+        android:padding="5dp"
         android:layout_height="50dp">
 
         <TextView
@@ -91,8 +97,11 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/rl_auto_fill"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_item_back"
+        android:padding="5dp"
         android:layout_height="50dp">
 
         <TextView
@@ -121,6 +130,9 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:visibility="visible"
+        android:background="@drawable/shape_item_back"
+        android:layout_margin="5dp"
+        android:padding="5dp"
         android:layout_height="50dp">
 
         <TextView

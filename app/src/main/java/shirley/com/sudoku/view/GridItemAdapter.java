@@ -105,13 +105,17 @@ public class GridItemAdapter extends BaseAdapter {
             holder.tv_content.setBackgroundResource(R.color.item_conflict_back);
         } else {
             if (isHighlightTipsOpen && item.isSelected) {
-                holder.tv_content.setBackgroundResource(R.color.item_select_reference_back);
+//                holder.tv_content.setBackgroundResource(R.color.item_select_reference_back);
+                holder.tv_content.setBackgroundResource(R.drawable.shape_grid_back_normal);
             } else {
                 holder.tv_content.setBackgroundResource(R.color.item_back);
+//                holder.tv_content.setBackgroundResource(R.drawable.shape_btn_back_normal);
             }
             if (position == selection) {
-                holder.tv_content.setBackgroundResource(R.color.item_select_back);
+//                holder.tv_content.setBackgroundResource(R.color.item_select_back);
+                holder.tv_content.setBackgroundResource(R.drawable.shape_grid_back_press);
             }
+
         }
     }
 

@@ -14,7 +14,7 @@
     <color name="item_back">#ffffffff</color><!--普通格子的背景颜色-->
     <color name="item_select_back">#ff9d6d60</color><!--选中格子的背景颜色-->
     <color name="item_select_reference_back">#ffdac6bf</color><!--和选中格子有关系的格子背景颜色-->
-    <color name="item_conflict_back">#ffff0000</color><!--冲突格子背景颜色-->
+    <color name="item_conflict_back">#55ff0000</color><!--冲突格子背景颜色-->
 
     <color name="item_main_border_color">#ff492d29</color><!--九宫格边框颜色-->
     <color name="item_sub_border_color">#ffb5aaa8</color><!--小格子边框颜色-->
@@ -26,6 +26,11 @@
     <color name="btn_number_select">#ff9d6d60</color><!--按钮选中背景-->
     <color name="btn_number_not_enable">#66a0948f</color><!--按钮黑灰背景-->
     <color name="btn_number_normal">#ffd8bbae</color><!--按钮背景-->
+    <color name="btn_border">#ceb6af</color>  <!--按钮背景边框-->
+    <color name="btn_gradient_start_color">#fcfaf8</color> <!--按钮背景渐变开始颜色-->
+    <color name="btn_gradient_normal_end_color">#e1d2bb</color> <!--按钮背景渐变结束颜色-->
+    <color name="btn_gradient_press_end_color">#936054</color> <!--按钮背景渐变按下时的结束颜色-->
+    <color name="btn_gradient_disenable_end_color">#44bab4b3</color> <!--按钮背景渐变不可用时的结束颜色-->
 
     <color name="mode_color_1">#f23043</color><!--颜色1-->
     <color name="mode_color_2">#ea7352</color><!--按钮背景-->

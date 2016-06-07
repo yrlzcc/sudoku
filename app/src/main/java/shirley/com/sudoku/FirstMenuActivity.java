@@ -7,9 +7,11 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.ProgressDialogUtils;
 import shirley.com.sudoku.utils.ReadSudokuUtil;
+import shirley.com.sudoku.utils.Utils;
 
 public class FirstMenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
@@ -18,6 +20,11 @@ public class FirstMenuActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_first_menu);
         findViewById(R.id.mode_num).setOnClickListener(this);
         findViewById(R.id.mode_color).setOnClickListener(this);
+        currentGrade = Utils.stringToArr(SettingPreferences.getSetStringValue(this, SettingPreferences.KEY_CURRENT_CURRENT_GRADE));
+        if(currentGrade == null){
+            currentGrade = new int[4];
+        }
+        currentLevel = SettingPreferences.getValue(this, SettingPreferences.KEY_CURRENT_SUDOKU_CURRENTLEVEL,0);
     }
 
     @Override

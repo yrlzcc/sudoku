@@ -1,5 +1,10 @@
 package shirley.com.sudoku.uiBase;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,16 +15,18 @@ import shirley.com.sudoku.model.GridItem;
  * Created by Administrator on 2016/5/10.
  */
 public class BaseInputStack {
-    private static List<BaseItem> inputlist;
+    private List<BaseItem> inputlist;
     private static BaseInputStack baseInputStack = null;
-    private static int cursor = -1;
+    private int cursor = -1;
     private boolean isPreEnable = false;  //是否可向前
     private boolean isNextEnable = false; //是否可向后
+    private Context context;
 
-    public static BaseInputStack getInstance(){
-        if(inputlist == null){
-            inputlist = new ArrayList<BaseItem>();
+    public static BaseInputStack getInstance(Context con){
+        if(baseInputStack == null){
             baseInputStack = new BaseInputStack();
+            baseInputStack.context = con;
+            baseInputStack.inputlist = new ArrayList<BaseItem>();
         }
         return baseInputStack;
     }
@@ -161,5 +168,25 @@ public class BaseInputStack {
         cursor = -1;
         isPreEnable = false;
         isNextEnable = false;
+    }
+
+    /**
+     * 存储当前数独数据
+     */
+    public void save(){
+        if(inputlist != null){
+            Gson gs = new Gson();
+            String str = gs.toJson(inputlist);
+            SettingPreferences.setSettingValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST, str);
+        }
+    }
+
+    /**
+     * 恢复当前数独
+     */
+    public  void restore(){
+        String str = SettingPreferences.getSetStringValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST);
+        Gson gs = new Gson();
+        inputlist = gs.fromJson(str,new TypeToken<List<GridItem>>() {}.getType());
     }
 }

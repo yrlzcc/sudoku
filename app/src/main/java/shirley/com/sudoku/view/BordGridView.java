@@ -77,10 +77,11 @@ public class BordGridView extends GridView {
         for (int i = 0; i < childCount; i++) {//遍历子view
             View cellView = getChildAt(i);//获取子view
 //            cellView.setSelected(true);
-            if (i == selection) {
-                canvas.drawRect(cellView.getLeft(), cellView.getTop(), cellView.getRight(), cellView.getBottom(), selectPaint);
-                continue;
-            }
+//            if (i == selection) {
+                //绘制边框
+//                canvas.drawRect(cellView.getLeft(), cellView.getTop(), cellView.getRight(), cellView.getBottom(), selectPaint);
+//                continue;
+//            }
             int row = i / column;
             int col = i % column;
             canvas.drawLine(cellView.getLeft(), cellView.getBottom(), cellView.getRight(), cellView.getBottom(), childPaint);

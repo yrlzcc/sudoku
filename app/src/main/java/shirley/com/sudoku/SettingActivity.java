@@ -62,21 +62,21 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        rl_auto_fill = (RelativeLayout)findViewById(R.id.rl_auto_fill);
-        toggleButtoncomplete = (ToggleButton)findViewById(R.id.tb_setting_complete);
-        if(!isDebug){
-            rl_auto_fill.setVisibility(View.GONE);
-        }
-        toggleButtoncomplete.setChecked(false);
-        isAutoFill = false;
-        toggleButtoncomplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AdUtils.openAd(SettingActivity.this);
-                isAutoFill = isChecked;
-                toggleButtonsound.setChecked(isChecked);
-            }
-        });
+//        rl_auto_fill = (RelativeLayout)findViewById(R.id.rl_auto_fill);
+//        toggleButtoncomplete = (ToggleButton)findViewById(R.id.tb_setting_complete);
+//        if(!isDebug){
+//            rl_auto_fill.setVisibility(View.GONE);
+//        }
+//        toggleButtoncomplete.setChecked(false);
+//        isAutoFill = false;
+//        toggleButtoncomplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                AdUtils.openAd(SettingActivity.this);
+//                isAutoFill = isChecked;
+//                toggleButtonsound.setChecked(isChecked);
+//            }
+//        });
 
     }
 

@@ -335,5 +335,40 @@ public class Utils {
         }
     }
 
+    /**
+     * 数组转字符串
+     * @param arr
+     * @return
+     */
+    public static String arrToString(int[] arr){
+        String str = "";
+        if(arr != null && arr.length >= 0){
+            for(int a:arr){
+                str += a + ",";
+            }
+            str.substring(0,str.length()-1);
+        }
+        return str;
+    }
+
+    public static int[] stringToArr(String str){
+        String[] arr = null;
+        if(str != null && !str.equals("") ){
+            arr = str.split(",");
+        }
+        return stringToInt(arr);
+    }
+
+    public static int[] stringToInt(String[] arr){
+        int[] intArr = null;
+        if(arr != null && arr.length > 0){
+            intArr = new int[arr.length];
+            for(int i = 0;i < arr.length;i++){
+                intArr[i] =Integer.parseInt(arr[i]);
+            }
+        }
+        return intArr;
+    }
+
 }
 

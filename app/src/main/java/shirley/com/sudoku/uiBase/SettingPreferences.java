@@ -4,6 +4,9 @@ package shirley.com.sudoku.uiBase;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import shirley.com.sudoku.utils.Utils;
+
 /**
  * Created by Administrator on 2016/5/9.
  */
@@ -14,6 +17,14 @@ public class SettingPreferences {
     public static final String KEY_SETTING_SWITCH_TIPS = "key_setting_switch_tips";
     public static final String KEY_SETTING_SWITCH_SOUND = "key_setting_switch_sound";
     public static final String  KEY_CURRENT_SUDOKU_DATA = "key_current_sudoku_data";
+    public static final String  KEY_CURRENT_SUDOKU_INPUTLIST = "key_current_sudoku_inputlist";
+    public static final String  KEY_CURRENT_SUDOKU_SELECTION = "key_current_sudoku_selection";
+    public static final String  KEY_CURRENT_SUDOKU_ISMARK = "key_current_sudoku_ismark";
+    public static final String  KEY_CURRENT_SUDOKU_CURRENTLEVEL = "key_current_sudoku_level";
+    public static final String  KEY_CURRENT_SUDOKU_TIME = "key_current_sudoku_time";
+    public static final String  KEY_CURRENT_CURRENT_GRADE = "key_current_current_grade";
+    /** 是否是首次运行 */
+    public static final String KEY_FIRST_LUNCH = "first_lunch";
 
     /**
      * @param context
@@ -106,6 +117,15 @@ public class SettingPreferences {
         SharedPreferences sp = context.getSharedPreferences(SETTING_PRE_NAME, Context.MODE_PRIVATE);
         long value = sp.getLong(key, defaultValue);
         return value;
+    }
+
+    public static boolean isFristLunch(Context context) {
+        String version = getSetStringValue(context, KEY_FIRST_LUNCH);
+        if (version.equals(Utils.getVersion(context))) {
+            return false;
+        }
+        return true;
+
     }
 }
 

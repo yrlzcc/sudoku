@@ -23,10 +23,10 @@ public class BaseActivity extends FragmentActivity {
 	protected static boolean isSoundOpen = true;  //声音开关
 	protected static boolean isHighlightTipsOpen = true;  //高亮提示开关
 	protected static boolean isConflictHelpOpen = true; 	//帮助开关
-	protected static boolean isAutoFill = false; //自动填充所有开关
+//	protected static boolean isAutoFill = false; //自动填充所有开关
 	protected static int mode = 1; //模式
 	protected static int currentLevel = 0;
-	protected static int[] currentGrade = new int[4];
+	protected static int[] currentGrade ;
 	protected ReadSudokuUtil utils = null;
 
 	@Override

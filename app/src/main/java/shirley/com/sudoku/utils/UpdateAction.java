@@ -12,5 +12,6 @@ public enum UpdateAction {
     CANDIDATES,
     HELP,
     INPUT_NUMBER,
-    SELECTED_POSITION
+    SELECTED_POSITION,
+    RESUME_GAME
 }

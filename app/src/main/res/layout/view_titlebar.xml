@@ -18,9 +18,9 @@
             android:layout_centerVertical="true"
             android:background="@color/transparent"
             android:contentDescription="@null"
-            android:paddingLeft="17dp"
-            android:paddingRight="17dp"
-            android:src="@mipmap/btn_left_back" />
+            android:paddingLeft="10dp"
+            android:paddingRight="15dp"
+            android:src="@mipmap/ic_find_previous_mtrl_alpha" />
 
         <TextView
             android:id="@+id/text_title"
@@ -43,9 +43,9 @@
             android:layout_centerVertical="true"
             android:background="@color/transparent"
             android:contentDescription="@null"
-            android:src="@mipmap/btn_setting"
-            android:paddingLeft="17dp"
-            android:paddingRight="17dp" />
+            android:src="@mipmap/ic_menu_moreoverflow_normal_holo_dark"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
     </RelativeLayout>
 
 </LinearLayout>

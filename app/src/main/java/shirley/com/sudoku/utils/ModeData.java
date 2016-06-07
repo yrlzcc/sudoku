@@ -24,4 +24,11 @@ public class ModeData {
             {8, R.color.mode_color_8},
             {9, R.color.mode_color_9}
     };
+
+    public static int[][] levelString = {
+            {Constans.LEVEL1, R.string.level1},
+            {Constans.LEVEL2, R.string.level2},
+            {Constans.LEVEL3, R.string.level3},
+            {Constans.LEVEL4, R.string.level4}
+    };
 }

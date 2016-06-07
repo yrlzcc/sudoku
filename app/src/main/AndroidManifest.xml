@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="shirley.com.sudoku">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,6 +20,7 @@
 
     <!-- 允许程序录制音频 -->
     <application
+        tools:replace="android:icon, android:theme"
         android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -26,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".FirstMenuActivity"
+            android:name=".MenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,7 +80,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".FirstMenuActivity"></activity>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ def getVersionNameFromManifest() {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile 'com.yalantis:contextmenu:1.0.7'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/YoumiSdk_v6.2.0_2016-05-20.jar')
@@ -32,7 +33,7 @@ android {
 
     defaultConfig {
         applicationId "shirley.com.sudoku"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 2
         versionName "1.5"

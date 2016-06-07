@@ -2,6 +2,7 @@ package shirley.com.sudoku;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -15,9 +16,11 @@ import com.pgyersdk.update.UpdateManagerListener;
 
 import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
+import shirley.com.sudoku.utils.Utils;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
@@ -38,6 +41,11 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         level3.setOnClickListener(this);
         level4 = (Button)findViewById(R.id.menu_level4);
         level4.setOnClickListener(this);
+        currentGrade = Utils.stringToArr(SettingPreferences.getSetStringValue(this, SettingPreferences.KEY_CURRENT_CURRENT_GRADE));
+        if(currentGrade == null){
+            currentGrade = new int[4];
+        }
+        currentLevel = SettingPreferences.getValue(this, SettingPreferences.KEY_CURRENT_SUDOKU_CURRENTLEVEL,0);
         checkUpdate();
         AdUtils.openAd(this);
         updateButtonText();
@@ -47,6 +55,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
      * 更新当前级别
      */
     private void updateButtonText(){
+        System.out.println("---------------------grade:" + currentGrade);
         if(level1 != null)
         level1.setText(String.format(getResources().getString(R.string.level1),currentGrade[0]));
         if(level2 != null)
@@ -56,10 +65,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         if(level4 != null)
         level4.setText(String.format(getResources().getString(R.string.level4),currentGrade[3]));
     }
-
     @Override
     public void onClick(View v) {
-        int level = 1;
+        int level = 0;
         switch (v.getId()) {
             case R.id.menu_level1:
                 level = Constans.LEVEL1;
