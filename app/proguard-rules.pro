@@ -26,6 +26,8 @@
 #-libraryjars libs/pgyer_sdk_2.2.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
+-keep class com.yallantis.contextmenu.lib.**{*;}
+
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application

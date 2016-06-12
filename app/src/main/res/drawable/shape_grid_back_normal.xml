@@ -7,7 +7,7 @@
     <!-- 渐变 -->
     <gradient
         android:type="radial"
-        android:gradientRadius="30dp"
+        android:gradientRadius="40"
         android:angle="360"
         android:endColor="@color/btn_gradient_normal_end_color"
         android:startColor="@color/btn_gradient_start_color" />

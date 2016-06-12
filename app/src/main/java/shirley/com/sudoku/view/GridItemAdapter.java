@@ -1,12 +1,9 @@
 package shirley.com.sudoku.view;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -113,7 +110,7 @@ public class GridItemAdapter extends BaseAdapter {
             }
             if (position == selection) {
 //                holder.tv_content.setBackgroundResource(R.color.item_select_back);
-                holder.tv_content.setBackgroundResource(R.drawable.shape_grid_back_press);
+                holder.tv_content.setBackgroundResource(R.drawable.shape_title_back);
             }
 
         }

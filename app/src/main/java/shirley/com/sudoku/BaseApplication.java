@@ -3,6 +3,7 @@ package shirley.com.sudoku;
 import android.app.Application;
 
 import com.pgyersdk.crash.PgyCrashManager;
+import com.umeng.analytics.MobclickAgent;
 
 import sdw.sea.erd.AdManager;
 import sdw.sea.erd.normal.spot.SpotManager;
@@ -20,6 +21,7 @@ public class BaseApplication extends Application {
         public static BaseApplication getInstance(){
             return application;
         }
+        protected ReadSudokuUtil utils = null;
 
         @Override
         public void onCreate() {
@@ -31,7 +33,10 @@ public class BaseApplication extends Application {
             AdManager.getInstance(this).init("b0935234b0c9d58f", "d5372ef76aaab0a4", false, true);
             SpotManager.getInstance(this).setSpotOrientation(SpotManager.ORIENTATION_PORTRAIT);
 
-
+            MobclickAgent.setDebugMode(true);
+                    // TODO Auto-generated method stub
+            utils = new ReadSudokuUtil(BaseApplication.this);
+            sudokuData = utils.read();
         }
 
 }

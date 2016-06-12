@@ -9,48 +9,51 @@
     tools:context="shirley.com.sudoku.MainActivity">
 
     <include layout="@layout/view_titlebar"
-        android:id="@+id/include_title"></include>
+        android:id="@+id/include_title"
+        ></include>
 
+    <!-- 弹出框容器 -->
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <include layout="@layout/include_layout_popwindow"
+    <include
+        layout="@layout/include_layout_time"
+        android:id="@+id/include_layout_time"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/include_title"
-        android:layout_below="@+id/include_title"></include>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ll_title"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:textSize="20dp"
-            android:textColor="@color/main_clock_textcolor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_title_info"
-            android:text="@string/level1"
-            />
-    <Chronometer
-        android:layout_margin="10dp"
-        android:textSize="20dp"
-        android:textColor="@color/main_clock_textcolor"
-        android:id="@+id/main_ch_time"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/ll_title"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:textSize="20dp"-->
+            <!--android:textColor="@color/main_clock_textcolor"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/tv_title_info"-->
+            <!--android:text="@string/level1"-->
+            <!--/>-->
+    <!--<Chronometer-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:textSize="20dp"-->
+        <!--android:textColor="@color/main_clock_textcolor"-->
+        <!--android:id="@+id/main_ch_time"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
 
 
     <shirley.com.sudoku.view.BordGridView
         android:id="@+id/main_gv_show"
-        android:layout_below="@+id/ll_title"
+        android:layout_below="@id/include_title"
         android:padding="5dp"
         android:numColumns="9"
         android:gravity="center"
@@ -66,15 +69,14 @@
     <include
         layout="@layout/include_layout_btn"
         android:id="@+id/main_include_btn"
-        android:layout_below="@+id/main_gv_show"
+        android:layout_below="@id/main_gv_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <include
         layout="@layout/include_layout_select_item"
-        android:id="@+id/main_include_select_layout"
-        android:layout_below="@+id/main_include_btn"
+        android:layout_below="@id/main_include_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

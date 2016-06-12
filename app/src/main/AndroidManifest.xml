@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".MenuActivity"
+            android:name="MenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="MainActivity"
             android:screenOrientation="portrait" />
 
         <!-- 友盟更新开始 -->
@@ -61,7 +61,7 @@
             android:value="b18636cdccbb6cc1b264d5eb8a09aa30"></meta-data>
 
         <activity
-            android:name=".SettingActivity"
+            android:name="SettingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="sdw.sea.erd.RF"
@@ -80,7 +80,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".FirstMenuActivity"></activity>
+        <activity android:name="FirstMenuActivity"></activity>
     </application>
 
 </manifest>

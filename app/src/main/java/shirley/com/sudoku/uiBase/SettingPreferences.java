@@ -18,6 +18,7 @@ public class SettingPreferences {
     public static final String KEY_SETTING_SWITCH_SOUND = "key_setting_switch_sound";
     public static final String  KEY_CURRENT_SUDOKU_DATA = "key_current_sudoku_data";
     public static final String  KEY_CURRENT_SUDOKU_INPUTLIST = "key_current_sudoku_inputlist";
+    public static final String  KEY_CURRENT_SUDOKU_INPUTLIST_CURSOR = "key_current_sudoku_inputlist_cursor";
     public static final String  KEY_CURRENT_SUDOKU_SELECTION = "key_current_sudoku_selection";
     public static final String  KEY_CURRENT_SUDOKU_ISMARK = "key_current_sudoku_ismark";
     public static final String  KEY_CURRENT_SUDOKU_CURRENTLEVEL = "key_current_sudoku_level";

@@ -173,20 +173,24 @@ public class BaseInputStack {
     /**
      * 存储当前数独数据
      */
-    public void save(){
+    public void save(int level){
         if(inputlist != null){
             Gson gs = new Gson();
             String str = gs.toJson(inputlist);
-            SettingPreferences.setSettingValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST, str);
+            SettingPreferences.setSettingValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST + level, str);
+            SettingPreferences.setSettingValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST_CURSOR + level, cursor);
         }
     }
 
     /**
      * 恢复当前数独
      */
-    public  void restore(){
-        String str = SettingPreferences.getSetStringValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST);
+    public  void restore(int level){
+        cursor = SettingPreferences.getValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST_CURSOR + level, -1);
+        String str = SettingPreferences.getSetStringValue(context, SettingPreferences.KEY_CURRENT_SUDOKU_INPUTLIST + level);
         Gson gs = new Gson();
-        inputlist = gs.fromJson(str,new TypeToken<List<GridItem>>() {}.getType());
+        inputlist = gs.fromJson(str,new TypeToken<List<BaseItem>>() {}.getType());
+        updatePreState();
+        updateNextState();
     }
 }

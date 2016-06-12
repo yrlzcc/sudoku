@@ -67,8 +67,8 @@ public class Game extends Observable {
     public void setGame(int[][] data,int[][] solution){
         game = copy(data);
         this.solution = copy(solution);
-        print(solution);
-        print(game);
+//        print(solution);
+//        print(game);
         setChanged();
         notifyObservers(UpdateAction.NEW_GAME);
     }

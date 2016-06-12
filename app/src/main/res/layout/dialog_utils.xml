@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
+    android:background="@drawable/shape_dialog_back"
     android:orientation="vertical" >
 
     <TextView
@@ -39,7 +39,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/sudoku_cancel"
-            android:textColor="#666666"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_btn_selector"
             android:textSize="16dp" />
 
         <View
@@ -53,7 +54,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/sudoku_ok"
-            android:textColor="@color/title_back"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_btn_selector"
             android:textSize="16dp" />
 
         <Button

@@ -1,7 +1,9 @@
 package shirley.com.sudoku;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -84,9 +86,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.imagebutton_left:
+                Intent in=getIntent();
+                //设置返回结果成功
+                setResult(RESULT_OK, in);
                 finish();
                 break;
             default:break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Intent in=getIntent();
+                //设置返回结果成功
+                setResult(RESULT_OK, in);
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

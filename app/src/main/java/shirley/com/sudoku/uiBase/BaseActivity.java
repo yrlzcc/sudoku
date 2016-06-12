@@ -15,6 +15,7 @@ import shirley.com.sudoku.utils.ReadSudokuUtil;
 
 public class BaseActivity extends FragmentActivity {
 	public static final boolean isDebug = true; // app是否是测试包
+	protected static final int SETTING = 10;
 	public boolean isDestory;
 	public boolean isResume;
 	private boolean exit;
@@ -27,28 +28,16 @@ public class BaseActivity extends FragmentActivity {
 	protected static int mode = 1; //模式
 	protected static int currentLevel = 0;
 	protected static int[] currentGrade ;
-	protected ReadSudokuUtil utils = null;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		MobclickAgent.setDebugMode(true);
 		setExit(false);
 		if (applicationManager == null) {
 			applicationManager = ApplicationManager.getScreenManager();
 		}
 
 		applicationManager.pushActivity(this);
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				utils = new ReadSudokuUtil(BaseActivity.this);
-				app.sudokuData = utils.read();
-			}
-		}).start();
 	}
 
 	@Override

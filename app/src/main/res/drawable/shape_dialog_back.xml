@@ -3,19 +3,19 @@
     android:shape="rectangle">
 
     <!-- 实心 -->
-    <!--<solid android:color="@android:color/white" />-->
+    <solid android:color="@android:color/white" />
 
     <!-- 边框 -->
     <stroke
         android:width="1dp"
         android:color="@color/btn_border" />
-    <!--&lt;!&ndash; 圆角 &ndash;&gt;-->
+    <!-- 圆角 -->
     <corners android:radius="5dp" />
     <!-- 渐变 -->
     <gradient
-        android:type="radial"
-        android:gradientRadius="40"
-        android:endColor="@color/btn_gradient_normal_end_color"
-        android:startColor="@color/btn_gradient_start_color" />
+        android:type="linear"
+        android:angle="360"
+        android:startColor="@color/btn_dialog_back_end_color"
+        android:endColor="@color/btn_dialog_back_end_color" />
 
 </shape>

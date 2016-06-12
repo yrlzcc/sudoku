@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.test.ServiceTestCase;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Chronometer;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
 import shirley.com.sudoku.model.BaseItem;
 import shirley.com.sudoku.model.GradeItem;
 import shirley.com.sudoku.uiBase.BaseActivity;
@@ -68,6 +71,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private TextView tv_title_info; //显示信息的textview
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
+    private long lasttime;  //计时器时间
+    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,31 +91,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         main_include_btn_next.setOnClickListener(this);
         findViewById(R.id.imagebutton_right).setOnClickListener(this);
         findViewById(R.id.imagebutton_left).setOnClickListener(this);
-        tv_title_info = (TextView)findViewById(R.id.tv_title_info);
+        tv_title_info = (TextView) findViewById(R.id.tv_title_info);
         chronometer = (Chronometer) findViewById(R.id.main_ch_time);
         gridView.setOnItemClickListener(this);
         context = this;
-        level = this.getIntent().getIntExtra("level",0);
+        level = this.getIntent().getIntExtra("level", 0);
 //        showProgressDialog("正在生成数独...");
-        System.out.println("--------------------level------------------" + level);
+//        System.out.println("--------------------level------------------" + level);
         gameList = app.sudokuData.sudokuList.get(level).getGameList();
+        if (gameList == null) {
+            Toast.makeText(context, "加载失败，请重试", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        size = gameList.size();
+        currentLevel = level;
         if (currentGrade[level] == 0) {
             currentGrade[level]++;  //没开始是0，第一次进来就变为1
             initGame(level);
         }/* else if(currentLevel != level){
             showChoiceDialog();
-        }*/else{
+        }*/ else {
             resumeGame();
         }
-        currentLevel = level;
         fragmentManager = getSupportFragmentManager();
         initMenuFragment();
     }
 
 
     private void initMenuFragment() {
+        float density = context.getResources().getDisplayMetrics().density;
+        int height = context.getResources().getInteger(R.integer.dialog_menu_height);
         MenuParams menuParams = new MenuParams();
-        menuParams.setActionBarSize(120);
+        menuParams.setActionBarSize((int) (height * density));
         menuParams.setMenuObjects(getMenuObjects());
         menuParams.setClosableOutside(false);
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
@@ -135,7 +148,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         // You can set any [color] as divider color:
         // item.setDividerColor(...)
 
-        List<MenuObject> menuObjects = new ArrayList<>();
+        List<MenuObject> menuObjects = new ArrayList<MenuObject>();
 
         MenuObject close = new MenuObject();
         close.setResource(R.drawable.icn_close);
@@ -150,9 +163,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         settings.setResource(R.mipmap.ic_menu_manage);
         settings.setBgResource(R.drawable.shape_drop_item_back);
 
-        MenuObject help = new MenuObject("帮助");
-        help.setResource(R.mipmap.ic_menu_help);
-        help.setBgResource(R.drawable.shape_drop_item_back);
+//        MenuObject help = new MenuObject("帮助");
+//        help.setResource(R.mipmap.ic_menu_help);
+//        help.setBgResource(R.drawable.shape_drop_item_back);
 
         MenuObject solution = new MenuObject("解题");
         BitmapDrawable bd = new BitmapDrawable(getResources(),
@@ -163,12 +176,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         menuObjects.add(close);
         menuObjects.add(again);
         menuObjects.add(settings);
-        menuObjects.add(help);
-        if(isDebug) {
+//        menuObjects.add(help);
+        if (isDebug) {
             menuObjects.add(solution);
         }
         return menuObjects;
     }
+
     /**
      * 更新关数
      */
@@ -232,6 +246,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //        initBtnState();
         isMark = false;
         selection = -1;
+        onRecordStart();
         BaseInputStack.getInstance(context).reset();
         updateBtnState();
         updateClearState();
@@ -242,11 +257,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         game = new Game(context);
         game.addObserver(MainActivity.this);
         game.setGame(gameList.get(currentGrade[level]).getGame(), gameList.get(currentGrade[level]).getSolution());
-        tv_title_info.setText(String.format(getResources().getString(ModeData.levelString[level][1]),currentGrade[level]));
+        tv_title_info.setText(String.format(getResources().getString(ModeData.levelString[level][1]), currentGrade[level]));
     }
 
     private void resumeGame() {
         restore();
+        onRecordResume();
         updateBtnState();
         updateClearState();
         updateMarkState();
@@ -266,8 +282,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 int x = i / 9;
                 int y = i % 9;
                 game.setNumber(x, y, gridItemsData.get(i).num);
-                game.setReference(x,y,gridItemsData.get(i).isSelected);
-                game.setConflict(x,y,gridItemsData.get(i).isSame);
+                game.setReference(x, y, gridItemsData.get(i).isSelected);
+                game.setConflict(x, y, gridItemsData.get(i).isSame);
             }
         }
     }
@@ -396,9 +412,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (isConflictHelpOpen) {
                     checkConflict();
                 }
-                if (isComplete()) {
-                    chronometer.stop();
-                    showCompleteDialog();
+                boolean isComplete = checkComplete();
+                if (isComplete) {
+                    onRecordPause();
                 }
                 updateClearState();
                 gridItemAdapter.setSelection(selection);
@@ -406,13 +422,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 gridItemAdapter.notifyDataSetChanged();
                 break;
             case R.id.imagebutton_left:
-                showExitDialog();
+//                showExitDialog();
+                onRecordPause();
+                pressBack();
                 break;
             case R.id.imagebutton_right:
-//                Intent intent = new Intent(this, SettingActivity.class);
-//                startActivity(intent);
                 if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
                     mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                    onRecordPause();
                 }
                 break;
             default:
@@ -458,10 +475,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 更新标记按钮
      */
     private void updateMarkState() {
-        if(isMark){
+        if (isMark) {
             main_include_btn_mark.setSelected(true);
-        }
-        else{
+        } else {
             main_include_btn_mark.setSelected(false);
         }
     }
@@ -498,16 +514,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         gridItemAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * 启动计时器
-     */
-    private void initTime() {
-        if(true) {
-            // 将计时器清零
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            //开始计时
-            chronometer.start();
-        }
+    private long recordingTime = 0;// 记录下来的总时间
+
+    public void onRecordStart() {
+        chronometer.setBase(SystemClock.elapsedRealtime() - recordingTime);// 跳过已经记录了的时间，起到继续计时的作用
+        chronometer.start();
+    }
+
+    public void onRecordPause() {
+        chronometer.stop();
+        recordingTime = SystemClock.elapsedRealtime()
+                - chronometer.getBase();// 保存这次记录了的时间
+    }
+
+    public void onRecordResume() {
+        chronometer.setBase(SystemClock.elapsedRealtime() - recordingTime);// 跳过已经记录了的时间，起到继续计时的作用
+    }
+
+    public void onRecordStop() {
+        recordingTime = 0;
+        chronometer.setBase(SystemClock.elapsedRealtime());
     }
 
     /**
@@ -613,10 +639,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (isConflictHelpOpen) {
             checkConflict();
         }
-        if (isComplete()) {
-            chronometer.stop();
-            showCompleteDialog();
-        }
+        checkComplete();
         gridItemAdapter.notifyDataSetChanged();
 
 
@@ -736,9 +759,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(int whichButton) {
                 switch (whichButton) {
                     case 0:
+                        onRecordStop();
+                        initGame(currentLevel);
                         dialogUtils.dismiss();
                         break;
                     case 1:
+                        onRecordStop();
                         currentGrade[currentLevel]++;
                         initGame(currentLevel);
                         dialogUtils.dismiss();
@@ -746,7 +772,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }
         });
-        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_again));
+        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_ok));
+        dialogUtils.setCancelText(context.getResources().getString(R.string.sudoku_again));
+        dialogUtils.show();
+    }
+
+    /**
+     * 弹出完成对话框
+     */
+    private void showCompleteLevelDialog() {
+//        AdUtils.openAd(this);
+        dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_level_tips), chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
+            @Override
+            public void onClick(int whichButton) {
+                switch (whichButton) {
+                    case 0:
+                        onRecordStop();
+                        initGame(currentLevel);
+                        dialogUtils.dismiss();
+                        break;
+                    case 1:
+                        dialogUtils.dismiss();
+                        pressBack();
+                        break;
+                }
+            }
+        });
+        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_back));
+        dialogUtils.setCancelText(context.getResources().getString(R.string.sudoku_again));
         dialogUtils.show();
     }
 
@@ -776,12 +829,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        selection = position;
-        gridItemAdapter.setSelection(selection);
-        gridView.setSelection(selection);
         if (gridItemsData.get(position).isFix) {
             return;
         }
+        selection = position;
+        gridItemAdapter.setSelection(selection);
+        gridView.setSelection(selection);
         int x = position / COLOUMNUM;
         int y = position % COLOUMNUM;
         game.setSelectedPosition(x, y); //
@@ -861,13 +914,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         @Override
                         public void run() {
                             gameToGrid(game);
-                            initTime();
                         }
                     });
                 }
                 break;
             case RESUME_GAME:
-                initTime();
+                boolean isComplete = checkComplete();
+                if (!isComplete) {
+                    onRecordStart();
+                }
                 break;
             case CHECK:
 //                setGameCheck((Game)o);
@@ -875,9 +930,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case SELECTED_NUMBER: {
                 Game game = (Game) observable;
                 push(game.getSelectedNumber());
+                addNumToGrid(game.getSelectedNumber());
                 updateClearState();  //更新清除按钮
                 updateBtnState();   //更新撤销按钮
-                addNumToGrid(game.getSelectedNumber());
                 break;
             }
             case CANDIDATES:
@@ -1012,15 +1067,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
 //                showExitDialog();
-                writeSettingValue();
-                SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_FIRST_LUNCH, Utils.getVersion(MainActivity.this));
-                save();
-                finish();
+                onRecordPause();
+                pressBack();
                 break;
             default:
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 点击后退操作
+     */
+    private void pressBack() {
+        writeSettingValue();
+        SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_FIRST_LUNCH, Utils.getVersion(MainActivity.this));
+        save();
+        finish();
     }
 
     /**
@@ -1031,11 +1094,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             Gson gs = new Gson();
             String str = gs.toJson(gridItemsData);
             SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_DATA + level, str);
-            BaseInputStack.getInstance(context).save();
-            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_ISMARK, isMark);
-            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_SELECTION, selection);
+            BaseInputStack.getInstance(context).save(level);
+            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_ISMARK + level, isMark);
+            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_SELECTION + level, selection);
             SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_CURRENTLEVEL, currentLevel);
-            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_TIME, chronometer.getText().toString());
+            SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_TIME + level, recordingTime);
             SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_CURRENT_GRADE, Utils.arrToString(currentGrade));
         }
     }
@@ -1048,33 +1111,64 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Gson gs = new Gson();
         gridItemsData = gs.fromJson(str, new TypeToken<List<GridItem>>() {
         }.getType());
-        BaseInputStack.getInstance(context).restore();
-        isMark = SettingPreferences.getSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_ISMARK, false);
-        selection = SettingPreferences.getValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_SELECTION, -1);
+        BaseInputStack.getInstance(context).restore(level);
+        isMark = SettingPreferences.getSettingValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_ISMARK + level, false);
+        selection = SettingPreferences.getValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_SELECTION + level, -1);
+        recordingTime = SettingPreferences.getValue(MainActivity.this, SettingPreferences.KEY_CURRENT_SUDOKU_TIME + level, 0L);
     }
 
+    /**
+     * 检查是否完成
+     */
+    private boolean checkComplete() {
+        if (isComplete()) {
+            if (currentGrade[level] == size) {
+                showCompleteLevelDialog();
+            } else {
+                showCompleteDialog();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //requestcode 区别发出请求用意
+        if (requestCode == SETTING) {//第二个页面返回来的数据
+            //resultcode 区分结果是否属于正常返回
+            if (resultCode == RESULT_OK) {
+                onRecordStart();
+                //操作成功
+            } else if (resultCode == RESULT_CANCELED) {
+                //操作失败
+            }
+
+        }
+    }
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        switch(position){
+        switch (position) {
             case 0:
+                onRecordStart();
                 break;
             case 1:
+                onRecordStop();
                 initGame(currentLevel);
                 break;
             case 2:
                 Intent intent = new Intent(this, SettingActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SETTING);
                 break;
+//            case 3:
+////                chronometer.setBase(lasttime);
+////                chronometer.start();
+//                onRecordStart();
+//                break;
             case 3:
-                break;
-            case 4:
                 setAutoFill();
                 gridItemAdapter.notifyDataSetChanged();
-                if (isComplete()) {
-                    chronometer.stop();
-                    showCompleteDialog();
-                }
+                checkComplete();
                 break;
         }
     }

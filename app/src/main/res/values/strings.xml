@@ -8,9 +8,10 @@
     <string name="mode_num">数字模式</string>
     <string name="mode_color">颜色模式</string>
 
-    <string name="sudoku_ok">确定</string>
-    <string name="sudoku_again">下一关</string>
+    <string name="sudoku_ok">下一关</string>
+    <string name="sudoku_again">重玩本关</string>
     <string name="sudoku_cancel">取消</string>
+    <string name="sudoku_back">返回</string>
 
     <string name="sudoku_pre">向前</string>
     <string name="sudoku_clear">清除</string>
@@ -24,6 +25,7 @@
     <string name="setting_version">当前版本</string>
 
     <string name="sudoku_dialog_complete_tips">恭喜过关！本局用时%s</string>
+    <string name="sudoku_dialog_complete_level_tips">恭喜过关！本局用时%s。您已经完成本级别的所有关卡，快去挑战更难级别吧！</string>
     <string name="sudoku_dialog_exit">当前游戏正在进行中，确定要退出吗？</string>
     <string name="sudoku_dialog_choic_tips">当前有个谜题正在进行中，要开始新的游戏吗？</string>
 

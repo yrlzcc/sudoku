@@ -31,6 +31,7 @@
     <color name="btn_gradient_normal_end_color">#e1d2bb</color> <!--按钮背景渐变结束颜色-->
     <color name="btn_gradient_press_end_color">#936054</color> <!--按钮背景渐变按下时的结束颜色-->
     <color name="btn_gradient_disenable_end_color">#44bab4b3</color> <!--按钮背景渐变不可用时的结束颜色-->
+    <color name="btn_dialog_back_end_color">#eebab4b3</color> <!--对话框背景结束颜色-->
 
     <color name="mode_color_1">#f23043</color><!--颜色1-->
     <color name="mode_color_2">#ea7352</color><!--按钮背景-->
