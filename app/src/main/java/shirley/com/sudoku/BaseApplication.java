@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.pgyersdk.crash.PgyCrashManager;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.PlatformConfig;
 
 import sdw.sea.erd.AdManager;
 import sdw.sea.erd.normal.spot.SpotManager;
@@ -30,13 +31,20 @@ public class BaseApplication extends Application {
             application = this;
             PgyCrashManager.register(this);
 
-            AdManager.getInstance(this).init("b0935234b0c9d58f", "d5372ef76aaab0a4", false, true);
+            AdManager.getInstance(this).init("97345f1b6d032a9a", "e9192ebe202a59b2", false, true);
             SpotManager.getInstance(this).setSpotOrientation(SpotManager.ORIENTATION_PORTRAIT);
 
             MobclickAgent.setDebugMode(true);
                     // TODO Auto-generated method stub
             utils = new ReadSudokuUtil(BaseApplication.this);
             sudokuData = utils.read();
+
+            PlatformConfig.setWeixin("wx937deb05a1d753fc", "71798ba222027d046b2ad8d0fdb3db8c");
+            //微信 appid appsecret
+            PlatformConfig.setSinaWeibo("wx937deb05a1d753fc","71798ba222027d046b2ad8d0fdb3db8c");
+            //新浪微博 appkey appsecret
+            PlatformConfig.setQQZone("1105473130", "KxwTx0fR8SHCBdaD");
+            // QQ和Qzone appid appkey
         }
 
 }

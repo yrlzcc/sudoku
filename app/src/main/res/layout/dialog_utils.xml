@@ -58,14 +58,20 @@
             android:background="@drawable/bg_btn_selector"
             android:textSize="16dp" />
 
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#e5e5e5" />
+
         <Button
             android:id="@+id/dialog_utils_dialog"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/sudoku_ok"
-            android:textColor="#4bbe73"
+            android:text="@string/sudoku_down_share"
             android:textSize="16dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_btn_selector"
             android:visibility="gone" />
     </LinearLayout>
 

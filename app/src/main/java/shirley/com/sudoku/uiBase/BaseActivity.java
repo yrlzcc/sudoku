@@ -1,4 +1,5 @@
 package shirley.com.sudoku.uiBase;
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.umeng.analytics.MobclickAgent;
 
 import shirley.com.sudoku.BaseApplication;
+import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.ReadSudokuUtil;
 
 public class BaseActivity extends FragmentActivity {
@@ -33,10 +36,10 @@ public class BaseActivity extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setExit(false);
+		AdUtils.getOnlineVar(this);
 		if (applicationManager == null) {
 			applicationManager = ApplicationManager.getScreenManager();
 		}
-
 		applicationManager.pushActivity(this);
 	}
 
@@ -131,5 +134,9 @@ public class BaseActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onConfigurationChanged(newConfig);
 	}
+
+	//可以将一下代码加到你的MainActivity中，或者在任意一个需要调用分享功能的activity当中
+//	String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,Manifest.permission.READ_LOGS,Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.SET_DEBUG_APP,Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
+//	ActivityCompat.requestPermissions(this,mPermissionList, 100);
 
 }

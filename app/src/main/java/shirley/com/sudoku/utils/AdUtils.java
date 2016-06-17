@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import sdw.sea.erd.AdManager;
 import sdw.sea.erd.normal.banner.BannerManager;
+import sdw.sea.erd.normal.spot.SpotDialogListener;
 import sdw.sea.erd.normal.spot.SpotManager;
 import sdw.sea.erd.onlineconfig.OnlineConfigCallBack;
 
@@ -22,7 +23,8 @@ import sdw.sea.erd.onlineconfig.OnlineConfigCallBack;
  * Created by lichuang on 2016/5/18.
  */
 public class AdUtils {
-    public static boolean isOpen = true;
+    private static boolean isTestOpen = true;  //自己测试时用的开关
+    public static boolean isOpen = false;
     public static void setAD(Activity context){
         // 实例化 LayoutParams（重要）
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -42,11 +44,11 @@ public class AdUtils {
         adLayout.addView(adView);
     }
 
-    public static void getOnlineVar( Activity activity){
+    public static void getOnlineVar( Context context){
         // 方法二： 异步调用（可在任意线程中调用）
-        SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("onlinevar", Context.MODE_PRIVATE );
+        SharedPreferences sharedPreferences = context.getSharedPreferences("onlinevar", Context.MODE_PRIVATE);
         final SharedPreferences.Editor  editor = sharedPreferences.edit();
-        AdManager.getInstance(activity.getApplicationContext()).asyncGetOnlineConfig("openAd", new OnlineConfigCallBack() {
+        AdManager.getInstance(context).asyncGetOnlineConfig("openAd", new OnlineConfigCallBack() {
             @Override
             public void onGetOnlineConfigSuccessful(String key, String value) {
                 // TODO Auto-generated method stub
@@ -54,21 +56,45 @@ public class AdUtils {
                 editor.putInt(key, Integer.parseInt(value));
                 editor.commit();
                 int v = Integer.parseInt(value);
-                isOpen = (v == 1?true:false);
+                System.out.println("onlinevar:" + isOpen);
+                isOpen = (v == 1 ? true : false);
 
             }
 
             @Override
             public void onGetOnlineConfigFailed(String key) {
                 // TODO Auto-generated method stub
-
+                System.out.println("get online var failed!");
             }
         });
     }
 
-    public static void openAd(Context context){
+    public static boolean openAd(Context context){
         if(isOpen){
             SpotManager.getInstance(context).showSpotAds(context);
+        }
+        if(isTestOpen){
+            SpotManager.getInstance(context).showSpotAds(context);
+        }
+        return isOpen;
+    }
+
+    public static void openTestAd(Context context){
+        if(isTestOpen){
+            SpotManager.getInstance(context).showSpotAds(context);
+        }
+    }
+
+    public static boolean openAd(Context context,SpotDialogListener listener){
+        if(isOpen){
+            SpotManager.getInstance(context).showSpotAds(context,listener);
+        }
+        return isOpen;
+    }
+
+    public static void openBanner(Activity context){
+        if(isTestOpen){
+            setAD(context);
         }
     }
 }

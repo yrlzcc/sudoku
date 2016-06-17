@@ -24,7 +24,8 @@ dependencies {
     compile 'com.yalantis:contextmenu:1.0.7'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile files('libs/YoumiSdk_v6.2.0_2016-05-20.jar')
+    //    compile files('libs/YoumiSdk_v6.2.0_2016-05-20.jar')
+    compile project(':social_sdk_library_project')
 }
 
 android {
@@ -35,7 +36,7 @@ android {
         applicationId "shirley.com.sudoku"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "1.6"
     }
 
@@ -59,7 +60,10 @@ android {
 //            keyPassword 'sudokuxia'
 //            storeFile file('sudoku.debugkey')
 //            storePassword 'sudokuxia'
-//
+            keyAlias 'sudoku'
+            keyPassword 'sudokuxia'
+            storeFile file('sudoku.releasekey')
+            storePassword 'sudokuxia'
         }
 //        release {
 //            keyAlias 'sudoku'
@@ -98,32 +102,33 @@ android {
         update {}
         baidu {}
         android {}
-        anzhi {}
-        '360' {}
-        tengxun {}
+//        anzhi {}
+//        '360' {}
+//        youmi {}
+//        tengxun {}
         '91' {}
-        jifeng {}
-        xiaomi {}
-        Nduo {}
-        appchina {}
-        wandoujia {}
-        oppo {}
-        '10086' {}
-        meizu {}
-        eoemarket {}
-        yiyonghui {}
-        huawei {}
-        talkphone {}
-        google {}
-        mumayi {}
-        woshangdian {}
-        leshangdian {}
-        aliyun {}
-        samsung {}
-        wangyi {}
-        taobao {}
-        pp {}
-        sougou {}
+//        jifeng {}
+//        xiaomi {}
+//        Nduo {}
+//        appchina {}
+//        wandoujia {}
+//        oppo {}
+//        '10086' {}
+//        meizu {}
+//        eoemarket {}
+//        yiyonghui {}
+//        huawei {}
+//        talkphone {}
+//        google {}
+//        mumayi {}
+//        woshangdian {}
+//        leshangdian {}
+//        aliyun {}
+//        samsung {}
+//        wangyi {}
+//        taobao {}
+//        pp {}
+//        sougou {}
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }

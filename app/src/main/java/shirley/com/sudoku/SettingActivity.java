@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 
 import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
+import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Utils;
 
@@ -86,6 +87,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.imagebutton_left:
+                writeSettingValue();
                 Intent in=getIntent();
                 //设置返回结果成功
                 setResult(RESULT_OK, in);
@@ -99,13 +101,24 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                writeSettingValue();
                 Intent in=getIntent();
                 //设置返回结果成功
                 setResult(RESULT_OK, in);
+
                 break;
             default:
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 保存设置参数
+     */
+    private void writeSettingValue() {
+        SettingPreferences.setSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_TIPS, isHighlightTipsOpen);
+        SettingPreferences.setSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_CONFLICT, isConflictHelpOpen);
+        SettingPreferences.setSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_SOUND, isSoundOpen);
     }
 }

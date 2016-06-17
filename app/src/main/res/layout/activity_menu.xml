@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center"
     tools:context="shirley.com.sudoku.MenuActivity">
 
@@ -58,12 +54,22 @@
 
     </LinearLayout>
 
-    <TextView
+    <include
+        layout="@layout/include_layout_bottom_btn"
+        android:id="@+id/menu_bottommenu_include_btn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
         android:textSize="16dp"
+        android:layout_above="@id/menu_bottommenu_include_btn"
         android:gravity="center_horizontal"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="@string/sudoku_help"/>
 

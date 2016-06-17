@@ -75,7 +75,7 @@ public class Game extends Observable {
 
     public void resumeGame(int[][] solution){
         this.solution = copy(solution);
-        print(solution);
+//        print(solution);
         setChanged();
         notifyObservers(UpdateAction.RESUME_GAME);
     }

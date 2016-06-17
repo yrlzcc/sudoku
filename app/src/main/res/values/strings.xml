@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">数独</string>
-    <string name="level1">入门级(%s/200)</string>
-    <string name="level2">进阶级(%s/200)</string>
-    <string name="level3">困难级(%s/200)</string>
-    <string name="level4">专家级(%s/200)</string>
+    <string name="level1">入门级</string>
+    <string name="level2">进阶级</string>
+    <string name="level3">困难级</string>
+    <string name="level4">专家级</string>
+    <string name="grade">(%s/200)</string>
 
     <string name="mode_num">数字模式</string>
     <string name="mode_color">颜色模式</string>
 
-    <string name="sudoku_ok">下一关</string>
+    <string name="sudoku_download">下载</string>
+    <string name="sudoku_ok">确定</string>
+    <string name="sudoku_dialog_next">下一关</string>
     <string name="sudoku_again">重玩本关</string>
     <string name="sudoku_cancel">取消</string>
     <string name="sudoku_back">返回</string>
@@ -26,8 +29,13 @@
 
     <string name="sudoku_dialog_complete_tips">恭喜过关！本局用时%s</string>
     <string name="sudoku_dialog_complete_level_tips">恭喜过关！本局用时%s。您已经完成本级别的所有关卡，快去挑战更难级别吧！</string>
-    <string name="sudoku_dialog_exit">当前游戏正在进行中，确定要退出吗？</string>
+    <string name="sudoku_dialog_exit">确定要退出吗？</string>
     <string name="sudoku_dialog_choic_tips">当前有个谜题正在进行中，要开始新的游戏吗？</string>
 
     <string name="sudoku_help">用数字1~9填充九宫格上的所有空格，保证每行、每列、每个小九宫格中1~9的数字只出现一次</string>
+
+    <string name="sudoku_down_share">分享</string>
+    <string name="sudoku_share_text">"我在玩高智商数独游戏，你也来试试吧！"</string>
+    <string name="sudoku_share_url">"http://shouji.baidu.com/game/9505077.html"</string>
+    <string name="sudoku_share_complete_text">我在数独游戏中，%1$s第%2$d关中，用时%3$s，快来挑战我吧！</string>
 </resources>

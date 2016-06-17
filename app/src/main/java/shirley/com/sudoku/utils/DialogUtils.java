@@ -61,7 +61,7 @@ public class DialogUtils extends Dialog {
      * @param alertDo
      */
     public DialogUtils(Context context, String content,
-                       final OnDialogSelectId alertDo,int isConfirm) {
+                       final OnDialogSelectId alertDo, int isConfirm) {
         this(context, default_width, default_new_height,
                 R.layout.dialog_utils, title, content, null, alertDo, isConfirm);
     }
@@ -90,7 +90,7 @@ public class DialogUtils extends Dialog {
      * @param title
      * @param content
      * @param alertDo
-     * @param isConfirm      1 为不显示确认button，2为不显示取消button;默认为0都顯示
+     * @param isConfirm 1 为不显示确认button，2为不显示取消button;默认为0都顯示
      */
     public DialogUtils(Context context, String title, String content,
                        final OnDialogSelectId alertDo, int isConfirm) {
@@ -244,6 +244,10 @@ public class DialogUtils extends Dialog {
             mCancel.setVisibility(View.GONE);
             mConfirm.setVisibility(View.GONE);
             mConfirmOne.setVisibility(View.VISIBLE);
+        } else if (this.isConfirm == 3) {
+            mCancel.setVisibility(View.VISIBLE);
+            mConfirm.setVisibility(View.VISIBLE);
+            mConfirmOne.setVisibility(View.VISIBLE);
         }
 
         mCancel.setOnClickListener(new View.OnClickListener() {
@@ -266,7 +270,7 @@ public class DialogUtils extends Dialog {
 
             @Override
             public void onClick(View v) {
-                mOnDialogSelectId.onClick(1);
+                mOnDialogSelectId.onClick(2);
             }
         });
     }
@@ -281,5 +285,6 @@ public class DialogUtils extends Dialog {
     public void setContentGravity(int gravity) {
         this.gravity = gravity;
     }
+
 
 }

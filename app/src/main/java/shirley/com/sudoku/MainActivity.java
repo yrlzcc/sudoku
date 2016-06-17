@@ -2,15 +2,9 @@ package shirley.com.sudoku;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.SystemClock;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.test.ServiceTestCase;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,34 +15,39 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import sdw.sea.erd.normal.spot.SpotDialogListener;
 import shirley.com.sudoku.model.BaseItem;
 import shirley.com.sudoku.model.GradeItem;
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.uiBase.BaseInputStack;
 import shirley.com.sudoku.uiBase.SettingPreferences;
+import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
 import shirley.com.sudoku.utils.Game;
 import shirley.com.sudoku.utils.ModeData;
 import shirley.com.sudoku.utils.ProgressDialogUtils;
+import shirley.com.sudoku.utils.ShareUtils;
 import shirley.com.sudoku.utils.UpdateAction;
 import shirley.com.sudoku.model.GridItem;
 import shirley.com.sudoku.utils.Utils;
 import shirley.com.sudoku.view.GridItemAdapter;
+import shirley.com.sudoku.wxapi.HelpActivity;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, Observer, OnMenuItemClickListener, OnMenuItemLongClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, Observer, OnMenuItemClickListener, OnMenuItemLongClickListener, UMShareListener {
 
     private final int COLOUMNUM = 9;
     private Context context;
@@ -78,7 +77,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        readSettingValue();
         gridView = (GridView) findViewById(R.id.main_gv_show);
         setVisualByMode();
         main_include_btn_clear = findViewById(R.id.main_include_btn_clear);
@@ -96,8 +94,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         gridView.setOnItemClickListener(this);
         context = this;
         level = this.getIntent().getIntExtra("level", 0);
-//        showProgressDialog("正在生成数独...");
-//        System.out.println("--------------------level------------------" + level);
         gameList = app.sudokuData.sudokuList.get(level).getGameList();
         if (gameList == null) {
             Toast.makeText(context, "加载失败，请重试", Toast.LENGTH_SHORT).show();
@@ -109,9 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (currentGrade[level] == 0) {
             currentGrade[level]++;  //没开始是0，第一次进来就变为1
             initGame(level);
-        }/* else if(currentLevel != level){
-            showChoiceDialog();
-        }*/ else {
+        } else {
             resumeGame();
         }
         fragmentManager = getSupportFragmentManager();
@@ -155,28 +149,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         close.setBgResource(R.drawable.shape_drop_item_back);
 
         MenuObject again = new MenuObject("重来");
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_perm_group_sync_settings);
-        again.setBitmap(b);
+        again.setResource(R.mipmap.ic_perm_group_sync_settings);
         again.setBgResource(R.drawable.shape_drop_item_back);
 
         MenuObject settings = new MenuObject("设置");
         settings.setResource(R.mipmap.ic_menu_manage);
         settings.setBgResource(R.drawable.shape_drop_item_back);
 
-//        MenuObject help = new MenuObject("帮助");
-//        help.setResource(R.mipmap.ic_menu_help);
-//        help.setBgResource(R.drawable.shape_drop_item_back);
+        MenuObject help = new MenuObject("帮助");
+        help.setResource(R.mipmap.ic_menu_help);
+        help.setBgResource(R.drawable.shape_drop_item_back);
 
         MenuObject solution = new MenuObject("解题");
-        BitmapDrawable bd = new BitmapDrawable(getResources(),
-                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_menu_view));
-        solution.setDrawable(bd);
+        solution.setResource(R.mipmap.ic_menu_view);
         solution.setBgResource(R.drawable.shape_drop_item_back);
+
+        MenuObject share = new MenuObject("分享");
+        share.setResource(R.mipmap.ic_menu_share);
+        share.setBgResource(R.drawable.shape_drop_item_back);
 
         menuObjects.add(close);
         menuObjects.add(again);
         menuObjects.add(settings);
-//        menuObjects.add(help);
+        menuObjects.add(share);
+        menuObjects.add(help);
         if (isDebug) {
             menuObjects.add(solution);
         }
@@ -257,7 +253,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         game = new Game(context);
         game.addObserver(MainActivity.this);
         game.setGame(gameList.get(currentGrade[level]).getGame(), gameList.get(currentGrade[level]).getSolution());
-        tv_title_info.setText(String.format(getResources().getString(ModeData.levelString[level][1]), currentGrade[level]));
+        tv_title_info.setText(getResources().getString(ModeData.levelString[level][1]) + String.format(getResources().getString(R.string.grade), currentGrade[level]));
+//        System.out.println("--------------------------------width,height" + gridView.getWidth() + "," + gridView.getHeight());
     }
 
     private void resumeGame() {
@@ -273,7 +270,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         gridItemAdapter = new GridItemAdapter(context, gridItemsData, selection);
         gridItemAdapter.setMode(mode);
         gridView.setAdapter(gridItemAdapter);
-        tv_title_info.setText(String.format(getResources().getString(ModeData.levelString[level][1]), currentGrade[level]));
+        tv_title_info.setText(getResources().getString(ModeData.levelString[level][1]) + String.format(getResources().getString(R.string.grade), currentGrade[level]));
+//        System.out.println("--------------------------------width,height" + gridView.getWidth() + "," + gridView.getHeight());
     }
 
     private void gridToGame() {
@@ -380,6 +378,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 onNumClick(key);
                 break;
             case R.id.main_include_btn_mark:
+                AdUtils.openTestAd(this);
                 isMark = !isMark;
                 if (isMark) {
                     main_include_btn_mark.setSelected(true);
@@ -392,7 +391,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 onNumClick(key);
                 break;
             case R.id.main_include_btn_pre: {
-//                AdUtils.openAd(this);
+                AdUtils.openTestAd(this);
                 BaseItem item = BaseInputStack.getInstance(context).getPre();
                 updateBtnState();
                 pre(item);
@@ -406,6 +405,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             }
             case R.id.main_include_btn_next:
+                AdUtils.openTestAd(this);
                 BaseItem item = BaseInputStack.getInstance(context).getNext();
                 updateBtnState();
                 next(item);
@@ -428,8 +428,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.imagebutton_right:
                 if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+//                    onRecordPause();
+//                    boolean isopen = AdUtils.openAd(this, new SpotDialogListener() {
+//                        @Override
+//                        public void onShowSuccess() {
+//                        }
+//
+//                        @Override
+//                        public void onShowFailed() {
+//                            mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+//                        }
+//
+//                        @Override
+//                        public void onSpotClosed() {
+//                            mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+//                        }
+//
+//                        @Override
+//                        public void onSpotClick(boolean b) {
+//
+//                        }
+//                    });
+//                    if(!isopen){
                     mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
-                    onRecordPause();
+//                    }
                 }
                 break;
             default:
@@ -639,7 +661,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (isConflictHelpOpen) {
             checkConflict();
         }
-        checkComplete();
+        boolean isComplete = checkComplete();
+        if (isComplete) {
+            onRecordPause();
+        }
         gridItemAdapter.notifyDataSetChanged();
 
 
@@ -753,7 +778,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 弹出完成对话框
      */
     private void showCompleteDialog() {
-//        AdUtils.openAd(this);
         dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_tips), chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -769,10 +793,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         initGame(currentLevel);
                         dialogUtils.dismiss();
                         break;
+                    case 2:
+                        String strLevel = context.getResources().getString(ModeData.levelString[currentLevel][1]);
+                        String strText = String.format(context.getResources().getString(R.string.sudoku_share_complete_text), strLevel, currentGrade[currentLevel], chronometer.getText().toString());
+                        onRecordStop();
+                        dialogUtils.dismiss();
+                        ShareUtils.getInstance().showShare(MainActivity.this, strText, MainActivity.this);
+                        break;
                 }
             }
-        });
-        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_ok));
+        }, 3);
+        dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_dialog_next));
         dialogUtils.setCancelText(context.getResources().getString(R.string.sudoku_again));
         dialogUtils.show();
     }
@@ -781,7 +812,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 弹出完成对话框
      */
     private void showCompleteLevelDialog() {
-//        AdUtils.openAd(this);
         dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_level_tips), chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -801,6 +831,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_back));
         dialogUtils.setCancelText(context.getResources().getString(R.string.sudoku_again));
         dialogUtils.show();
+//        AdUtils.openAd(this);
     }
 
     /**
@@ -816,7 +847,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         break;
                     case 1:
                         dialogUtils.dismiss();
-                        writeSettingValue();
                         SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_FIRST_LUNCH, Utils.getVersion(MainActivity.this));
                         save();
                         finish();
@@ -987,25 +1017,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     /**
-     * 保存设置参数
-     */
-    private void writeSettingValue() {
-        SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_TIPS, isHighlightTipsOpen);
-        SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_CONFLICT, isConflictHelpOpen);
-        SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_SOUND, isSoundOpen);
-    }
-
-    /**
-     * 读取设置参数
-     */
-    private void readSettingValue() {
-        isHighlightTipsOpen = SettingPreferences.getSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_TIPS, true);
-        isConflictHelpOpen = SettingPreferences.getSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_CONFLICT, true);
-        isSoundOpen = SettingPreferences.getSettingValue(MainActivity.this, SettingPreferences.KEY_SETTING_SWITCH_SOUND, true);
-    }
-
-
-    /**
      * 自动填充所有数据
      */
     private void setAutoFill() {
@@ -1080,7 +1091,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 点击后退操作
      */
     private void pressBack() {
-        writeSettingValue();
         SettingPreferences.setSettingValue(MainActivity.this, SettingPreferences.KEY_FIRST_LUNCH, Utils.getVersion(MainActivity.this));
         save();
         finish();
@@ -1137,7 +1147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (requestCode == SETTING) {//第二个页面返回来的数据
             //resultcode 区分结果是否属于正常返回
             if (resultCode == RESULT_OK) {
-                onRecordStart();
+//                onRecordStart();
                 //操作成功
             } else if (resultCode == RESULT_CANCELED) {
                 //操作失败
@@ -1150,31 +1160,83 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onMenuItemClick(View clickedView, int position) {
         switch (position) {
             case 0:
-                onRecordStart();
+//                onRecordStart();
                 break;
             case 1:
                 onRecordStop();
                 initGame(currentLevel);
                 break;
-            case 2:
+            case 2: {
                 Intent intent = new Intent(this, SettingActivity.class);
                 startActivityForResult(intent, SETTING);
-                break;
+            }
+            break;
 //            case 3:
 ////                chronometer.setBase(lasttime);
 ////                chronometer.start();
 //                onRecordStart();
 //                break;
             case 3:
-                setAutoFill();
-                gridItemAdapter.notifyDataSetChanged();
-                checkComplete();
+                ShareUtils.getInstance().showShare(MainActivity.this, context.getResources().getString(R.string.sudoku_share_text).toString(), MainActivity.this);
                 break;
+            case 4: {
+                Intent intent = new Intent(this, HelpActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case 5: {
+                onRecordPause();
+                boolean isopen = AdUtils.openAd(this, new SpotDialogListener() {
+                    @Override
+                    public void onShowSuccess() {
+                    }
+
+                    @Override
+                    public void onShowFailed() {
+                        setAutoFill();
+                        gridItemAdapter.notifyDataSetChanged();
+                        checkComplete();
+                    }
+
+                    @Override
+                    public void onSpotClosed() {
+                        setAutoFill();
+                        gridItemAdapter.notifyDataSetChanged();
+                        checkComplete();
+                    }
+
+                    @Override
+                    public void onSpotClick(boolean b) {
+
+                    }
+                });
+                if (!isopen) {
+                    setAutoFill();
+                    gridItemAdapter.notifyDataSetChanged();
+                    checkComplete();
+                }
+                break;
+            }
         }
     }
 
     @Override
     public void onMenuItemLongClick(View clickedView, int position) {
+
+    }
+
+    @Override
+    public void onResult(SHARE_MEDIA share_media) {
+
+    }
+
+    @Override
+    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCancel(SHARE_MEDIA share_media) {
 
     }
 }

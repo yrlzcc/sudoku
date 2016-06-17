@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import shirley.com.sudoku.R;
@@ -55,12 +56,20 @@ public class SquareLayout extends RelativeLayout {
 
         int childHeightSize = getMeasuredHeight();
 
-        //高度和宽度一样
 
         heightMeasureSpec = widthMeasureSpec = MeasureSpec.makeMeasureSpec(childWidthSize, MeasureSpec.EXACTLY);
-
+//        for(int i = 0; i < getChildCount();i++){
+//            android.view.View child = getChildAt(0);
+//            child.measure(widthMeasureSpec,heightMeasureSpec);
+//        }
+//        childHeightSize = getMeasuredHeight();
+//        Log.i("qinchi","childHeightSize = "+childHeightSize);
+        //高度和宽度一样
+//        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     }
+
+
 }
 

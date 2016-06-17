@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
@@ -20,9 +22,11 @@ import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
+import shirley.com.sudoku.utils.ShareUtils;
 import shirley.com.sudoku.utils.Utils;
+import shirley.com.sudoku.wxapi.HelpActivity;
 
-public class MenuActivity extends BaseActivity implements View.OnClickListener {
+public class MenuActivity extends BaseActivity implements View.OnClickListener, UMShareListener {
 
     private DialogUtils dialogUtils = null;
     private Button level1,level2,level3,level4;
@@ -41,14 +45,19 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         level3.setOnClickListener(this);
         level4 = (Button)findViewById(R.id.menu_level4);
         level4.setOnClickListener(this);
+        findViewById(R.id.menu_bottommenu_setting).setOnClickListener(this);
+        findViewById(R.id.menu_bottommenu_share).setOnClickListener(this);
+        findViewById(R.id.menu_bottommenu_help).setOnClickListener(this);
+        readSettingValue();
         currentGrade = Utils.stringToArr(SettingPreferences.getSetStringValue(this, SettingPreferences.KEY_CURRENT_CURRENT_GRADE));
         if(currentGrade == null){
             currentGrade = new int[4];
         }
         currentLevel = SettingPreferences.getValue(this, SettingPreferences.KEY_CURRENT_SUDOKU_CURRENTLEVEL,0);
         checkUpdate();
-        AdUtils.openAd(this);
+//        AdUtils.openBanner(this);
         updateButtonText();
+        AdUtils.openTestAd(this);
     }
 
     /**
@@ -69,24 +78,50 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         int level = 0;
         switch (v.getId()) {
-            case R.id.menu_level1:
+            case R.id.menu_level1: {
                 level = Constans.LEVEL1;
+                Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                intent.putExtra("level", level);
+                startActivity(intent);
+            }
                 break;
-            case R.id.menu_level2:
+            case R.id.menu_level2:{
                 level = Constans.LEVEL2;
+                Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                intent.putExtra("level", level);
+                startActivity(intent);
+            }
                 break;
-            case R.id.menu_level3:
+            case R.id.menu_level3: {
                 level = Constans.LEVEL3;
+                Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                intent.putExtra("level", level);
+                startActivity(intent);
+            }
                 break;
-            case R.id.menu_level4:
+            case R.id.menu_level4: {
                 level = Constans.LEVEL4;
+                Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                intent.putExtra("level", level);
+                startActivity(intent);
+            }
+                break;
+            case R.id.menu_bottommenu_setting: {
+                Intent intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
+            }
+                break;
+            case R.id.menu_bottommenu_share:
+                ShareUtils.getInstance().showShare(MenuActivity.this,MenuActivity.this.getResources().getString(R.string.sudoku_share_text).toString(),MenuActivity.this);
+                break;
+            case R.id.menu_bottommenu_help: {
+                Intent intent = new Intent(this, HelpActivity.class);
+                startActivity(intent);
+            }
                 break;
             default:
                 break;
         }
-        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-        intent.putExtra("level", level);
-        startActivity(intent);
     }
 
     private void checkUpdate() {
@@ -115,6 +150,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                             }
                         });
                         dialogUtils.show();
+                        dialogUtils.setConfirmText(MenuActivity.this.getResources().getString(R.string.sudoku_download));
                     }
 
                     @Override
@@ -137,5 +173,61 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
 //        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                showExitDialog();
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 弹出退出对话框
+     */
+    private void showExitDialog() {
+        dialogUtils = new DialogUtils(this, "退出", this.getResources().getString(R.string.sudoku_dialog_exit), new DialogUtils.OnDialogSelectId() {
+            @Override
+            public void onClick(int whichButton) {
+                switch (whichButton) {
+                    case 0:
+                        dialogUtils.dismiss();
+                        break;
+                    case 1:
+                        System.exit(0);
+                        break;
+                }
+            }
+        });
+        dialogUtils.show();
+    }
+
+    /**
+     * 读取设置参数
+     */
+    private void readSettingValue() {
+        isHighlightTipsOpen = SettingPreferences.getSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_TIPS, true);
+        isConflictHelpOpen = SettingPreferences.getSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_CONFLICT, true);
+        isSoundOpen = SettingPreferences.getSettingValue(this, SettingPreferences.KEY_SETTING_SWITCH_SOUND, true);
+    }
+
+    @Override
+    public void onResult(SHARE_MEDIA share_media) {
+
+    }
+
+    @Override
+    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCancel(SHARE_MEDIA share_media) {
+
     }
 }
