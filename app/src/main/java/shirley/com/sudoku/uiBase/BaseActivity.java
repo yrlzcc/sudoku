@@ -17,7 +17,7 @@ import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.ReadSudokuUtil;
 
 public class BaseActivity extends FragmentActivity {
-	public static final boolean isDebug = true; // app是否是测试包
+	public static final boolean isDebug = false; // app是否是测试包
 	protected static final int SETTING = 10;
 	public boolean isDestory;
 	public boolean isResume;

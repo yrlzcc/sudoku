@@ -149,7 +149,7 @@
         <!-- 有米结束 -->
 
         <activity android:name=".FirstMenuActivity" />
-        <activity android:name=".wxapi.HelpActivity"></activity>
+        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>

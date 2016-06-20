@@ -36,8 +36,8 @@ android {
         applicationId "shirley.com.sudoku"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.6"
+        versionCode 5
+        versionName "1.7"
     }
 
 
@@ -64,6 +64,7 @@ android {
             keyPassword 'sudokuxia'
             storeFile file('sudoku.releasekey')
             storePassword 'sudokuxia'
+            //48956a5bf32658358f5c8f7fa01f0c00
         }
 //        release {
 //            keyAlias 'sudoku'
@@ -76,6 +77,7 @@ android {
             keyPassword 'itisabenny'
             storeFile file('safetrip.releasekey')
             storePassword 'itisabenny'
+            //b524f2fa74cc21181e1302f2559375b2
         }
     }
 
@@ -84,7 +86,7 @@ android {
          * 配置编译类型
          */
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
@@ -103,7 +105,11 @@ android {
         baidu {}
         android {}
 //        anzhi {}
-//        '360' {}
+        '360' {}
+        androidyuan {}
+        anfen {}
+        anbei {}
+        anzhuozhijia {}
 //        youmi {}
 //        tengxun {}
         '91' {}

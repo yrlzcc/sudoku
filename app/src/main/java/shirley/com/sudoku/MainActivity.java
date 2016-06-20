@@ -45,7 +45,6 @@ import shirley.com.sudoku.utils.UpdateAction;
 import shirley.com.sudoku.model.GridItem;
 import shirley.com.sudoku.utils.Utils;
 import shirley.com.sudoku.view.GridItemAdapter;
-import shirley.com.sudoku.wxapi.HelpActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, Observer, OnMenuItemClickListener, OnMenuItemLongClickListener, UMShareListener {
 
@@ -164,7 +163,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         solution.setResource(R.mipmap.ic_menu_view);
         solution.setBgResource(R.drawable.shape_drop_item_back);
 
-        MenuObject share = new MenuObject("分享");
+        MenuObject share = new MenuObject("求助");
         share.setResource(R.mipmap.ic_menu_share);
         share.setBgResource(R.drawable.shape_drop_item_back);
 
@@ -777,7 +776,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 弹出完成对话框
      */
-    private void showCompleteDialog() {
+    private void showCompleteGradeDialog() {
         dialogUtils = new DialogUtils(context, "选择", String.format(context.getResources().getString(R.string.sudoku_dialog_complete_tips), chronometer.getText().toString()), new DialogUtils.OnDialogSelectId() {
             @Override
             public void onClick(int whichButton) {
@@ -796,7 +795,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     case 2:
                         String strLevel = context.getResources().getString(ModeData.levelString[currentLevel][1]);
                         String strText = String.format(context.getResources().getString(R.string.sudoku_share_complete_text), strLevel, currentGrade[currentLevel], chronometer.getText().toString());
-                        onRecordStop();
                         dialogUtils.dismiss();
                         ShareUtils.getInstance().showShare(MainActivity.this, strText, MainActivity.this);
                         break;
@@ -825,9 +823,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         dialogUtils.dismiss();
                         pressBack();
                         break;
+                    case 2:
+                        String strLevel = context.getResources().getString(ModeData.levelString[currentLevel][1]);
+                        String strText = String.format(context.getResources().getString(R.string.sudoku_share_complete_text), strLevel, currentGrade[currentLevel], chronometer.getText().toString());
+                        dialogUtils.dismiss();
+                        ShareUtils.getInstance().showShare(MainActivity.this, strText, MainActivity.this);
+                        break;
                 }
             }
-        });
+        },3);
         dialogUtils.setConfirmText(context.getResources().getString(R.string.sudoku_back));
         dialogUtils.setCancelText(context.getResources().getString(R.string.sudoku_again));
         dialogUtils.show();
@@ -1132,14 +1136,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      */
     private boolean checkComplete() {
         if (isComplete()) {
-            if (currentGrade[level] == size) {
-                showCompleteLevelDialog();
-            } else {
+            onRecordPause();
+            boolean isopen = AdUtils.openAd(this, new SpotDialogListener() {
+                @Override
+                public void onShowSuccess() {
+                }
+
+                @Override
+                public void onShowFailed() {
+                    showCompleteDialog();
+                }
+
+                @Override
+                public void onSpotClosed() {
+                    showCompleteDialog();
+                }
+
+                @Override
+                public void onSpotClick(boolean b) {
+
+                }
+            });
+            if (!isopen) {
                 showCompleteDialog();
             }
             return true;
         }
         return false;
+    }
+
+    /**
+     * 显示完成对话框
+     */
+    private void showCompleteDialog(){
+        if (currentGrade[level] == size) {
+            showCompleteLevelDialog();
+        } else {
+            showCompleteGradeDialog();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1176,9 +1210,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 ////                chronometer.start();
 //                onRecordStart();
 //                break;
-            case 3:
-                ShareUtils.getInstance().showShare(MainActivity.this, context.getResources().getString(R.string.sudoku_share_text).toString(), MainActivity.this);
+            case 3: {
+                String strLevel = context.getResources().getString(ModeData.levelString[currentLevel][1]);
+                String strText = String.format(context.getResources().getString(R.string.sudoku_share_help), strLevel, currentGrade[currentLevel]);
+                ShareUtils.getInstance().showShare(MainActivity.this, strText, MainActivity.this);
                 break;
+            }
             case 4: {
                 Intent intent = new Intent(this, HelpActivity.class);
                 startActivity(intent);
@@ -1227,16 +1264,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onResult(SHARE_MEDIA share_media) {
-
+        Toast.makeText(this," 分享成功啦", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
+        Toast.makeText(this," 分享失败啦", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancel(SHARE_MEDIA share_media) {
-
+        Toast.makeText(this," 分享取消啦", Toast.LENGTH_SHORT).show();
     }
 }

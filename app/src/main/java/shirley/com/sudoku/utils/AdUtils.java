@@ -23,7 +23,7 @@ import sdw.sea.erd.onlineconfig.OnlineConfigCallBack;
  * Created by lichuang on 2016/5/18.
  */
 public class AdUtils {
-    private static boolean isTestOpen = true;  //自己测试时用的开关
+    private static boolean isTestOpen = false;  //自己测试时用的开关
     public static boolean isOpen = false;
     public static void setAD(Activity context){
         // 实例化 LayoutParams（重要）

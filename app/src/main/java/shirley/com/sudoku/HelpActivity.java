@@ -1,11 +1,9 @@
-package shirley.com.sudoku.wxapi;
+package shirley.com.sudoku;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import shirley.com.sudoku.uiBase.BaseActivity;
 
-import shirley.com.sudoku.R;
-
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

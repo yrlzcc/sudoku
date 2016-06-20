@@ -35,7 +35,9 @@
     <string name="sudoku_help">用数字1~9填充九宫格上的所有空格，保证每行、每列、每个小九宫格中1~9的数字只出现一次</string>
 
     <string name="sudoku_down_share">分享</string>
-    <string name="sudoku_share_text">"我在玩高智商数独游戏，你也来试试吧！"</string>
-    <string name="sudoku_share_url">"http://shouji.baidu.com/game/9505077.html"</string>
+    <string name="sudoku_down_help">求助</string>
+    <string name="sudoku_share_text">我在玩高智商数独游戏，你也来试试吧！</string>
+    <string name="sudoku_share_url">http://shouji.baidu.com/game/9505077.html</string>
     <string name="sudoku_share_complete_text">我在数独游戏中，%1$s第%2$d关中，用时%3$s，快来挑战我吧！</string>
+    <string name="sudoku_share_help">我在数独游戏中，卡在%1$s第%2$d关中，快来帮帮我吧！</string>
 </resources>

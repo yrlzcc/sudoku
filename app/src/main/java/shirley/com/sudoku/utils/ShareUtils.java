@@ -41,11 +41,11 @@ public class ShareUtils {
         UMImage image = new UMImage(activity,
                 BitmapFactory.decodeResource(activity.getResources(), R.mipmap.icon));
         ShareContent content = new ShareContent();
-        content.mTitle = "分享";
+        content.mTitle = "高智商游戏";
         content.mText = strText;
         new ShareAction(activity).setDisplayList(displaylist)
                 .withText(strText)
-                .withTitle("分享")
+                .withTitle("高智商游戏")
                 .setShareContent(content)
                 .withMedia(image)
                 .withTargetUrl(activity.getResources().getText(R.string.sudoku_share_url).toString())

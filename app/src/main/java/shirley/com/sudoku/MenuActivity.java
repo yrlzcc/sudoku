@@ -1,14 +1,11 @@
 package shirley.com.sudoku;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -16,7 +13,6 @@ import com.pgyersdk.update.UpdateManagerListener;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.AdUtils;
@@ -24,7 +20,6 @@ import shirley.com.sudoku.utils.Constans;
 import shirley.com.sudoku.utils.DialogUtils;
 import shirley.com.sudoku.utils.ShareUtils;
 import shirley.com.sudoku.utils.Utils;
-import shirley.com.sudoku.wxapi.HelpActivity;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener, UMShareListener {
 
@@ -218,16 +213,16 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onResult(SHARE_MEDIA share_media) {
-
+        Toast.makeText(this, " 分享成功啦", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
+        Toast.makeText(this," 分享失败啦", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancel(SHARE_MEDIA share_media) {
-
+        Toast.makeText(this," 分享取消啦", Toast.LENGTH_SHORT).show();
     }
 }
