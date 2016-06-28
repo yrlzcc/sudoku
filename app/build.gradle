@@ -23,7 +23,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.yalantis:contextmenu:1.0.7'
     compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.umeng.analytics:analytics:latest.integration'
+//    compile 'com.umeng.analytics:analytics:latest.integration'
     //    compile files('libs/YoumiSdk_v6.2.0_2016-05-20.jar')
     compile project(':social_sdk_library_project')
 }
@@ -36,7 +36,7 @@ android {
         applicationId "shirley.com.sudoku"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 5
+        versionCode 6
         versionName "1.7"
     }
 
@@ -110,11 +110,11 @@ android {
         anfen {}
         anbei {}
         anzhuozhijia {}
-//        youmi {}
-//        tengxun {}
+        youmi {}
+        tengxun {}
         '91' {}
 //        jifeng {}
-//        xiaomi {}
+        xiaomi {}
 //        Nduo {}
 //        appchina {}
 //        wandoujia {}
@@ -127,11 +127,11 @@ android {
 //        talkphone {}
 //        google {}
 //        mumayi {}
-//        woshangdian {}
 //        leshangdian {}
 //        aliyun {}
 //        samsung {}
 //        wangyi {}
+//        woshangdian {}
 //        taobao {}
 //        pp {}
 //        sougou {}

@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.umeng.analytics.MobclickAgent;
 
 import shirley.com.sudoku.BaseApplication;
+import shirley.com.sudoku.model.SudokuData;
 import shirley.com.sudoku.utils.AdUtils;
 import shirley.com.sudoku.utils.ReadSudokuUtil;
 
@@ -31,12 +34,12 @@ public class BaseActivity extends FragmentActivity {
 	protected static int mode = 1; //模式
 	protected static int currentLevel = 0;
 	protected static int[] currentGrade ;
+	protected static SudokuData sudokuData = null;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setExit(false);
-		AdUtils.getOnlineVar(this);
 		if (applicationManager == null) {
 			applicationManager = ApplicationManager.getScreenManager();
 		}
@@ -138,5 +141,14 @@ public class BaseActivity extends FragmentActivity {
 	//可以将一下代码加到你的MainActivity中，或者在任意一个需要调用分享功能的activity当中
 //	String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,Manifest.permission.READ_LOGS,Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.SET_DEBUG_APP,Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
 //	ActivityCompat.requestPermissions(this,mPermissionList, 100);
+
+	public class MainHandler extends Handler {
+
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			}
+		}
+	}
 
 }

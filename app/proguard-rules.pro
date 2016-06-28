@@ -121,7 +121,7 @@
  -keep class com.facebook.**
  -keep class com.facebook.** { *; }
  -keep class com.umeng.scrshot.**
-# -keep public class com.tencent.** {*;}
+ -keep public class com.tencent.** {*;}
  -keep class com.umeng.socialize.sensor.**
  -keep class com.umeng.socialize.handler.**
  -keep class com.umeng.socialize.handler.*
@@ -151,9 +151,9 @@
 
  -keep class com.sina.** {*;}
  -dontwarn com.sina.**
-# -keep class  com.alipay.share.sdk.** {
-#    *;
-# }
+ -keep class  com.alipay.share.sdk.** {
+    *;
+ }
  -keepnames class * implements android.os.Parcelable {
      public static final ** CREATOR;
  }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import sdw.sea.erd.AdManager;
 import sdw.sea.erd.normal.banner.BannerManager;
+import sdw.sea.erd.normal.spot.SplashView;
 import sdw.sea.erd.normal.spot.SpotDialogListener;
 import sdw.sea.erd.normal.spot.SpotManager;
 import sdw.sea.erd.onlineconfig.OnlineConfigCallBack;
@@ -25,6 +26,7 @@ import sdw.sea.erd.onlineconfig.OnlineConfigCallBack;
 public class AdUtils {
     private static boolean isTestOpen = false;  //自己测试时用的开关
     public static boolean isOpen = false;
+    public static boolean isSplashOpen = true;
     public static void setAD(Activity context){
         // 实例化 LayoutParams（重要）
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -56,8 +58,9 @@ public class AdUtils {
                 editor.putInt(key, Integer.parseInt(value));
                 editor.commit();
                 int v = Integer.parseInt(value);
-                System.out.println("onlinevar:" + isOpen);
+                System.out.println("onlinevar:" + v);
                 isOpen = (v == 1 ? true : false);
+                isSplashOpen = isOpen;
 
             }
 
@@ -90,6 +93,13 @@ public class AdUtils {
             SpotManager.getInstance(context).showSpotAds(context,listener);
         }
         return isOpen;
+    }
+
+    public static boolean openSplashAd(Context context,SplashView splashView,SpotDialogListener listener){
+        if(isSplashOpen){
+            SpotManager.getInstance(context).showSplashSpotAds(context,splashView,listener);
+        }
+        return isSplashOpen;
     }
 
     public static void openBanner(Activity context){

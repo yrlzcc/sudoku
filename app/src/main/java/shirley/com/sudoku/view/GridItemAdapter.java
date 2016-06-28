@@ -22,6 +22,7 @@ public class GridItemAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private int selection;
+    private int selectionNum;
     private boolean isHighlightTipsOpen = true;  //高亮提示开关
     private boolean isConflictHelpOpen = true;    //帮助开关
     private int mode = 1;

@@ -10,9 +10,11 @@ import android.widget.Toast;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import sdw.sea.erd.normal.spot.SpotManager;
 import shirley.com.sudoku.uiBase.BaseActivity;
 import shirley.com.sudoku.uiBase.SettingPreferences;
 import shirley.com.sudoku.utils.AdUtils;
@@ -53,6 +55,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 //        AdUtils.openBanner(this);
         updateButtonText();
         AdUtils.openTestAd(this);
+        MobclickAgent.updateOnlineConfig(this);
     }
 
     /**
@@ -194,7 +197,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                         dialogUtils.dismiss();
                         break;
                     case 1:
+                        SpotManager.getInstance(MenuActivity.this).onDestroy();
+                        popAllActivity();
                         System.exit(0);
+                        finish();
                         break;
                 }
             }

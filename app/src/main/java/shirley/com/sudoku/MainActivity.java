@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         gridView.setOnItemClickListener(this);
         context = this;
         level = this.getIntent().getIntExtra("level", 0);
-        gameList = app.sudokuData.sudokuList.get(level).getGameList();
+        gameList = sudokuData.sudokuList.get(level).getGameList();
         if (gameList == null) {
             Toast.makeText(context, "加载失败，请重试", Toast.LENGTH_SHORT).show();
             finish();
@@ -981,10 +981,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     game.checkReference(selection / COLOUMNUM, selection % COLOUMNUM);
                     setHighLight(game.isReference());
                 }
-                if (isConflictHelpOpen) {
-                    game.checkConflict();
-                    setConflictState(game.isConflict());
-                }
+//                if (isConflictHelpOpen) {
+//                    game.checkConflict();
+//                    setConflictState(game.isConflict());
+//                }
                 updateClearState();
                 gridItemAdapter.notifyDataSetChanged();
             }

@@ -12,4 +12,6 @@ public class Constans {
     public static final int MODE_NUM = 1;  //类型，数字
     public static final int MODE_COLOR = 2; //类型颜色
     public static final int MODE_CAR = 3; //类型车型
+
+    public static String SHAREURL = "";
 }

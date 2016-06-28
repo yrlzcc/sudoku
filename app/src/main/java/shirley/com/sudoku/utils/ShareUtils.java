@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 
 import com.tencent.connect.common.UIListenerManager;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.ShareContent;
 import com.umeng.socialize.UMShareListener;
@@ -38,6 +39,8 @@ public class ShareUtils {
      *
      */
     public void showShare(Activity activity,String strText,UMShareListener listener) {
+        Constans.SHAREURL= MobclickAgent.getConfigParams(activity, "shareUrl");
+        System.out.println("shareurl:" + Constans.SHAREURL);
         UMImage image = new UMImage(activity,
                 BitmapFactory.decodeResource(activity.getResources(), R.mipmap.icon));
         ShareContent content = new ShareContent();
@@ -48,7 +51,7 @@ public class ShareUtils {
                 .withTitle("高智商游戏")
                 .setShareContent(content)
                 .withMedia(image)
-                .withTargetUrl(activity.getResources().getText(R.string.sudoku_share_url).toString())
+                .withTargetUrl(Constans.SHAREURL)
                 .setCallback(listener)
                 .open();
     }
